@@ -54,6 +54,14 @@ table {
 * {
     box-sizing: border-box;
 }
-`
+`;
 
-export default GlobalStyle;
+const colors = {
+  black: "#151515",
+  darkGrey: "#E5E5E5",
+  ligthGrey: "EFEFEF",
+  white: "#FFFFFF",
+  blue: "#1877f2",
+};
+
+export { GlobalStyle, colors };
