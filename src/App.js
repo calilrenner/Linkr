@@ -2,13 +2,15 @@ import styled from "styled-components";
 import { GlobalStyle, colors } from "./globalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
+import Post from "./components/Post";
+
 export default function App() {
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Switch>
         <Route path="/" exact>
-          <Teste>teste</Teste>
+          <Post />
         </Route>
         <Route path="/sign-up" exact></Route>
         <Route path="/timeline" exact></Route>
