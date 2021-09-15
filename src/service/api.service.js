@@ -5,8 +5,15 @@ function setConfig(token) {
   return;
 }
 
+function registerUser(newUserData) {}
+
+function serverLogin(userData) {
+  console.log(userData);
+  return axios.post(`${URL}sign-in`, userData);
+}
+
 function getTrending({ token }) {
   return axios.get(`${URL}trending`, setConfig(token));
 }
 
-export { getTrending };
+export { getTrending, serverLogin, registerUser };

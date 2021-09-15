@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../globalStyles";
+import { colors } from "../../globalStyles";
 import { Link } from "react-router-dom";
 
 export default function Trending() {
