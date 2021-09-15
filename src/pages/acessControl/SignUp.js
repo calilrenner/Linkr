@@ -1,6 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
 import { Container, Form, TitleContainer } from "./accesControlStyles";
+import { registerUser } from "../../service/api.service";
 import Loader from "react-loader-spinner";
 
 export default function SignUp() {
@@ -14,7 +15,35 @@ export default function SignUp() {
   function handleSignInSubmit(e) {
     e.preventDefault();
     setDisableForm(true);
+    if (email && password && username && pictureUrl) {
+      const newUserData = {
+        email: email,
+        password: password,
+        username: username,
+        pictureUrl: pictureUrl,
+      };
+      registerUser(newUserData).then(redirect).catch(handleError);
+    } else {
+      alert("Preencha todos os campos!");
+      setDisableForm(false);
+    }
   }
+
+  function redirect() {
+    setDisableForm(false);
+    history.push("/");
+  }
+
+  function handleError(e) {
+    const error = e.response.status;
+    if (error === "400") {
+      alert("O email inserido já está cadastrado");
+    } else {
+      alert("Ocorreu um erro inesperado");
+    }
+    setDisableForm(false);
+  }
+
   return (
     <Container>
       <TitleContainer>
@@ -60,7 +89,7 @@ export default function SignUp() {
             "Sign Up"
           )}
         </button>
-        <Link to="/sign-up">Switch back to log in</Link>
+        <Link to="/">Switch back to log in</Link>
       </Form>
     </Container>
   );

@@ -5,10 +5,12 @@ function setConfig(token) {
   return;
 }
 
-function registerUser(newUserData) {}
+function registerUser(newUserData) {
+  console.log(newUserData);
+  return axios.post(`${URL}sign-up`, newUserData);
+}
 
 function serverLogin(userData) {
-  console.log(userData);
   return axios.post(`${URL}sign-in`, userData);
 }
 
