@@ -50,32 +50,33 @@ export default function Timeline() {
 
     function loadPosts() {
         if (errPosts === '') {
-            if (posts === '') {
-                return (
-                    <Container><Loader /><LoaderText>Carregando...</LoaderText></Container>
-                )
-            } else if (posts.length > 0) {
-                return (
-                    <Main>
-                        <div>
-                            <Header />
-                            <Title>timeline</Title>
-                            <PostCreation />
-                            {posts.map(post => <TimelinePost key={post.id} {...post} />)}
-                        </div>
-                        <DivHashTag />
-                    </Main>
-                )
-            } else if (posts.length === 0) {
-                return (
-                    <ErrorMsg>Nenhum post encontrado</ErrorMsg>
-                )
-            }
-
-
-        } else {
             return (
                 <ErrorMsg>{errPosts}</ErrorMsg>
+            )
+        }
+
+        if (posts === '') {
+            return (
+                <Container>
+                    <Loader />
+                    <LoaderText>Carregando...</LoaderText>
+                </Container>
+            )
+        } else if (posts.length === 0) {
+            return (
+                <ErrorMsg>Nenhum post encontrado</ErrorMsg>
+            )
+        } else {
+            return (
+                <Main>
+                    <div>
+                        <Header />
+                        <Title>timeline</Title>
+                        <PostCreation />
+                        {posts.map(post => <TimelinePost key={post.id} {...post} />)}
+                    </div>
+                    <DivHashTag />
+                </Main>
             )
         }
     }
