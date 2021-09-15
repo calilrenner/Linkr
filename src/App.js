@@ -4,6 +4,7 @@ import { useState } from "react";
 import UserContext from "./contexts/UserContext";
 import Trending from "./components/commons/Trending";
 import Login from "./pages/acessControl/Login";
+import SignUp from "./pages/acessControl/SignUp";
 
 export default function App() {
   const [user, setUser] = useState({});
@@ -15,7 +16,9 @@ export default function App() {
           <Route path="/" exact>
             <Login />
           </Route>
-          <Route path="/sign-up" exact></Route>
+          <Route path="/sign-up" exact>
+            <SignUp />
+          </Route>
           <Route path="/timeline" exact>
             <Trending />
           </Route>
