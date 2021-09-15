@@ -1,22 +1,69 @@
+import { useState } from "react";
 import styled from "styled-components";
 
+import { createNewPost } from "../services/api.services";
+
 export default function Post(){
+    const [link, setLink] = useState("");
+    const [text, setText] = useState("");
+    const [buttonText, setButtonText] = useState("Publish")
+    const [disabled, setDisabled] = useState(false);
+
+    function createPost(e){
+        e.preventDefault();
+
+        setButtonText("Publishing...");
+        setDisabled(true);
+
+        const body = {link, text};
+        const req = createNewPost(body);
+
+        req.then(() => {
+            setButtonText("Publish");
+            setDisabled(false);
+            setLink("");
+            setText("");
+            //ATUALIZAR PÁGINA
+        });
+        req.catch(() => {
+            alert("Houve um erro ao publicar seu link");
+            setDisabled(false);
+            setButtonText("Publish");
+        })
+    }
+    
+
     return (
-        <Content>
-            <Image>
-                <img src="https://st.depositphotos.com/1780879/3816/i/600/depositphotos_38166573-stock-photo-trees-with-sunbeams.jpg" alt="adf"/>
-            </Image>
-            <Text>
-                <p>O que você tem para favoritar hoje?</p>
-                <form>
-                    <LinkInput type="url" placeholder="http://..." />
-                    <TextInput type="text" placeholder="Muito irado esse link falando de #javascript" />
-                    <Button type="submit">
-                        Publicar
-                    </Button>
-                </form>
-            </Text>
-        </Content>
+        <>
+            <Content>
+                <Image>
+                    <img src="https://st.depositphotos.com/1780879/3816/i/600/depositphotos_38166573-stock-photo-trees-with-sunbeams.jpg" alt="adf"/>
+                </Image>
+                <Text>
+                    <p>O que você tem para favoritar hoje?</p>
+                    <form onSubmit={createPost}>
+                        <LinkInput 
+                            type="url" 
+                            placeholder="http://..." 
+                            value={link} 
+                            onChange={e => setLink(e.target.value)} 
+                            required
+                            disabled={disabled}
+                        />
+                        <TextInput 
+                            type="text" 
+                            placeholder="Muito irado esse link falando de #javascript" 
+                            value={text} 
+                            onChange={e => setText(e.target.value)}
+                            disabled={disabled} 
+                        />
+                        <Button type="submit" disabled={disabled}>
+                            {buttonText}
+                        </Button>
+                    </form>
+                </Text>
+            </Content>
+        </>
     );
 }
 
@@ -105,5 +152,5 @@ const Button = styled.button`
     font-size: 14px;
     font-weight: bold;
     line-height: 17px;
-    cursor: pointer;
+    cursor: ${props => props.disabled ? "" : "pointer"};
 `;
