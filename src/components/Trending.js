@@ -1,30 +1,33 @@
 import styled from "styled-components";
 import { colors } from "../globalStyles";
 import { Link } from "react-router-dom";
-//import { getTrending } from "../service/api.service";
+import { getTrending } from "../service/api.service";
 import { useEffect, useState, useContext } from "react";
-//import UserContext from "../contexts/UserContext";
+import UserContext from "../contexts/UserContext";
 
 export default function Trending() {
-  //const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
+
   const [trending, setTrending] = useState([]);
 
-  /* useEffect(
+  useEffect(
     () => getTrending({ token: user.token }).then((r) => setTrending(r.data)),
     []
-  ); */
-
+  );
+  console.log(trending);
   return (
     <TrendingContainer>
       <div>
         <h1>trending</h1>
       </div>
       <ul>
-        {trending.hashtags.map((topic, index) => (
-          <Link key={index} to={`/hashtag/:${topic.name}`}>
-            <li># {topic.name}</li>
-          </Link>
-        ))}
+        {trending.hashtags
+          ? trending.hashtags.map((topic, index) => (
+              <Link key={index} to={`/hashtag/:${topic.name}`}>
+                <li># {topic.name}</li>
+              </Link>
+            ))
+          : ""}
       </ul>
     </TrendingContainer>
   );
