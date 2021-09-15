@@ -28,7 +28,7 @@ export default function TimelinePost(props) {
             <Container>
                 <SideBarPost>
                     <Link to={`/user/${id}`}><img src={avatar} alt='' /></Link>
-                    <div><FiHeart /></div>
+                    <FiHeart />
                     <span>{likes.length === 1 ? `${likes.length} like` : `${likes.length} likes`}</span>
                 </SideBarPost>
                 <ContentPost>

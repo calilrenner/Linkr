@@ -1,5 +1,13 @@
 const { createGlobalStyle } = require("styled-components");
 
+const colors = {
+  black: "#151515",
+  darkGrey: "#484848",
+  ligthGrey: "#EFEFEF",
+  white: "#FFFFFF",
+  blue: "#1877f2",
+};
+
 const GlobalStyle = createGlobalStyle`
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -34,7 +42,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
     font-family: 'Lato', sans-serif;
-	background-color: #333333;
+	background-color: ${colors.darkGrey}
 }
 ol, ul {
 	list-style: none;
@@ -55,7 +63,6 @@ table {
 * {
     box-sizing: border-box;
 }
-`;
 
 const colors = {
   black: "#151515",
@@ -64,5 +71,9 @@ const colors = {
   white: "#FFFFFF",
   blue: "#1877f2",
 };
+a{
+	text-decoration: none;
+}
+`;
 
 export { GlobalStyle, colors };

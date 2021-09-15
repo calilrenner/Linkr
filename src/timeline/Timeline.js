@@ -1,51 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import TimelinePost from "./TimelinePost";
 import { VscLoading } from 'react-icons/vsc'
 import styled from "styled-components";
 import { colors } from "../globalStyles";
-import axios from "axios";
+import UserContext from "../contexts/UserContext";
+import { getPosts } from "../service/api.service";
 
 export default function Timeline() {
 
-    const [token, setToken] = useState('');
     const [posts, setPosts] = useState('');
     const [errPosts, SetErrPosts] = useState('')
-
-    function login() {
-
-        const signIn = {
-            "email": "leandro@driven.com",
-            "password": "12"
-        }
-        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in', signIn);
-        return promise;
-    }
-
-    function getPosts(token) {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', config);
-        return promise;
-    }
+    const { user }  = useContext(UserContext);
 
     useEffect(() => {
-        login()
-            .then(res => setToken(res.data.token))
-            .catch(err => console.log(err.response))
-    }, []);
-
-    useEffect(() => {
-        if (token !== '') {
-            getPosts(token)
+            getPosts(user.token)
                 .then(res => setPosts(res.data.posts))
                 .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'))
-        } else {
-            return;
-        }
-    }, [token]);
+    }, []);
 
 
     function loadPosts() {
@@ -54,7 +25,6 @@ export default function Timeline() {
                 <ErrorMsg>{errPosts}</ErrorMsg>
             )
         }
-
         if (posts === '') {
             return (
                 <Container>
@@ -147,7 +117,6 @@ const DivHashTag = styled.div`
 const Main = styled.div`
 display: flex;
 margin: 0 calc((100% - 937px) / 2);
-background-color: #333333;
 
 @media (max-width: 1000px) {
     margin: 0;
@@ -158,7 +127,7 @@ const PostCreation = styled.div`
 width: 611px;
 height: 209px;
 border-radius: 16px;
-background-color: ${colors.darkGrey};
+background-color: ${colors.white};
 margin-top: 43px;
 
 @media (max-width: 1000px) {
