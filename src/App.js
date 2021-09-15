@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import { GlobalStyle, colors } from "./globalStyles";
+import { GlobalStyle } from "./globalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Trending from "./components/Trending";
+import Login from "./components/Login";
 
 export default function App() {
   return (
@@ -8,10 +9,12 @@ export default function App() {
       <GlobalStyle />
       <Switch>
         <Route path="/" exact>
-          <Teste>teste</Teste>
+          <Login />
         </Route>
         <Route path="/sign-up" exact></Route>
-        <Route path="/timeline" exact></Route>
+        <Route path="/timeline" exact>
+          <Trending />
+        </Route>
         <Route path="/myposts" exact></Route>
         <Route path="/my-likes" exact></Route>
         <Route path="/user/:id" exact></Route>
@@ -20,7 +23,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-
-const Teste = styled.h1`
-  color: ${colors.blue};
-`;
