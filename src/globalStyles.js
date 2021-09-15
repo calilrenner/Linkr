@@ -59,7 +59,7 @@ table {
 const colors = {
   black: "#151515",
   darkGrey: "#E5E5E5",
-  ligthGrey: "EFEFEF",
+  ligthGrey: "#EFEFEF",
   white: "#FFFFFF",
   blue: "#1877f2",
 };
