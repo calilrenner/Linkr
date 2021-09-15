@@ -1,16 +1,35 @@
 import { useEffect, useState } from "react";
 import TimelinePost from "./TimelinePost";
-import { login } from "./createUser";
 import { VscLoading } from 'react-icons/vsc'
 import styled from "styled-components";
 import { colors } from "../globalStyles";
-import { getPosts } from "./createUser";
+import axios from "axios";
 
 export default function Timeline() {
 
     const [token, setToken] = useState('');
     const [posts, setPosts] = useState('');
     const [errPosts, SetErrPosts] = useState('')
+
+    function login() {
+
+        const signIn = {
+            "email": "leandro@driven.com",
+            "password": "12"
+        }
+        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in', signIn);
+        return promise;
+    }
+    
+    function getPosts(token) {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', config);
+            return promise;
+    }
 
     useEffect(() => {
         login().then(res => setToken(res.data.token)).catch(err => console.log(err.response))
