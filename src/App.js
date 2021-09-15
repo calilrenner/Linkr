@@ -1,21 +1,26 @@
 import { GlobalStyle } from "./globalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "./pages/acessControl/Login";
+import { useState } from "react";
+import UserContext from "./contexts/UserContext";
 
 export default function App() {
+  const [user, setUser] = useState({});
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Switch>
-        <Route path="/" exact>
-          <Login />
-        </Route>
-        <Route path="/sign-up" exact></Route>
-        <Route path="/timeline" exact></Route>
-        <Route path="/myposts" exact></Route>
-        <Route path="/my-likes" exact></Route>
-        <Route path="/user/:id" exact></Route>
-        <Route path="/hashtag/:hashtag" exact></Route>
+        <UserContext.Provider value={{ user, setUser }}>
+          <Route path="/" exact>
+            <Login />
+          </Route>
+          <Route path="/sign-up" exact></Route>
+          <Route path="/timeline" exact></Route>
+          <Route path="/myposts" exact></Route>
+          <Route path="/my-likes" exact></Route>
+          <Route path="/user/:id" exact></Route>
+          <Route path="/hashtag/:hashtag" exact></Route>
+        </UserContext.Provider>
       </Switch>
     </BrowserRouter>
   );
