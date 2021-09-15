@@ -2,7 +2,7 @@ import axios from "axios";
 const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/";
 
 function setConfig(token) {
-  return;
+  return { headers: { Authorization: token } };
 }
 
 function getTrending({ token }) {

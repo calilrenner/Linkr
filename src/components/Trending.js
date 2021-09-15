@@ -1,32 +1,18 @@
 import styled from "styled-components";
 import { colors } from "../globalStyles";
 import { Link } from "react-router-dom";
+//import { getTrending } from "../service/api.service";
+import { useEffect, useState, useContext } from "react";
+//import UserContext from "../contexts/UserContext";
 
 export default function Trending() {
-  const trending = {
-    hashtags: [
-      {
-        id: 2,
-        name: "respondeai",
-        numberOfMentions: 1,
-      },
-      {
-        id: 1,
-        name: "rickroll",
-        numberOfMentions: 3,
-      },
-      {
-        id: 3,
-        name: "rickroll",
-        numberOfMentions: 5,
-      },
-      {
-        id: 4,
-        name: "rickroll",
-        numberOfMentions: 4,
-      },
-    ],
-  };
+  //const {user} = useContext(UserContext);
+  const [trending, setTrending] = useState([]);
+
+  /* useEffect(
+    () => getTrending({ token: user.token }).then((r) => setTrending(r.data)),
+    []
+  ); */
 
   return (
     <TrendingContainer>
