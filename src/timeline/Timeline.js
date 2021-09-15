@@ -100,6 +100,8 @@ const Loader = styled(VscLoading)`
         height: 150px;
         width: 150px;
         animation: rotation 0.3s infinite linear;
+        color: ${colors.white};
+        margin-top: 200px;
 
         @keyframes rotation {
             from {
@@ -113,6 +115,7 @@ const Loader = styled(VscLoading)`
 
 const LoaderText = styled.h1`
     animation: brink 0.3s infinite linear;
+    color: ${colors.white};
 
     @keyframes brink {
         50% {

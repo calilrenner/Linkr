@@ -70,6 +70,7 @@ const Container = styled.div`
 
     @media (max-width: 1000px) {
         width: 100vw;
+        height: 60vw;
         border-radius: 0;
     }
 `;
@@ -111,7 +112,7 @@ width: 100%;
         color: #CECECE;
         display: block;
         display: -webkit-box;
-        -webkit-line-clamp: 2; 
+        -webkit-line-clamp: 1; 
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -130,7 +131,7 @@ width: 100%;
         color: #9B9595;
         display: block;
         display: -webkit-box;
-        -webkit-line-clamp: 3; 
+        -webkit-line-clamp: 2; 
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -149,7 +150,7 @@ width: 100%;
            color: #CECECE;
            display: block;
             display: -webkit-box;
-            -webkit-line-clamp: 2; 
+            -webkit-line-clamp: 1; 
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -167,6 +168,10 @@ width: 100%;
        width: 40%;
        height: 100%;
        border-radius: 0 16px 16px 0;
+   }
+
+   @media (max-width: 1000px) {
+       height: 65%;
    }
 `;
 
