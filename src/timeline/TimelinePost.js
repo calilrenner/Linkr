@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { colors } from "../globalStyles";
 import { FiHeart } from 'react-icons/fi';
+import { Link } from "react-router-dom";
+import ReactHashtag from "react-hashtag";
 
 export default function TimelinePost(props) {
 
     const {
+        id,
         text,
         link,
         linkTitle,
@@ -24,20 +27,27 @@ export default function TimelinePost(props) {
         <>
             <Container>
                 <SideBarPost>
-                    <img src={avatar} alt='' />
+                    <Link to={`/user/${id}`}><img src={avatar} alt=''/></Link>
                     <div><FiHeart /></div>
                     <span>{likes.length === 1 ? `${likes.length} like` : `${likes.length} likes`}</span>
                 </SideBarPost>
                 <ContentPost>
                     <MsgPost>
                         <span>{username}</span>
-                        <span>{text}</span>
+                        <span>
+                        <ReactHashtag renderHashtag={(hashTagValue) => (
+                            <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>
+                        )}> 
+                        #google 
+                        </ReactHashtag>
+                        </span>
+                        
                     </MsgPost>
                     <LinkPost>
                         <span>
                             <div>{linkTitle}</div>
                             <div>{linkDescription}</div>
-                            <div>{link}</div>
+                            <a href={link} target='_blank'>{link}</a>
                         </span>
                         <img src={linkImage} alt='' />
                     </LinkPost>
@@ -49,14 +59,14 @@ export default function TimelinePost(props) {
 
 const Container = styled.div`
     width: 611px;
-    height: 276px;
+    min-height: 276px;
     background-color: ${colors.black};
     border: 1px solid #4D4D4D;
     border-radius: 16px;
     padding: 20px;
     display: flex;
     color: ${colors.white};
-    margin-bottom: 16px;
+    margin: 0 auto 16px;
 `;
 
 const SideBarPost = styled.div`
@@ -85,10 +95,11 @@ const SideBarPost = styled.div`
 
 const LinkPost = styled.div`
 display: flex;
+justify-content: space-between;
 border: 1px solid #4D4D4D;
 border-radius: 16px;
 width: 503px;
-height: 155px;
+min-height: 155px;
 
    span {
        margin: 24px 19px;
@@ -96,15 +107,19 @@ height: 155px;
        div:first-child {
         font-size: 16px;
         margin-bottom: 5px;
+        color: #CECECE;
        }
 
        div:nth-child(2) {
         font-size: 11px;
         margin-bottom: 13px;
+        color: #9B9595;
        }
        
-       div:last-child {
+       a {
            font-size: 11px;
+           text-decoration: none;
+           color: #CECECE;
        }
    }
 
@@ -126,6 +141,7 @@ const MsgPost = styled.div`
 
         span:last-child {
             font-size: 17px;
+            color: #CECECE;
         }
 `;
 
@@ -134,3 +150,9 @@ display:flex;
 flex-direction: column;
 justify-content: space-between;
 `;
+
+const Hashtag = styled.a`
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+`

@@ -14,9 +14,6 @@ function createUser() {
     return promise;
 };
 
-
-
-
 function login() {
 
     const signIn = {

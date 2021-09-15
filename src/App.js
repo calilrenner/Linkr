@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { GlobalStyle, colors } from "./globalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Timeline from "./timeline/Timeline";
+import User from "./user/User";
+import Hashtag from "./hashtag/Hashtag";
 
 export default function App() {
   return (
@@ -15,8 +17,8 @@ export default function App() {
         <Route path="/timeline" exact component={Timeline} />
         <Route path="/myposts" exact></Route>
         <Route path="/my-likes" exact></Route>
-        <Route path="/user/:id" exact></Route>
-        <Route path="/hashtag/:hashtag" exact></Route>
+        <Route path="/user/:id" exact component={User} />
+        <Route path="/hashtag/:hashtag" exact component={Hashtag} />
       </Switch>
     </BrowserRouter>
   );
