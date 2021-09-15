@@ -12,9 +12,7 @@ export default function App() {
           <Login />
         </Route>
         <Route path="/sign-up" exact></Route>
-        <Route path="/timeline" exact>
-          <Trending />
-        </Route>
+        <Route path="/timeline" exact></Route>
         <Route path="/myposts" exact></Route>
         <Route path="/my-likes" exact></Route>
         <Route path="/user/:id" exact></Route>

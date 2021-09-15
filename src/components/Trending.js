@@ -34,8 +34,8 @@ export default function Trending() {
         <h1>trending</h1>
       </div>
       <ul>
-        {trending.hashtags.map((topic) => (
-          <Link to={`/hashtag/:${topic.name}`}>
+        {trending.hashtags.map((topic, index) => (
+          <Link key={index} to={`/hashtag/:${topic.name}`}>
             <li># {topic.name}</li>
           </Link>
         ))}
