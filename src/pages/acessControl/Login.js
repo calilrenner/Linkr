@@ -2,11 +2,11 @@ import { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Container, TitleContainer, Form } from "./accesControlStyles";
 import { serverLogin } from "../../service/api.service";
-import UserContext from "../../contexts/UserContext";
+//import UserContext from "../../contexts/UserContext";
 import Loader from "react-loader-spinner";
 
 export default function Login() {
-  const { setUser } = useContext(UserContext);
+  //const { setUser } = useContext(UserContext);
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +34,6 @@ export default function Login() {
   }
 
   function handleError(e) {
-    //change to modals
     const errorCode = e.response.status;
     if (errorCode === "401") {
       alert("E-mail/senha incorretos");
