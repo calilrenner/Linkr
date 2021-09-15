@@ -13,6 +13,11 @@ export default function Header() {
     //     setUser(undefined);
     // }
 
+    function teste(event) {
+        const isClickInside = document.getElementById('a').contains(event.target);
+        if(!isClickInside) setShowMenu(!showMenu) 
+    }
+
     return (
         <>
             <Content>
@@ -28,7 +33,8 @@ export default function Header() {
                     </Image>
                 </div>
             </Content>
-            <DropDown top={showMenu}>
+            <Background display={showMenu} onClick={() => setShowMenu(!showMenu)}/>
+            <DropDown id="a" onClick={teste} top={showMenu}>
                 <Link to="/my-posts" style={{ textDecoration: "none" }}><p>My posts</p></Link>
                 <Link to="/my-likes" style={{ textDecoration: "none" }}><p>My likes</p></Link>
                 <Link to="/" style={{ textDecoration: "none" }} /*onClick={logout}*/><p className="logout">Logout</p></Link>
@@ -91,6 +97,12 @@ const ArrowUp = styled(IoIosArrowUp)`
     font-size: 30px;
     margin-right: 8px;
     cursor: pointer;
+`;
+
+const Background = styled.div`
+    width: 100vw;
+    height: 100vh;
+    display: ${props => props.display ? "" : "none"};
 `;
 
 const DropDown = styled.div`
