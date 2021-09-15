@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { GlobalStyle, colors } from "./globalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Timeline from "./timeline/Timeline";
-import User from "./user/User";
-import Hashtag from "./hashtag/Hashtag";
 
 export default function App() {
   return (

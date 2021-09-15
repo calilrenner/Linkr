@@ -27,7 +27,7 @@ export default function TimelinePost(props) {
         <>
             <Container>
                 <SideBarPost>
-                    <Link to={`/user/${id}`}><img src={avatar} alt=''/></Link>
+                    <Link to={`/user/${id}`}><img src={avatar} alt='' /></Link>
                     <div><FiHeart /></div>
                     <span>{likes.length === 1 ? `${likes.length} like` : `${likes.length} likes`}</span>
                 </SideBarPost>
@@ -35,13 +35,13 @@ export default function TimelinePost(props) {
                     <MsgPost>
                         <span>{username}</span>
                         <span>
-                        <ReactHashtag renderHashtag={(hashTagValue) => (
-                            <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>
-                        )}> 
-                        {text}
-                        </ReactHashtag>
+                            <ReactHashtag renderHashtag={(hashTagValue) => (
+                                <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>
+                            )}>
+                                {text}
+                            </ReactHashtag>
                         </span>
-                        
+
                     </MsgPost>
                     <LinkPost>
                         <span>
@@ -59,7 +59,7 @@ export default function TimelinePost(props) {
 
 const Container = styled.div`
     width: 611px;
-    min-height: 276px;
+    height: 276px;
     background-color: ${colors.black};
     border: 1px solid #4D4D4D;
     border-radius: 16px;
@@ -69,7 +69,7 @@ const Container = styled.div`
     margin: 29px 0;
 
     @media (max-width: 1000px) {
-        width: 100%;
+        width: 100vw;
         border-radius: 0;
     }
 `;
@@ -98,39 +98,75 @@ display: flex;
 justify-content: space-between;
 border: 1px solid #4D4D4D;
 border-radius: 16px;
-min-height: 155px;
-width: 503px;
+height: 155px;
+width: 100%;
 
    span {
        margin: 24px 19px;
+       min-width: 0;
 
        div:first-child {
         font-size: 16px;
         margin-bottom: 5px;
         color: #CECECE;
+        display: block;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; 
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: -o-ellipsis-lastline;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
        }
 
        div:nth-child(2) {
         font-size: 11px;
         margin-bottom: 13px;
         color: #9B9595;
+        display: block;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; 
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: -o-ellipsis-lastline;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
        }
        
        a {
            font-size: 11px;
            text-decoration: none;
            color: #CECECE;
+           display: block;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            text-overflow: -o-ellipsis-lastline;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
        }
    }
 
    img {
-       width: 153px;
+       width: 40%;
        height: 100%;
        border-radius: 0 16px 16px 0;
-   }
-
-   @media (max-width: 1000px) {
-    //    width: 100%;
    }
 `;
 

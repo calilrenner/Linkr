@@ -49,7 +49,7 @@ export default function Timeline() {
 
 
     function loadPosts() {
-        if (errPosts === '') {
+        if (errPosts !== '') {
             return (
                 <ErrorMsg>{errPosts}</ErrorMsg>
             )
@@ -93,7 +93,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content:center;
     align-items: center;
-`
+`;
 
 
 const Loader = styled(VscLoading)`
@@ -125,7 +125,7 @@ const ErrorMsg = styled.div`
     display: flex;
     justify-content:center;
     margin-top: 50px
-`
+`;
 
 const DivHashTag = styled.div`
       width: 301px;
@@ -139,16 +139,17 @@ const DivHashTag = styled.div`
       @media (max-width: 1000px) {
         display: none;
     }
-`
+`;
 
 const Main = styled.div`
 display: flex;
 margin: 0 calc((100% - 937px) / 2);
+background-color: #333333;
 
 @media (max-width: 1000px) {
     margin: 0;
 }
-`
+`;
 
 const PostCreation = styled.div`
 width: 611px;
@@ -159,9 +160,9 @@ margin-top: 43px;
 
 @media (max-width: 1000px) {
     border-radius: 0;
-    width: 100%;
+    width: 100vw;
 }
-`
+`;
 
 const Header = styled.div`
     height: 72px;
@@ -170,11 +171,11 @@ const Header = styled.div`
     top: 0;
     left: 0;
     right: 0;
-`
+`;
 
 const Title = styled.h1`
     font-size: 43px;
     margin-top: 125px;
-    margin-left: 18px;
-    color: ${colors.black};
-`
+    color: ${colors.white};
+    font-family: 'Oswald', sans-serif;
+`;
