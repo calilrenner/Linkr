@@ -25,7 +25,18 @@ function login() {
     return promise;
 }
 
+function getPosts(token) {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', config);
+        return promise;
+}
+
 export  {
     createUser,
-    login
+    login,
+    getPosts
 }

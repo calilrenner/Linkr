@@ -38,7 +38,7 @@ export default function TimelinePost(props) {
                         <ReactHashtag renderHashtag={(hashTagValue) => (
                             <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>
                         )}> 
-                        #google 
+                        {text}
                         </ReactHashtag>
                         </span>
                         
@@ -66,7 +66,12 @@ const Container = styled.div`
     padding: 20px;
     display: flex;
     color: ${colors.white};
-    margin: 0 auto 16px;
+    margin: 29px 0;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+        border-radius: 0;
+    }
 `;
 
 const SideBarPost = styled.div`
@@ -82,11 +87,6 @@ const SideBarPost = styled.div`
        border-radius: 100%;
    }
 
-   div {
-       width: 20px;
-       height: 19px;
-   }
-
    span {
        font-size: 11px;
        margin-top: 4px
@@ -98,8 +98,8 @@ display: flex;
 justify-content: space-between;
 border: 1px solid #4D4D4D;
 border-radius: 16px;
-width: 503px;
 min-height: 155px;
+width: 503px;
 
    span {
        margin: 24px 19px;
@@ -127,6 +127,10 @@ min-height: 155px;
        width: 153px;
        height: 100%;
        border-radius: 0 16px 16px 0;
+   }
+
+   @media (max-width: 1000px) {
+    //    width: 100%;
    }
 `;
 
