@@ -17,8 +17,8 @@ export default function App() {
         <Route path="/timeline" exact component={Timeline} />
         <Route path="/myposts" exact></Route>
         <Route path="/my-likes" exact></Route>
-        <Route path="/user/:id" exact component={User} />
-        <Route path="/hashtag/:hashtag" exact component={Hashtag} />
+        <Route path="/user/:id" exact/>
+        <Route path="/hashtag/:hashtag" exact/>
       </Switch>
     </BrowserRouter>
   );

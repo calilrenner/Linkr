@@ -20,24 +20,28 @@ export default function Timeline() {
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in', signIn);
         return promise;
     }
-    
+
     function getPosts(token) {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
-            const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', config);
-            return promise;
+        }
+        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', config);
+        return promise;
     }
 
     useEffect(() => {
-        login().then(res => setToken(res.data.token)).catch(err => console.log(err.response))
-    }, [])
+        login()
+            .then(res => setToken(res.data.token))
+            .catch(err => console.log(err.response))
+    }, []);
 
     useEffect(() => {
-        if(token !== '') {
-            getPosts(token).then(res => setPosts(res.data.posts)).catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'))
+        if (token !== '') {
+            getPosts(token)
+                .then(res => setPosts(res.data.posts))
+                .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'))
         } else {
             return;
         }
@@ -45,30 +49,30 @@ export default function Timeline() {
 
 
     function loadPosts() {
-        if(errPosts === '') {
-            if(posts === '') {
+        if (errPosts === '') {
+            if (posts === '') {
                 return (
-                    <Container><Loader/><LoaderText>Carregando...</LoaderText></Container>
+                    <Container><Loader /><LoaderText>Carregando...</LoaderText></Container>
                 )
-            } else if(posts.length > 0) {
+            } else if (posts.length > 0) {
                 return (
                     <Main>
                         <div>
-                        <Header />
-                        <Title>timeline</Title>
-                        <PostCreation />
-                        {posts.map(post => <TimelinePost key={post.id} {...post}/>)}
+                            <Header />
+                            <Title>timeline</Title>
+                            <PostCreation />
+                            {posts.map(post => <TimelinePost key={post.id} {...post} />)}
                         </div>
-                    <DivHashTag />
+                        <DivHashTag />
                     </Main>
                 )
-            }  else if(posts.length === 0) {
+            } else if (posts.length === 0) {
                 return (
                     <ErrorMsg>Nenhum post encontrado</ErrorMsg>
                 )
-            } 
-            
-            
+            }
+
+
         } else {
             return (
                 <ErrorMsg>{errPosts}</ErrorMsg>
@@ -78,7 +82,7 @@ export default function Timeline() {
 
     return (
         <>
-        {loadPosts()}
+            {loadPosts()}
         </>
     )
 }
