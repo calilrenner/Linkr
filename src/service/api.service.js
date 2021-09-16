@@ -5,6 +5,10 @@ function setConfig(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
 }
 
+function registerUser(newUserData) {
+  return axios.post(`${URL}sign-up`, newUserData);
+}
+
 function serverLogin(userData) {
   return axios.post(`${URL}sign-in`, userData);
 }
@@ -14,12 +18,7 @@ function getTrending({ token }) {
 }
 
 function getPosts(token) {
-  return axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', setConfig(token));
+  return axios.get(`${URL}posts`, setConfig(token));
 }
 
-export { 
-  getTrending,
-  serverLogin,
-  getPosts
-};
-
+export { getTrending, serverLogin, registerUser, getPosts };

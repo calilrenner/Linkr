@@ -22,7 +22,6 @@ export default function TimelinePost(props) {
         avatar
     } = user;
 
-
     return (
         <>
             <Container>
