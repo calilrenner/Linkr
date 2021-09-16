@@ -1,0 +1,81 @@
+import { useState, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { Container, TitleContainer, Form } from "./accesControlStyles";
+import { serverLogin } from "../../service/api.service";
+import UserContext from "../../contexts/UserContext";
+import Loader from "react-loader-spinner";
+
+export default function Login() {
+  const { setUser } = useContext(UserContext);
+  const history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [disableForm, setDisableForm] = useState(false);
+
+  function handleLoginSubmit(e) {
+    e.preventDefault();
+    setDisableForm(true);
+    if (email && password) {
+      const userData = {
+        email,
+        password,
+      };
+      serverLogin(userData).then(res => login(res.data)).catch(handleError);
+    } else {
+      alert("Preencha todos os campos!");
+      setDisableForm(false);
+    }
+  }
+
+  function login(user) {
+    setUser(user);
+    setDisableForm(false);
+    history.push("/timeline");
+  }
+
+  function handleError(e) {
+    const errorCode = e.response.status;
+    if (errorCode === "401") {
+      alert("E-mail/senha incorretos");
+    } else {
+      alert("Ocorreu um erro inesperado");
+    }
+    setDisableForm(false);
+  }
+
+  return (
+    <Container>
+      <TitleContainer>
+        <h1>linkr</h1>
+        <h2>
+          save, share and discover
+          <br /> the best liks on the web
+        </h2>
+      </TitleContainer>
+      <Form onSubmit={handleLoginSubmit}>
+        <input
+          disabled={disableForm}
+          type="email"
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          disabled={disableForm}
+          type="password"
+          placeholder="senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button disabled={disableForm} type="submit">
+          {disableForm ? (
+            <Loader type="ThreeDots" color="#ffffff" height="45px" />
+          ) : (
+            "Log In"
+          )}
+        </button>
+        <Link to="/sign-up">First time? Create an account!</Link>
+      </Form>
+    </Container>
+  );
+}
