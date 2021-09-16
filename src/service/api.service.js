@@ -17,4 +17,8 @@ function getTrending({ token }) {
   return axios.get(`${URL}hashtags/trending`, setConfig(token));
 }
 
-export { getTrending, serverLogin, registerUser };
+function getPosts(token) {
+  return axios.get(`${URL}posts`, setConfig(token));
+}
+
+export { getTrending, serverLogin, registerUser, getPosts };

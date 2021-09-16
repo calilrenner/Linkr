@@ -20,7 +20,7 @@ export default function Login() {
         email,
         password,
       };
-      serverLogin(userData).then(login).catch(handleError);
+      serverLogin(userData).then(res => login(res.data)).catch(handleError);
     } else {
       alert("Preencha todos os campos!");
       setDisableForm(false);
