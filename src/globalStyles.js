@@ -64,13 +64,6 @@ table {
     box-sizing: border-box;
 }
 
-const colors = {
-  black: "#151515",
-  darkGrey: "#E5E5E5",
-  ligthGrey: "#EFEFEF",
-  white: "#FFFFFF",
-  blue: "#1877f2",
-};
 a{
 	text-decoration: none;
 }
