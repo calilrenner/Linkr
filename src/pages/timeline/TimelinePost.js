@@ -10,8 +10,14 @@ import { FaHeart } from 'react-icons/fa';
 import { postUnlike } from "../../service/api.service";
 
 export default function TimelinePost(props) {
-    const { userData } = useContext(UserContext);
     const token = '4b02619a-8c75-4a0a-937b-42b2620e1eb0'
+    const userData = {
+        "id": 621,
+        "email": "calil@driven.com",
+        "username": "banana",
+        "avatar": "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/621/avatar"
+      };
+
     const {
         id,
         text,
@@ -21,19 +27,22 @@ export default function TimelinePost(props) {
         linkImage,
         user,
         likes,
-        setOnChangeLike
+        setOnChangeLike,
+        onChangeLike
     } = props;
 
     const {
         username,
         avatar
     } = user;
-    const [like, setLike] = useState(likes.length > 0 ? true : false);
+
     const usersLikesArray = likes.map(user => user.userId);
+    const [like, setLike] = useState(usersLikesArray.includes(userData.id) ? true : false);
+    
     console.log(usersLikesArray)
 
     function isliked() {
-        if(!like) {
+        if(!onChangeLike) {
             setLike(true);
             postLike(id, token);
             setOnChangeLike(true);

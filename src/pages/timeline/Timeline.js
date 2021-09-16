@@ -11,7 +11,7 @@ export default function Timeline() {
     const [posts, setPosts] = useState('');
     const [errPosts, SetErrPosts] = useState('')
     const { userData }  = useContext(UserContext);
-    const [onChangeLike, setOnChangeLike] = useState(false)
+    const [onChangeLike, setOnChangeLike] = useState(false);
 
     useEffect(() => {
             getPosts('4b02619a-8c75-4a0a-937b-42b2620e1eb0')
@@ -43,7 +43,7 @@ export default function Timeline() {
                         <Header />
                         <Title>timeline</Title>
                         <PostCreation />
-                        {posts.map(post => <TimelinePost key={post.id} {...post} setOnChangeLike={setOnChangeLike}/>)}
+                        {posts.map(post => <TimelinePost key={post.id} {...post} setOnChangeLike={setOnChangeLike} onChangeLike={onChangeLike}/>)}
                     </div>
                     <DivHashTag />
                 </Main>
