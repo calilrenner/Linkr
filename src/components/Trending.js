@@ -12,9 +12,9 @@ export default function Trending() {
 
   useEffect(
     () => getTrending({ token: userData.token }).then((r) => setTrending(r.data)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-  console.log(trending);
   return (
     <TrendingContainer>
       <div>
@@ -35,8 +35,8 @@ export default function Trending() {
 
 const TrendingContainer = styled.div`
   position: fixed;
-  top: 100px;
-  left: calc(100vw - 500px);
+  top: 211px;
+  right: calc((100% - 937px) / 2);
   width: 301px;
   height: 406px;
   background-color: ${colors.black};
@@ -68,7 +68,7 @@ const TrendingContainer = styled.div`
   a {
     color: ${colors.white};
   }
-  @media (max-width: 614px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 `;

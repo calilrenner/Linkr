@@ -21,7 +21,6 @@ export default function TimelinePost(props) {
         username,
         avatar
     } = user;
-console.log(id)
 
     return (
         <>
