@@ -5,6 +5,10 @@ function setConfig(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
 }
 
+function serverLogin(userData) {
+  return axios.post(`${URL}sign-in`, userData);
+}
+
 function getTrending({ token }) {
   return axios.get(`${URL}hashtags/trending`, setConfig(token));
 }
@@ -16,5 +20,7 @@ function getPosts(token) {
 
 export { 
   getTrending,
+  serverLogin,
   getPosts
 };
+

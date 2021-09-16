@@ -1,27 +1,20 @@
 import { GlobalStyle } from "./globalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Timeline from "./timeline/Timeline";
+import Login from "./pages/acessControl/Login";
 import { useState } from "react";
 import UserContext from "./contexts/UserContext";
 
 export default function App() {
-  const mockedUser = {
-    token: "639d821c-9377-476b-84b6-3ef4778a5e2c",
-    user: {
-      id: 483,
-      email: "leo@leo.com",
-      username: "leoguzi",
-      avatar:
-        "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/483/avatar",
-    },
-  };
-  const [user, setUser] = useState(mockedUser);
+  const [user, setUser] = useState({});
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Switch>
         <UserContext.Provider value={{ user, setUser }}>
-          <Route path="/" exact></Route>
+          <Route path="/" exact>
+            <Login />
+          </Route>
           <Route path="/sign-up" exact></Route>
           <Route path="/timeline" exact component={Timeline}></Route>
           <Route path="/myposts" exact></Route>
