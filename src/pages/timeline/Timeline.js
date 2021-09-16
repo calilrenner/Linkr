@@ -16,13 +16,16 @@ export default function Timeline() {
     const { userData }  = useContext(UserContext);
 
     useEffect(() => {
-            getPosts(userData.token)
-                .then(res => setPosts(res.data.posts))
-
-                .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'));
-
+            timelinePosts();
                 // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    function timelinePosts(){
+        getPosts(userData.token)
+            .then(res => setPosts(res.data.posts))
+
+            .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'));
+    }
 
     function loadPosts() {
         if (errPosts !== '') {
@@ -47,7 +50,7 @@ export default function Timeline() {
                     <div>
                         <Header />
                         <Title>timeline</Title>
-                        <Post />
+                        <Post timelinePosts={timelinePosts}/>
                         {posts.map((post, index) => <TimelinePost key={index} {...post} />)}
                     </div>
                     <Trending />

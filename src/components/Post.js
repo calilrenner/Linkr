@@ -2,9 +2,9 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 
 import UserContext from "../contexts/UserContext";
-import { createNewPost } from "../services/api.services";
+import { createNewPost } from "../service/api.service";
 
-export default function Post(){
+export default function Post({ timelinePosts }){
     const { userData } = useContext(UserContext);
     const [link, setLink] = useState("");
     const [text, setText] = useState("");
@@ -18,15 +18,16 @@ export default function Post(){
         setDisabled(true);
 
         const body = {link, text};
-        const req = createNewPost(body);
+        const token = userData.token;
+        const req = createNewPost(body, token);
 
         req.then(() => {
+            timelinePosts();
             setButtonText("Publish");
             setDisabled(false);
             setLink("");
             setText("");
-            //ATUALIZAR PÁGINA
-        });
+        })
         req.catch(() => {
             alert("Houve um erro ao publicar seu link");
             setDisabled(false);
