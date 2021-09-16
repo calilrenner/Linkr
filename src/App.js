@@ -5,8 +5,6 @@ import Login from "./pages/acessControl/Login";
 import { useState } from "react";
 import UserContext from "./contexts/UserContext";
 
-import Header from "./components/Header";
-
 export default function App() {
   const [user, setUser] = useState({});
   return (

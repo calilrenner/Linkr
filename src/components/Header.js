@@ -1,17 +1,18 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { /*useContext,*/ useState } from "react";
+import { useContext, useState } from "react";
 
 import {colors} from "../globalStyles";
+import UserContext from "../contexts/UserContext";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
-    // const { user, setUser } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
-    // function logout(){
-    //     setUser(undefined);
-    // }
+    function logout(){
+        setUser(undefined);
+    }
 
     return (
         <>
@@ -24,7 +25,7 @@ export default function Header() {
                         <ArrowUp onClick={() => setShowMenu(!showMenu)}/>
                     }
                     <Image onClick={() => setShowMenu(!showMenu)}>
-                        {/* <img src={user.user.avatar} alt={user.user.username} />  */}
+                        <img src={user.user.avatar} alt={user.user.username} /> 
                     </Image>
                 </div>
             </Content>
@@ -32,7 +33,7 @@ export default function Header() {
             <DropDown top={showMenu}>
                 <Link to="/my-posts" style={{ textDecoration: "none" }}><p>My posts</p></Link>
                 <Link to="/my-likes" style={{ textDecoration: "none" }}><p>My likes</p></Link>
-                <Link to="/" style={{ textDecoration: "none" }} /*onClick={logout}*/><p className="logout">Logout</p></Link>
+                <Link to="/" style={{ textDecoration: "none" }} onClick={logout}><p className="logout">Logout</p></Link>
             </DropDown>
         </>
     );
@@ -50,7 +51,7 @@ const Content = styled.div`
     top: 0;
     right: 0;
     left: 0;
-    z-index: 3;
+    z-index: 10;
 
     h1{
         font-family: 'Passion One', cursive;
@@ -97,7 +98,9 @@ const ArrowUp = styled(IoIosArrowUp)`
 const Background = styled.div`
     width: 100vw;
     height: 100vh;
+    position: fixed;
     display: ${props => props.display ? "" : "none"};
+    z-index: 8;
 `;
 
 const DropDown = styled.div`
@@ -114,7 +117,7 @@ const DropDown = styled.div`
     justify-content: space-around;
     padding: 10px 0;
     cursor: pointer;
-    z-index: 2;
+    z-index: 9;
     transition: top 150ms ease-in-out;
 
     p{

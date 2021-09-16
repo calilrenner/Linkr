@@ -12,9 +12,9 @@ export default function Trending() {
 
   useEffect(
     () => getTrending({ token: user.token }).then((r) => setTrending(r.data)),
-    []
+    []// eslint-disable-line react-hooks/exhaustive-deps
   );
-  console.log(trending);
+
   return (
     <TrendingContainer>
       <div>
@@ -23,7 +23,7 @@ export default function Trending() {
       <ul>
         {trending.hashtags
           ? trending.hashtags.map((topic, index) => (
-              <Link key={index} to={`/hashtag/:${topic.name}`}>
+              <Link key={index} to={`/hashtag/${topic.name}`}>
                 <li># {topic.name}</li>
               </Link>
             ))
@@ -35,7 +35,7 @@ export default function Trending() {
 
 const TrendingContainer = styled.div`
   position: fixed;
-  top: 100px;
+  top: 210px;
   left: calc(100vw - 500px);
   width: 301px;
   height: 406px;
@@ -64,6 +64,7 @@ const TrendingContainer = styled.div`
 
   li {
     margin-bottom: 10px;
+    font-family: "Lato", sans-serif;
   }
   a {
     color: ${colors.white};

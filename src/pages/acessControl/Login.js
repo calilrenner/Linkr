@@ -49,14 +49,14 @@ export default function Login() {
         <h1>linkr</h1>
         <h2>
           save, share and discover
-          <br /> the best liks on the web
+          <br /> the best links on the web
         </h2>
       </TitleContainer>
       <Form onSubmit={handleLoginSubmit}>
         <input
           disabled={disableForm}
           type="email"
-          placeholder="email"
+          placeholder="e-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
