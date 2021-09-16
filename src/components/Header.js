@@ -8,10 +8,11 @@ import UserContext from "../contexts/UserContext";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
-    const { user, setUser } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
+    console.log(userData)
 
     function logout(){
-        setUser(undefined);
+        setUserData(undefined);
     }
 
     return (
@@ -25,7 +26,7 @@ export default function Header() {
                         <ArrowUp onClick={() => setShowMenu(!showMenu)}/>
                     }
                     <Image onClick={() => setShowMenu(!showMenu)}>
-                        <img src={user.user.avatar} alt={user.user.username} /> 
+                        <img src={userData.user.avatar} alt={userData.user.username} /> 
                     </Image>
                 </div>
             </Content>
