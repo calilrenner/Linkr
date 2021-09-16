@@ -23,7 +23,7 @@ export default function Trending() {
       <ul>
         {trending.hashtags
           ? trending.hashtags.map((topic, index) => (
-              <Link key={index} to={`/hashtag/:${topic.name}`}>
+              <Link key={index} to={`/hashtag/${topic.name}`}>
                 <li># {topic.name}</li>
               </Link>
             ))
@@ -64,6 +64,7 @@ const TrendingContainer = styled.div`
 
   li {
     margin-bottom: 10px;
+    font-family: "Lato", sans-serif;
   }
   a {
     color: ${colors.white};

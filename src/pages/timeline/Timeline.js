@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { colors } from "../../globalStyles";
 import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../service/api.service";
+import Header from "../../components/Header";
 import Trending from "../../components/Trending";
 
 export default function Timeline() {
@@ -16,6 +17,7 @@ export default function Timeline() {
     useEffect(() => {
             getPosts(userData.token)
                 .then(res => setPosts(res.data.posts))
+
                 .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'));
 
                 // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,17 +126,9 @@ margin-top: 43px;
 }
 `;
 
-const Header = styled.div`
-    height: 72px;
-    background-color: ${colors.black};
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-`;
-
 const Title = styled.h1`
     font-size: 43px;
+    font-weight: bold;
     margin-top: 125px;
     color: ${colors.white};
     font-family: 'Oswald', sans-serif;
