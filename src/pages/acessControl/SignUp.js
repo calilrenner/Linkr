@@ -1,42 +1,43 @@
-import { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Container, TitleContainer, Form } from "./accesControlStyles";
-import { serverLogin } from "../../service/api.service";
-import UserContext from "../../contexts/UserContext";
+import { useState } from "react";
+import { Container, Form, TitleContainer } from "./accesControlStyles";
+import { registerUser } from "../../service/api.service";
 import Loader from "react-loader-spinner";
 
-export default function Login() {
-  const { setUserData } = useContext(UserContext);
+export default function SignUp() {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [pictureUrl, setPictureUrl] = useState("");
   const [disableForm, setDisableForm] = useState(false);
 
-  function handleLoginSubmit(e) {
+  function handleSignInSubmit(e) {
     e.preventDefault();
     setDisableForm(true);
-    if (email && password) {
-      const userData = {
-        email,
-        password,
+    if (email && password && username && pictureUrl) {
+      const newUserData = {
+        email: email,
+        password: password,
+        username: username,
+        pictureUrl: pictureUrl,
       };
-      serverLogin(userData).then(res => login(res.data)).catch(handleError);
+      registerUser(newUserData).then(redirect).catch(handleError);
     } else {
       alert("Preencha todos os campos!");
       setDisableForm(false);
     }
   }
 
-  function login(user) {
-    setUserData(user);
+  function redirect() {
     setDisableForm(false);
-    history.push("/timeline");
+    history.push("/");
   }
 
   function handleError(e) {
-    const errorCode = e.response.status;
-    if (errorCode === "401") {
-      alert("E-mail/senha incorretos");
+    const error = e.response.status;
+    if (error === "400") {
+      alert("O email inserido já está cadastrado");
     } else {
       alert("Ocorreu um erro inesperado");
     }
@@ -52,7 +53,7 @@ export default function Login() {
           <br /> the best liks on the web
         </h2>
       </TitleContainer>
-      <Form onSubmit={handleLoginSubmit}>
+      <Form onSubmit={handleSignInSubmit}>
         <input
           disabled={disableForm}
           type="email"
@@ -67,14 +68,28 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <input
+          disabled={disableForm}
+          type="text"
+          placeholder="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          disabled={disableForm}
+          type="text"
+          placeholder="picture url"
+          value={pictureUrl}
+          onChange={(e) => setPictureUrl(e.target.value)}
+        />
         <button disabled={disableForm} type="submit">
           {disableForm ? (
             <Loader type="ThreeDots" color="#ffffff" height="45px" />
           ) : (
-            "Log In"
+            "Sign Up"
           )}
         </button>
-        <Link to="/sign-up">First time? Create an account!</Link>
+        <Link to="/">Switch back to log in</Link>
       </Form>
     </Container>
   );
