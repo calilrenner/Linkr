@@ -14,17 +14,6 @@ export default function App() {
     <BrowserRouter>
       <GlobalStyle />
       <Switch>
-<<<<<<< HEAD
-        <Route path="/" exact>
-          <Post />
-        </Route>
-        <Route path="/sign-up" exact></Route>
-        <Route path="/timeline" exact></Route>
-        <Route path="/myposts" exact></Route>
-        <Route path="/my-likes" exact></Route>
-        <Route path="/user/:id" exact></Route>
-        <Route path="/hashtag/:hashtag" exact></Route>
-=======
         <UserContext.Provider value={{ userData, setUserData }}>
           <Route path="/" exact component={Login} />
           <Route path="/sign-up" exact component={SignUp} />
@@ -34,7 +23,6 @@ export default function App() {
           <Route path="/user/:id" exact />
           <Route path="/hashtag/:hashtag" exact />
         </UserContext.Provider>
->>>>>>> main
       </Switch>
     </BrowserRouter>
   );
