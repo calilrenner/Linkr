@@ -6,12 +6,12 @@ import { useEffect, useState, useContext } from "react";
 import UserContext from "../contexts/UserContext";
 
 export default function Trending() {
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   const [trending, setTrending] = useState([]);
 
   useEffect(
-    () => getTrending({ token: user.token }).then((r) => setTrending(r.data)),
+    () => getTrending({ token: userData.token }).then((r) => setTrending(r.data)),
     []
   );
   console.log(trending);
