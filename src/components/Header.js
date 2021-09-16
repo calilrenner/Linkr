@@ -13,11 +13,6 @@ export default function Header() {
     //     setUser(undefined);
     // }
 
-    function teste(event) {
-        const isClickInside = document.getElementById('a').contains(event.target);
-        if(!isClickInside) setShowMenu(!showMenu) 
-    }
-
     return (
         <>
             <Content>
@@ -34,7 +29,7 @@ export default function Header() {
                 </div>
             </Content>
             <Background display={showMenu} onClick={() => setShowMenu(!showMenu)}/>
-            <DropDown id="a" onClick={teste} top={showMenu}>
+            <DropDown top={showMenu}>
                 <Link to="/my-posts" style={{ textDecoration: "none" }}><p>My posts</p></Link>
                 <Link to="/my-likes" style={{ textDecoration: "none" }}><p>My likes</p></Link>
                 <Link to="/" style={{ textDecoration: "none" }} /*onClick={logout}*/><p className="logout">Logout</p></Link>
