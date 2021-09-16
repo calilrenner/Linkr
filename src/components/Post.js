@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 
+import UserContext from "../contexts/UserContext";
 import { createNewPost } from "../services/api.services";
 
 export default function Post(){
+    const { userData } = useContext(UserContext);
     const [link, setLink] = useState("");
     const [text, setText] = useState("");
     const [buttonText, setButtonText] = useState("Publish")
@@ -37,7 +39,7 @@ export default function Post(){
         <>
             <Content>
                 <Image>
-                    <img src="https://st.depositphotos.com/1780879/3816/i/600/depositphotos_38166573-stock-photo-trees-with-sunbeams.jpg" alt="adf"/>
+                    <img src={userData.user.avatar} alt={userData.user.username} />
                 </Image>
                 <Text>
                     <p>O que você tem para favoritar hoje?</p>
@@ -74,7 +76,12 @@ const Content = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
     display: flex;
-    margin: 20px;
+    margin-top: 43px;
+
+    @media (max-width: 1000px) {
+        border-radius: 0;
+        width: 100vw;
+    }
 `;
 
 const Image = styled.div`

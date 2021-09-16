@@ -6,8 +6,6 @@ import { useState } from "react";
 import UserContext from "./contexts/UserContext";
 import SignUp from "./pages/acessControl/SignUp";
 
-import Post from "./components/Post";
-
 export default function App() {
   const [userData, setUserData] = useState({});
   return (
