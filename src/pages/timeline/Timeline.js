@@ -7,7 +7,7 @@ import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../service/api.service";
 import Header from "../../components/Header";
 import Trending from "../../components/Trending";
-import Post from "../../components/Post";
+import CreateNewPost from "../../components/CreateNewPost";
 
 export default function Timeline() {
 
@@ -50,7 +50,7 @@ export default function Timeline() {
                     <div>
                         <Header />
                         <Title>timeline</Title>
-                        <Post timelinePosts={timelinePosts}/>
+                        <CreateNewPost timelinePosts={timelinePosts}/>
                         {posts.map((post, index) => <TimelinePost key={index} {...post} />)}
                     </div>
                     <Trending />
