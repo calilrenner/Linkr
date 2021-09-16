@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "./pages/acessControl/Login";
 import { useState } from "react";
 import UserContext from "./contexts/UserContext";
+import SignUp from "./pages/acessControl/SignUp";
 
 export default function App() {
   const [user, setUser] = useState({});
@@ -14,7 +15,9 @@ export default function App() {
           <Route path="/" exact>
             <Login />
           </Route>
-          <Route path="/sign-up" exact></Route>
+          <Route path="/sign-up" exact>
+            <SignUp />
+          </Route>
           <Route path="/timeline" exact></Route>
           <Route path="/myposts" exact></Route>
           <Route path="/my-likes" exact></Route>
