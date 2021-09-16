@@ -5,19 +5,21 @@ import styled from "styled-components";
 import { colors } from "../../globalStyles";
 import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../service/api.service";
+import Trending from "../../components/Trending";
 
 export default function Timeline() {
 
     const [posts, setPosts] = useState('');
-    const [errPosts, SetErrPosts] = useState('')
-    const { user }  = useContext(UserContext);
+    const [errPosts, SetErrPosts] = useState('');
+    const { userData }  = useContext(UserContext);
 
     useEffect(() => {
-            getPosts(user.token)
+            getPosts(userData.token)
                 .then(res => setPosts(res.data.posts))
-                .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'))
-    }, []);
+                .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'));
 
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     function loadPosts() {
         if (errPosts !== '') {
@@ -43,9 +45,9 @@ export default function Timeline() {
                         <Header />
                         <Title>timeline</Title>
                         <PostCreation />
-                        {posts.map(post => <TimelinePost key={post.id} {...post} />)}
+                        {posts.map((post, index) => <TimelinePost key={index} {...post} />)}
                     </div>
-                    <DivHashTag />
+                    <Trending />
                 </Main>
             )
         }
@@ -98,20 +100,6 @@ const ErrorMsg = styled.div`
     display: flex;
     justify-content:center;
     margin-top: 50px
-`;
-
-const DivHashTag = styled.div`
-      width: 301px;
-      height: 406px;
-      background-Color: ${colors.black};
-      position: fixed;
-      top: 211px;
-      right: calc((100% - 937px) / 2);
-      border-radius: 16px;
-
-      @media (max-width: 1000px) {
-        display: none;
-    }
 `;
 
 const Main = styled.div`
