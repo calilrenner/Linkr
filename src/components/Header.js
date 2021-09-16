@@ -9,7 +9,6 @@ import UserContext from "../contexts/UserContext";
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
     const { userData, setUserData } = useContext(UserContext);
-    console.log(userData)
 
     function logout(){
         setUserData(undefined);
