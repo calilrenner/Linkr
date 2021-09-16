@@ -17,7 +17,7 @@ export default function Header() {
     return (
         <>
             <Content>
-                <h1>linkr</h1>
+                <Link to="/timeline"><h1>linkr</h1></Link>
                 <div>
                     {!showMenu ? 
                         <ArrowDown onClick={() => setShowMenu(!showMenu)}/> 
