@@ -12,15 +12,13 @@ export default function App() {
       <GlobalStyle />
       <Switch>
         <UserContext.Provider value={{ user, setUser }}>
-          <Route path="/" exact>
-            <Login />
-          </Route>
-          <Route path="/sign-up" exact></Route>
-          <Route path="/timeline" exact component={Timeline}></Route>
-          <Route path="/myposts" exact></Route>
-          <Route path="/my-likes" exact></Route>
-          <Route path="/user/:id" exact></Route>
-          <Route path="/hashtag/:hashtag" exact></Route>
+          <Route path="/" exact component={Login} />
+          <Route path="/sign-up" exact />
+          <Route path="/timeline" exact component={Timeline} />
+          <Route path="/myposts" exact />
+          <Route path="/my-likes" exact />
+          <Route path="/user/:id" exact />
+          <Route path="/hashtag/:hashtag" exact />
         </UserContext.Provider>
       </Switch>
     </BrowserRouter>
