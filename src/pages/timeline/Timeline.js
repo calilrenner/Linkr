@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import TimelinePost from "./TimelinePost";
+import TimelinePost from "../../components/TimelinePost";
 import { VscLoading } from 'react-icons/vsc'
 import styled from "styled-components";
 import { colors } from "../../globalStyles";

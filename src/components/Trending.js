@@ -68,7 +68,7 @@ const TrendingContainer = styled.div`
   a {
     color: ${colors.white};
   }
-  @media (max-width: 1024px) {
+  @media (max-width: 1000px) {
     display: none;
   }
 `;

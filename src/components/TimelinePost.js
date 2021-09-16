@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { colors } from "../globalStyles";
 import { FiHeart } from 'react-icons/fi';
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
