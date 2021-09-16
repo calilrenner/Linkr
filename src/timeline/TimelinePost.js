@@ -187,6 +187,19 @@ const MsgPost = styled.div`
         span:last-child {
             font-size: 17px;
             color: #CECECE;
+            display: block;
+            display: -webkit-box;
+            -webkit-line-clamp: 1; 
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            text-overflow: -o-ellipsis-lastline;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
         }
 `;
 

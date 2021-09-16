@@ -14,8 +14,7 @@ function getTrending({ token }) {
 }
 
 function getPosts(token) {
-  const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', setConfig(token));
-  return promise;
+  return axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', setConfig(token));
 }
 
 export { 
