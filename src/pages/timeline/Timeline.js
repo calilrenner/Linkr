@@ -2,9 +2,9 @@ import { useEffect, useState, useContext } from "react";
 import TimelinePost from "./TimelinePost";
 import { VscLoading } from 'react-icons/vsc'
 import styled from "styled-components";
-import { colors } from "../globalStyles";
-import UserContext from "../contexts/UserContext";
-import { getPosts } from "../service/api.service";
+import { colors } from "../../globalStyles";
+import UserContext from "../../contexts/UserContext";
+import { getPosts } from "../../service/api.service";
 
 export default function Timeline() {
 

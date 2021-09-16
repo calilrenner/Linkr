@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../globalStyles";
+import { colors } from "../../globalStyles";
 import { FiHeart } from 'react-icons/fi';
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
@@ -47,7 +47,7 @@ export default function TimelinePost(props) {
                         <span>
                             <div>{linkTitle}</div>
                             <div>{linkDescription}</div>
-                            <a href={link} target='_blank'>{link}</a>
+                            <a href={link} target='_blank' rel="noreferrer">{link}</a>
                         </span>
                         <img src={linkImage} alt='' />
                     </LinkPost>
