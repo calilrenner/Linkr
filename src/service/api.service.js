@@ -14,12 +14,14 @@ function getTrending({ token }) {
 }
 
 function getPosts(token) {
-  return axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', setConfig(token));
+  return axios.get(
+    "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts",
+    setConfig(token)
+  );
 }
 
-export { 
-  getTrending,
-  serverLogin,
-  getPosts
-};
+function getPostsByHashtag({ token }, hashtag) {
+  return axios.get(`${URL}/hashtags/${hashtag}/posts`, setConfig(token));
+}
 
+export { getTrending, serverLogin, getPosts, getPostsByHashtag };
