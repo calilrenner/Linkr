@@ -10,14 +10,14 @@ export default function Timeline() {
 
     const [posts, setPosts] = useState('');
     const [errPosts, SetErrPosts] = useState('')
-    const { user }  = useContext(UserContext);
+    const { userData }  = useContext(UserContext);
+    const [onChangeLike, setOnChangeLike] = useState(false)
 
     useEffect(() => {
-            getPosts(user.token)
+            getPosts('4b02619a-8c75-4a0a-937b-42b2620e1eb0')
                 .then(res => setPosts(res.data.posts))
                 .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'))
-    }, []);
-
+    }, [onChangeLike]);
 
     function loadPosts() {
         if (errPosts !== '') {
@@ -43,7 +43,7 @@ export default function Timeline() {
                         <Header />
                         <Title>timeline</Title>
                         <PostCreation />
-                        {posts.map(post => <TimelinePost key={post.id} {...post} />)}
+                        {posts.map(post => <TimelinePost key={post.id} {...post} setOnChangeLike={setOnChangeLike}/>)}
                     </div>
                     <DivHashTag />
                 </Main>

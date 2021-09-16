@@ -14,12 +14,22 @@ function getTrending({ token }) {
 }
 
 function getPosts(token) {
-  return axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', setConfig(token));
+  return axios.get(`${URL}/posts`, setConfig(token));
+}
+
+function postLike(idPost, token) {
+  return axios.post(`${URL}/posts/${idPost}/like`, '', setConfig(token));
+}
+
+function postUnlike(idPost, token) {
+  return axios.post(`${URL}/posts/${idPost}/dislike`, '', setConfig(token))
 }
 
 export { 
   getTrending,
   serverLogin,
-  getPosts
+  getPosts,
+  postLike,
+  postUnlike
 };
 

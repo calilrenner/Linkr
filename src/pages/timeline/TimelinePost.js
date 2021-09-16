@@ -3,9 +3,15 @@ import { colors } from "../../globalStyles";
 import { FiHeart } from 'react-icons/fi';
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
+import UserContext from "../../contexts/UserContext";
+import { useContext, useState } from "react";
+import { postLike } from "../../service/api.service";
+import { FaHeart } from 'react-icons/fa';
+import { postUnlike } from "../../service/api.service";
 
 export default function TimelinePost(props) {
-
+    const { userData } = useContext(UserContext);
+    const token = '4b02619a-8c75-4a0a-937b-42b2620e1eb0'
     const {
         id,
         text,
@@ -14,21 +20,38 @@ export default function TimelinePost(props) {
         linkDescription,
         linkImage,
         user,
-        likes
+        likes,
+        setOnChangeLike
     } = props;
 
     const {
         username,
         avatar
     } = user;
+    const [like, setLike] = useState(likes.length > 0 ? true : false);
+    const usersLikesArray = likes.map(user => user.userId);
+    console.log(usersLikesArray)
 
+    function isliked() {
+        if(!like) {
+            setLike(true);
+            postLike(id, token);
+            setOnChangeLike(true);
+        } else {
+            setLike(false);
+            postUnlike(id, token);
+            setOnChangeLike(false);
+        }
+    }
 
     return (
         <>
             <Container>
                 <SideBarPost>
                     <Link to={`/user/${id}`}><img src={avatar} alt='' /></Link>
-                    <FiHeart />
+                    <div onClick={isliked}>
+                        {like ? <FaHeart color='red'/> : <FiHeart />}
+                    </div>
                     <span>{likes.length === 1 ? `${likes.length} like` : `${likes.length} likes`}</span>
                 </SideBarPost>
                 <ContentPost>
@@ -213,4 +236,4 @@ const Hashtag = styled.a`
         color: white;
         text-decoration: none;
         font-weight: 700;
-`
+`;
