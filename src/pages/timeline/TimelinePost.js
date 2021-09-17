@@ -131,7 +131,7 @@ export default function TimelinePost(props) {
                 </SideBarPost>
                 <ContentPost>
                     <MsgPost>
-                        <span>{username}</span>
+                        <Link to={`/user/${id}`}><span>{username}</span></Link>
                         <span>
                             <ReactHashtag renderHashtag={(hashTagValue) => (
                                 <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>

@@ -5,19 +5,28 @@ import styled from "styled-components";
 import { colors } from "../../globalStyles";
 import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../service/api.service";
+import Header from "../../components/Header";
+import Trending from "../../components/Trending";
+import CreateNewPost from "../../components/CreateNewPost";
 
 export default function Timeline() {
 
     const [posts, setPosts] = useState('');
-    const [errPosts, SetErrPosts] = useState('')
+    const [errPosts, SetErrPosts] = useState('');
     const { userData }  = useContext(UserContext);
     const [onChangeLike, setOnChangeLike] = useState(false);
 
     useEffect(() => {
-            getPosts(userData.token)
-                .then(res => setPosts(res.data.posts))
-                .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'))
-    }, [onChangeLike]);
+            timelinePosts();
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    function timelinePosts(){
+        getPosts(userData.token)
+            .then(res => setPosts(res.data.posts))
+
+            .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'));
+    }
 
     function loadPosts() {
         if (errPosts !== '') {
@@ -42,10 +51,10 @@ export default function Timeline() {
                     <div>
                         <Header />
                         <Title>timeline</Title>
-                        <PostCreation />
-                        {posts.map(post => <TimelinePost key={post.id} {...post} setOnChangeLike={setOnChangeLike} onChangeLike={onChangeLike}/>)}
+                        <CreateNewPost timelinePosts={timelinePosts}/>
+                        {posts.map((post, index) => <TimelinePost key={index} {...post} setOnChangeLike={setOnChangeLike} onChangeLike={onChangeLike}/>)}
                     </div>
-                    <DivHashTag />
+                    <Trending />
                 </Main>
             )
         }
@@ -97,21 +106,7 @@ const LoaderText = styled.h1`
 const ErrorMsg = styled.div`    
     display: flex;
     justify-content:center;
-    margin-top: 50px
-`;
-
-const DivHashTag = styled.div`
-      width: 301px;
-      height: 406px;
-      background-Color: ${colors.black};
-      position: fixed;
-      top: 211px;
-      right: calc((100% - 937px) / 2);
-      border-radius: 16px;
-
-      @media (max-width: 1000px) {
-        display: none;
-    }
+    margin-top: 50px;
 `;
 
 const Main = styled.div`
@@ -123,30 +118,9 @@ margin: 0 calc((100% - 937px) / 2);
 }
 `;
 
-const PostCreation = styled.div`
-width: 611px;
-height: 209px;
-border-radius: 16px;
-background-color: ${colors.white};
-margin-top: 43px;
-
-@media (max-width: 1000px) {
-    border-radius: 0;
-    width: 100vw;
-}
-`;
-
-const Header = styled.div`
-    height: 72px;
-    background-color: ${colors.black};
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-`;
-
 const Title = styled.h1`
     font-size: 43px;
+    font-weight: bold;
     margin-top: 125px;
     color: ${colors.white};
     font-family: 'Oswald', sans-serif;
