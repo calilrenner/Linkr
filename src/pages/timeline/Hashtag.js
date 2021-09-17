@@ -16,7 +16,7 @@ export default function Hashtag() {
     getPostsByHashtag({ token: userData.token }, hashtag).then((r) =>
       setHashtagPosts(r.data)
     );
-  }, [hashtag]);
+  }, [hashtag, userData.token]);
 
   return (
     <>

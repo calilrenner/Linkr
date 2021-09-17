@@ -13,7 +13,7 @@ export default function Trending() {
   useEffect(
     () =>
       getTrending({ token: userData.token }).then((r) => setTrending(r.data)),
-    []
+    [userData.token]
   );
   return (
     <TrendingContainer>
