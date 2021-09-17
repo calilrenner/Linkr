@@ -21,6 +21,10 @@ function getPosts(token) {
   return axios.get(`${URL}posts`, setConfig(token));
 }
 
+function getUserPosts(id, token){
+  return axios.get(`${URL}users/${id}/posts`, setConfig(token));
+}
+
 function getPostsByHashtag({ token }, hashtag) {
   return axios.get(`${URL}/hashtags/${hashtag}/posts`, setConfig(token));
 }
@@ -34,6 +38,7 @@ export {
   serverLogin,
   registerUser,
   getPosts,
+  getUserPosts,
   createNewPost,
   getPostsByHashtag,
 };
