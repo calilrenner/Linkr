@@ -25,7 +25,6 @@ export default function UserPosts() {
       ),
     [] // eslint-disable-line react-hooks/exhaustive-deps
   );
-  console.log(userPosts);
   return (
     <>
       <Header />
