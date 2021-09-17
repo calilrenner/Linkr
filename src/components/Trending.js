@@ -11,9 +11,9 @@ export default function Trending() {
   const [trending, setTrending] = useState([]);
 
   useEffect(
-    () => getTrending({ token: userData.token }).then((r) => setTrending(r.data)),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    () =>
+      getTrending({ token: userData.token }).then((r) => setTrending(r.data)),
+    [userData.token]
   );
   return (
     <TrendingContainer>

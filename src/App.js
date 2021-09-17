@@ -2,6 +2,7 @@ import { GlobalStyle } from "./globalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Timeline from "./pages/timeline/Timeline";
 import Login from "./pages/acessControl/Login";
+import Hashtag from "./pages/timeline/Hashtag";
 import { useState } from "react";
 import UserContext from "./contexts/UserContext";
 import SignUp from "./pages/acessControl/SignUp";
@@ -20,7 +21,7 @@ export default function App() {
           <Route path="/my-posts" exact component={MyPosts} />
           <Route path="/my-likes" exact />
           <Route path="/user/:id" exact />
-          <Route path="/hashtag/:hashtag" exact />
+          <Route path="/hashtag/:hashtag" exact component={Hashtag} />
         </UserContext.Provider>
       </Switch>
     </BrowserRouter>
