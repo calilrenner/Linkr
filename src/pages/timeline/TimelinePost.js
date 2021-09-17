@@ -4,19 +4,13 @@ import { FiHeart } from 'react-icons/fi';
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
 import UserContext from "../../contexts/UserContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { postLike } from "../../service/api.service";
 import { FaHeart } from 'react-icons/fa';
 import { postUnlike } from "../../service/api.service";
+import ReactTooltip from "react-tooltip";
 
 export default function TimelinePost(props) {
-    const token = '4b02619a-8c75-4a0a-937b-42b2620e1eb0'
-    const userData = {
-        "id": 621,
-        "email": "calil@driven.com",
-        "username": "banana",
-        "avatar": "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/621/avatar"
-      };
 
     const {
         id,
@@ -28,7 +22,6 @@ export default function TimelinePost(props) {
         user,
         likes,
         setOnChangeLike,
-        onChangeLike
     } = props;
 
     const {
@@ -36,19 +29,91 @@ export default function TimelinePost(props) {
         avatar
     } = user;
 
-    const usersLikesArray = likes.map(user => user.userId);
-    const [like, setLike] = useState(usersLikesArray.includes(userData.id) ? true : false);
+    const { 
+        userData
+    } = useContext(UserContext);
     
-    console.log(usersLikesArray)
+    // const token = '4b02619a-8c75-4a0a-937b-42b2620e1eb0'
+    // const userData.user = {
+    //     "id": 621,
+    //     "email": "calil@driven.com",
+    //     "username": "banana",
+    //     "avatar": "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/621/avatar"
+    //   };
+
+
+    const [usersLikesArray, setUsersLikesArray] = useState([...likes.map(user => user.userId)]);
+    useEffect(() => {
+        setUsersLikesArray([...likes.map(user => user.userId)]);
+
+    }, [likes])
+    const [like, setLike] = useState(usersLikesArray.includes(userData.user.id) ? true : false);
+    const [likesArrayLength, setLikesArrayLength] = useState(likes.length)
+    const [likesArrayId, setLikesArrayId] = useState([])
+    const [arrayToolTipId, setArrayToolTipId] = useState([])
+    const [arrayToolTipMyLike, setArrayToolTipMyLike] = useState([])
+    const [arrayToolTipAllLikes, setArrayToolTipAllLikes] = useState([])
+    const [toolTipMyMsg, setToolTipMyMsg] = useState('')
+    const [toolTipMsg, setToolTipMsg] = useState('');
+
+    let teste;
+    let teste2;
+    let teste3;
+    const [teste4, setTeste4] = useState('')
+    useEffect(() => {
+        teste = likes.map(names => names['user.username']);
+        teste2 = likes.map(ids => ids.userId)
+
+        if(teste.length === 1) {
+            teste3 = teste[0]
+
+            if(teste2.includes(userData.user.id)) {
+                teste3 = 'Você' 
+            }
+
+        } else if (teste.length === 2) {
+            teste3 = `${teste[0]} e ${teste[1]}`
+
+            if(teste2.includes(userData.user.id)) {
+                teste2 = teste2.filter(ids => ids !== userData.user.id)
+                teste = likes.filter((id => teste2.indexOf(id.userId) > -1))
+                teste3 = `Você e ${teste[0]['user.username']}` 
+            }
+        } else if (teste.length === 3) {
+            teste3 = `${teste[0]}, ${teste[1]} e outra pessoa`
+
+            if(teste2.includes(userData.user.id)) {
+                teste2 = teste2.filter(ids => ids !== userData.user.id)
+                teste = likes.filter((id => teste2.indexOf(id.userId) > -1))
+                teste3 = `Você, ${teste[0]['user.username']} e outra pessoa` 
+            }
+        } else if (teste.length >= 4) {
+            teste3 = `${teste[0]}, ${teste[1]} e outras ${teste.length - 2} pessoas`
+
+            if(teste2.includes(userData.user.id)) {
+                teste2 = teste2.filter(ids => ids !== userData.user.id)
+                teste = likes.filter((id => teste2.indexOf(id.userId) > -1))
+                teste3 = `Você, ${teste[0]['user.username']} e outras ${teste.length - 1} pessoas` 
+            }
+        }
+        setTeste4(teste3)
+    }, [likes]);
+    console.log(teste4)
+
+    function hoverLikes() {
+       
+    }
 
     function isliked() {
-        if(!onChangeLike) {
+        if(!like) {
             setLike(true);
-            postLike(id, token);
+            postLike(id, userData.token).then(res => setLikesArrayLength(res.data.post.likes.length));
             setOnChangeLike(true);
-        } else {
+        } 
+        
+        if(like) {
             setLike(false);
-            postUnlike(id, token);
+            postUnlike(id, userData.token).then(res => setLikesArrayLength(res.data.post.likes.length));
             setOnChangeLike(false);
         }
     }
@@ -58,10 +123,11 @@ export default function TimelinePost(props) {
             <Container>
                 <SideBarPost>
                     <Link to={`/user/${id}`}><img src={avatar} alt='' /></Link>
-                    <div onClick={isliked}>
+                    <div onClick={isliked} onMouseOver={hoverLikes} data-tip={teste4}>
                         {like ? <FaHeart color='red'/> : <FiHeart />}
+                        <ReactTooltip />
                     </div>
-                    <span>{likes.length === 1 ? `${likes.length} like` : `${likes.length} likes`}</span>
+                    <span>{likesArrayLength === 1 ? `${likesArrayLength} like` : `${likesArrayLength} likes`}</span>
                 </SideBarPost>
                 <ContentPost>
                     <MsgPost>
@@ -70,7 +136,7 @@ export default function TimelinePost(props) {
                             <ReactHashtag renderHashtag={(hashTagValue) => (
                                 <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>
                             )}>
-                                {text}
+                                {teste4 ? teste4 : text}
                             </ReactHashtag>
                         </span>
 

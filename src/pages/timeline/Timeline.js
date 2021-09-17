@@ -14,7 +14,7 @@ export default function Timeline() {
     const [onChangeLike, setOnChangeLike] = useState(false);
 
     useEffect(() => {
-            getPosts('4b02619a-8c75-4a0a-937b-42b2620e1eb0')
+            getPosts(userData.token)
                 .then(res => setPosts(res.data.posts))
                 .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'))
     }, [onChangeLike]);
