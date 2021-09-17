@@ -7,7 +7,7 @@ import { getUserPosts } from "../service/api.service";
 
 import Header from "../components/Header";
 import Trending from "../components/Trending";
-import TimelinePost from "./timeline/TimelinePost";
+import Post from "../components/Post";
 
 export default function MyPosts() {
     const { userData } = useContext(UserContext);
@@ -27,7 +27,7 @@ export default function MyPosts() {
                 <Header />
                 <Title>my posts</Title>
                 {userPosts.map((u, i) => (
-                    <TimelinePost key={i} {...u} />
+                    <Post key={i} {...u} />
                 ))}
             </div>
             <Trending />
