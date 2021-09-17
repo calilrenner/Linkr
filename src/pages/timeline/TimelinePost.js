@@ -32,7 +32,10 @@ export default function TimelinePost(props) {
                 </SideBarPost>
                 <ContentPost>
                     <MsgPost>
-                        <Link to={`/user/${id}`}><span>{username}</span></Link>
+                        <div>
+                            <Link to={`/user/${id}`}><span>{username}</span></Link>
+                            sdfsdf
+                        </div>
                         <span>
                             <ReactHashtag renderHashtag={(hashTagValue) => (
                                 <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>
@@ -40,7 +43,6 @@ export default function TimelinePost(props) {
                                 {text}
                             </ReactHashtag>
                         </span>
-
                     </MsgPost>
                     <LinkPost>
                         <span>
@@ -199,6 +201,11 @@ const MsgPost = styled.div`
             -webkit-hyphens: auto;
             -ms-hyphens: auto;
             hyphens: auto;
+        }
+
+        div{
+            display: flex;
+            justify-content: space-between;
         }
 `;
 
