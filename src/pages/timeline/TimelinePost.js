@@ -32,15 +32,6 @@ export default function TimelinePost(props) {
     const { 
         userData
     } = useContext(UserContext);
-    
-    // const token = '4b02619a-8c75-4a0a-937b-42b2620e1eb0'
-    // const userData.user = {
-    //     "id": 621,
-    //     "email": "calil@driven.com",
-    //     "username": "banana",
-    //     "avatar": "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/621/avatar"
-    //   };
-
 
     const [usersLikesArray, setUsersLikesArray] = useState([...likes.map(user => user.userId)]);
     useEffect(() => {
@@ -48,83 +39,81 @@ export default function TimelinePost(props) {
 
     }, [likes])
     const [like, setLike] = useState(usersLikesArray.includes(userData.user.id) ? true : false);
-    const [likesArrayLength, setLikesArrayLength] = useState(likes.length)
-    const [likesArrayId, setLikesArrayId] = useState([])
-    const [arrayToolTipId, setArrayToolTipId] = useState([])
-    const [arrayToolTipMyLike, setArrayToolTipMyLike] = useState([])
-    const [arrayToolTipAllLikes, setArrayToolTipAllLikes] = useState([])
-    const [toolTipMyMsg, setToolTipMyMsg] = useState('')
-    const [toolTipMsg, setToolTipMsg] = useState('');
+    const [likesArrayLength, setLikesArrayLength] = useState(likes.length);
+    const [actualLikes, setActualLikes] = useState(likes);
 
-    const [teste, setTeste] = useState([...likes.map(names => names['user.username'])])
-    const [teste2, setTeste2] = useState([...likes.map(ids => ids.userId)])
-    const [teste3, setTeste3] = useState('')
-    const [teste4, setTeste4] = useState('')
-
-    useEffect(() => {
-        if(teste.length === 1) {
-            setTeste3(teste[0]);
-
-            if(teste2.includes(userData.user.id)) {
-                setTeste3('Você'); 
-            }
-
-        } else if (teste.length === 2) {
-            setTeste3(`${teste[0]} e ${teste[1]}`)
-
-            if(teste2.includes(userData.user.id)) {
-                setTeste2([...teste2.filter(ids => ids !== userData.user.id)])
-                setTeste([...likes.filter((id => teste2.indexOf(id.userId) > -1))])
-                setTeste3(`Você e ${teste[0]['user.username']}`) 
-            }
-        } else if (teste.length === 3) {
-            setTeste3(`${teste[0]}, ${teste[1]} e outra pessoa`)
-
-            if(teste2.includes(userData.user.id)) {
-                setTeste2([...teste2.filter(ids => ids !== userData.user.id)])
-                setTeste([...likes.filter((id => teste2.indexOf(id.userId) > -1))])
-                setTeste3(`Você, ${teste[0]['user.username']} e outra pessoa`) 
-            }
-        } else if (teste.length >= 4) {
-            setTeste3(`${teste[0]}, ${teste[1]} e outras ${teste.length - 2} pessoas`)
-
-            if(teste2.includes(userData.user.id)) {
-                setTeste2([...teste2.filter(ids => ids !== userData.user.id)])
-                setTeste([...likes.filter((id => teste2.indexOf(id.userId) > -1))])
-                setTeste3(`Você, ${teste[0]['user.username']} e outras ${teste.length - 1} pessoas`) 
-            }
-        }
-
-        setTeste4(teste3)
-    }, [teste]);
-
-
-    console.log(teste3)
-
-    function hoverLikes() {
-       
-    }
 
     function isliked() {
         if(!like) {
             setLike(true);
-            postLike(id, userData.token).then(res => setLikesArrayLength(res.data.post.likes.length));
+            postLike(id, userData.token).then(res => {
+                setLikesArrayLength(res.data.post.likes.length);
+                setActualLikes(res.data.post.likes);
+            });
             setOnChangeLike(true);
         } 
         
         if(like) {
             setLike(false);
-            postUnlike(id, userData.token).then(res => setLikesArrayLength(res.data.post.likes.length));
+            postUnlike(id, userData.token).then(res => {
+                setLikesArrayLength(res.data.post.likes.length);
+                setActualLikes(res.data.post.likes);
+            });
             setOnChangeLike(false);
         }
     }
+
+    let toolTipUsersNames;
+    let toolTipUsersIds;
+    let preToolTipMsg;
+    const [toolTipMsg, setToolTipMsg] = useState('');
+    
+    useEffect(() => {
+        toolTipUsersNames = actualLikes.map(names => names.username ? names.username : names['user.username']);
+    toolTipUsersIds = actualLikes.map(ids => ids.userId)
+
+    if(toolTipUsersNames.length === 1) {
+        preToolTipMsg = toolTipUsersNames[0];
+
+        if(toolTipUsersIds.includes(userData.user.id)) {
+            preToolTipMsg = 'Você' 
+        }
+
+    } else if (toolTipUsersNames.length === 2) {
+        preToolTipMsg = `${toolTipUsersNames[0]} e ${toolTipUsersNames[1]}`
+
+        if(toolTipUsersIds.includes(userData.user.id)) {
+            toolTipUsersIds = toolTipUsersIds.filter(ids => ids !== userData.user.id)
+            toolTipUsersNames = likes.filter((id => toolTipUsersIds.indexOf(id.userId) > -1))
+            preToolTipMsg = `Você e ${toolTipUsersNames[0]['user.username']}` 
+        }
+    } else if (toolTipUsersNames.length === 3) {
+        preToolTipMsg = `${toolTipUsersNames[0]}, ${toolTipUsersNames[1]} e outra pessoa`
+
+        if(toolTipUsersIds.includes(userData.user.id)) {
+            toolTipUsersIds = toolTipUsersIds.filter(ids => ids !== userData.user.id)
+            toolTipUsersNames = likes.filter((id => toolTipUsersIds.indexOf(id.userId) > -1))
+            preToolTipMsg = `Você, ${toolTipUsersNames[0]['user.username']} e outra pessoa` 
+        }
+    } else if (toolTipUsersNames.length >= 4) {
+        preToolTipMsg = `${toolTipUsersNames[0]}, ${toolTipUsersNames[1]} e outras ${toolTipUsersNames.length - 2} pessoas`
+
+        if(toolTipUsersIds.includes(userData.user.id)) {
+            toolTipUsersIds = toolTipUsersIds.filter(ids => ids !== userData.user.id)
+            toolTipUsersNames = likes.filter((id => toolTipUsersIds.indexOf(id.userId) > -1))
+            preToolTipMsg = `Você, ${toolTipUsersNames[0]['user.username']} e outras ${toolTipUsersNames.length - 1} pessoas` 
+        }
+    }
+    setToolTipMsg(preToolTipMsg)
+    console.log(toolTipUsersNames)
+    }, [likes]);
 
     return (
         <>
             <Container>
                 <SideBarPost>
                     <Link to={`/user/${id}`}><img src={avatar} alt='' /></Link>
-                    <div onClick={isliked} onMouseOver={hoverLikes} data-tip={teste4}>
+                    <div onClick={isliked} data-tip={toolTipMsg}>
                         {like ? <FaHeart color='red'/> : <FiHeart />}
                         <ReactTooltip />
                     </div>

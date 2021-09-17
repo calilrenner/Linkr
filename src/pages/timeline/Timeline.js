@@ -52,7 +52,7 @@ export default function Timeline() {
                         <Header />
                         <Title>timeline</Title>
                         <CreateNewPost timelinePosts={timelinePosts}/>
-                        {posts.map((post, index) => <TimelinePost key={index} {...post} setOnChangeLike={setOnChangeLike} onChangeLike={onChangeLike}/>)}
+                        {posts.map((post, index) => <TimelinePost key={index} {...post} setOnChangeLike={setOnChangeLike}/>)}
                     </div>
                     <Trending />
                 </Main>
