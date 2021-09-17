@@ -4,12 +4,28 @@ import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
 import { MdModeEdit, MdDelete } from "react-icons/md";
+import UserContext from "../contexts/UserContext";
+import { useContext } from "react";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
     props;
 
   const { username, avatar } = user;
+
+  const { userData } = useContext(UserContext);
+
+   console.log(user);
+
+//   function edit() {
+//     if(id !== userData.user.id) {
+//       return (
+//  {<EditIcon />
+//  <DeleteIcon />}
+//       )
+//     }
+//   }
+
 
   return (
     <>
@@ -30,14 +46,14 @@ export default function Post(props) {
             <div>
               <Link to={`/user/${id}`}><span>{username}</span></Link>
               <div>
-                <EditIcon />
-                <DeleteIcon />
+                {user.id === userData.user.id ? <EditIcon /> : ""}
+                {user.id === userData.user.id ? <DeleteIcon />  : ""}
               </div>
             </div>
             <span>
               <ReactHashtag
                 renderHashtag={(hashTagValue) => (
-                  <Hashtag href={`/hashtag/${hashTagValue.replace("#", "")}`}>
+                  <Hashtag href={`/hashtag/${hashTagValue.replace("#", "").toLowerCase()}`}>
                     {hashTagValue}
                   </Hashtag>
                 )}
