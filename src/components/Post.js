@@ -4,12 +4,20 @@ import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
 import { MdModeEdit, MdDelete } from "react-icons/md";
+import UserContext from "../contexts/UserContext";
+import { useContext } from "react";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
     props;
 
   const { username, avatar } = user;
+
+  const { userData } = useContext(UserContext);
+
+  function deletePost() {
+    console.log("adfsdg")
+  }
 
   return (
     <>
@@ -30,14 +38,13 @@ export default function Post(props) {
             <div>
               <Link to={`/user/${id}`}><span>{username}</span></Link>
               <div>
-                <EditIcon />
-                <DeleteIcon />
+                {user.id === userData.user.id ? <><EditIcon /><DeleteIcon onClick={deletePost} /></> : ""}
               </div>
             </div>
             <span>
               <ReactHashtag
                 renderHashtag={(hashTagValue) => (
-                  <Hashtag href={`/hashtag/${hashTagValue.replace("#", "")}`}>
+                  <Hashtag href={`/hashtag/${hashTagValue.replace("#", "").toLowerCase()}`}>
                     {hashTagValue}
                   </Hashtag>
                 )}
@@ -70,7 +77,6 @@ const Container = styled.div`
   display: flex;
   color: ${colors.white};
   margin: 29px 0;
-
   @media (max-width: 1000px) {
     width: 100vw;
     height: 60vw;
@@ -83,14 +89,12 @@ const SideBarPost = styled.div`
   flex-direction: column;
   align-items: center;
   margin-right: 20px;
-
   img {
     width: 50px;
     height: 50px;
     margin-bottom: 19px;
     border-radius: 100%;
   }
-
   span {
     font-size: 11px;
     margin-top: 4px;
@@ -104,12 +108,10 @@ const LinkPost = styled.div`
   border-radius: 16px;
   height: 155px;
   width: 100%;
-
   span {
     margin: 24px 19px;
     min-width: 0;
     word-break: break-all;
-
     div:first-child {
       font-size: 16px;
       margin-bottom: 5px;
@@ -128,7 +130,6 @@ const LinkPost = styled.div`
       -ms-hyphens: auto;
       hyphens: auto;
     }
-
     div:nth-child(2) {
       font-size: 11px;
       margin-bottom: 13px;
@@ -147,7 +148,6 @@ const LinkPost = styled.div`
       -ms-hyphens: auto;
       hyphens: auto;
     }
-
     p {
       font-size: 11px;
       text-decoration: none;
@@ -167,13 +167,11 @@ const LinkPost = styled.div`
       hyphens: auto;
     }
   }
-
   img {
     width: 40%;
     height: 100%;
     border-radius: 0 16px 16px 0;
   }
-
   @media (max-width: 1000px) {
     height: 65%;
   }
@@ -182,12 +180,10 @@ const LinkPost = styled.div`
 const MsgPost = styled.div`
   display: flex;
   flex-direction: column;
-
   span {
     font-size: 19px;
     margin-bottom: 7px;
   }
-
   span:last-child {
     font-size: 17px;
     color: #cecece;
@@ -205,7 +201,6 @@ const MsgPost = styled.div`
     -ms-hyphens: auto;
     hyphens: auto;
   }
-
   div{
     display: flex;
     justify-content: space-between;
@@ -216,11 +211,13 @@ const EditIcon = styled(MdModeEdit)`
   color: white;
   font-size: 16px;
   margin-right: 4px;
+  cursor: pointer;
 `;
 
 const DeleteIcon = styled(MdDelete)`
   color: white;
   font-size: 16px;
+  cursor: pointer;
 `;
 
 const ContentPost = styled.div`
