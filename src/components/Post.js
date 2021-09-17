@@ -3,6 +3,7 @@ import { colors } from "../globalStyles";
 import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
+import { MdModeEdit, MdDelete } from "react-icons/md";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
@@ -26,7 +27,13 @@ export default function Post(props) {
         </SideBarPost>
         <ContentPost>
           <MsgPost>
-          <Link to={`/user/${id}`}><span>{username}</span></Link>
+            <div>
+              <Link to={`/user/${id}`}><span>{username}</span></Link>
+              <div>
+                <EditIcon />
+                <DeleteIcon />
+              </div>
+            </div>
             <span>
               <ReactHashtag
                 renderHashtag={(hashTagValue) => (
@@ -39,16 +46,14 @@ export default function Post(props) {
               </ReactHashtag>
             </span>
           </MsgPost>
-          <LinkPost>
+          <a href={link} target="_blank" rel="noreferrer"><LinkPost>
             <span>
               <div>{linkTitle}</div>
               <div>{linkDescription}</div>
-              <a href={link} target="_blank" rel="noreferrer">
-                {link}
-              </a>
+              <p>{link}</p>
             </span>
             <img src={linkImage} alt="" />
-          </LinkPost>
+          </LinkPost> </a>
         </ContentPost>
       </Container>
     </>
@@ -103,6 +108,7 @@ const LinkPost = styled.div`
   span {
     margin: 24px 19px;
     min-width: 0;
+    word-break: break-all;
 
     div:first-child {
       font-size: 16px;
@@ -142,7 +148,7 @@ const LinkPost = styled.div`
       hyphens: auto;
     }
 
-    a {
+    p {
       font-size: 11px;
       text-decoration: none;
       color: #cecece;
@@ -199,12 +205,29 @@ const MsgPost = styled.div`
     -ms-hyphens: auto;
     hyphens: auto;
   }
+
+  div{
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+const EditIcon = styled(MdModeEdit)`
+  color: white;
+  font-size: 16px;
+  margin-right: 4px;
+`;
+
+const DeleteIcon = styled(MdDelete)`
+  color: white;
+  font-size: 16px;
 `;
 
 const ContentPost = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 502px;
 `;
 
 const Hashtag = styled.a`
