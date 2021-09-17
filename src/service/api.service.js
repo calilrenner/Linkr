@@ -21,4 +21,8 @@ function getPosts(token) {
   return axios.get(`${URL}posts`, setConfig(token));
 }
 
-export { getTrending, serverLogin, registerUser, getPosts };
+function getPostsById(id, token){
+  return axios.get(`${URL}users/${id}/posts`, setConfig(token));
+}
+
+export { getTrending, serverLogin, registerUser, getPosts, getPostsById };
