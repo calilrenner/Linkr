@@ -4,7 +4,7 @@ import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
 
-export default function TimelinePost(props) {
+export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
     props;
 

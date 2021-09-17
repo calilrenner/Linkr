@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../globalStyles";
+
 const Container = styled.div`
   display: flex;
   @media (max-width: 614px) {
@@ -65,6 +66,9 @@ const Form = styled.form`
     border-radius: 6px;
     border: 1px solid ${colors.darkGrey};
     margin-bottom: 5px;
+    font-family: "Oswald", sans-serif;
+    line-height: 40px;
+    font-weight: bold;
   }
 
   input {

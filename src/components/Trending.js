@@ -64,6 +64,7 @@ const TrendingContainer = styled.div`
 
   li {
     margin-bottom: 10px;
+    font-family: "Lato", sans-serif;
   }
   a {
     color: ${colors.white};
