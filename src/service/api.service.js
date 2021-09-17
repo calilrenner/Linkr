@@ -29,10 +29,17 @@ function postUnlike(idPost, token) {
   return axios.post(`${URL}/posts/${idPost}/dislike`, '', setConfig(token))
 }
 
-function createNewPost(body, token){
-  return axios.post(`${URL}posts`, body, setConfig(token))
+function getUserPosts(id, token){
+  return axios.get(`${URL}users/${id}/posts`, setConfig(token));
 }
 
+function getPostsByHashtag({ token }, hashtag) {
+  return axios.get(`${URL}/hashtags/${hashtag}/posts`, setConfig(token));
+}
+
+function createNewPost(body, token) {
+  return axios.post(`${URL}posts`, body, setConfig(token));
+}
 export { 
   registerUser,
   getTrending,
@@ -40,5 +47,7 @@ export {
   getPosts,
   postLike,
   postUnlike,
-  createNewPost
+  getUserPosts,
+  createNewPost,
+  getPostsByHashtag,
 };
