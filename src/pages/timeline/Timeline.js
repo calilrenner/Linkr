@@ -101,7 +101,7 @@ const LoaderText = styled.h1`
 const ErrorMsg = styled.div`    
     display: flex;
     justify-content:center;
-    margin-top: 50px
+    margin-top: 50px;
 `;
 
 const Main = styled.div`
