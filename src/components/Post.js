@@ -26,7 +26,7 @@ export default function Post(props) {
         </SideBarPost>
         <ContentPost>
           <MsgPost>
-            <span>{username}</span>
+          <Link to={`/user/${id}`}><span>{username}</span></Link>
             <span>
               <ReactHashtag
                 renderHashtag={(hashTagValue) => (
