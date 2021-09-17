@@ -21,7 +21,7 @@ function getPosts(token) {
   return axios.get(`${URL}posts`, setConfig(token));
 }
 
-function getUserPosts(id, token){
+function getUserPosts(id, token) {
   return axios.get(`${URL}users/${id}/posts`, setConfig(token));
 }
 
@@ -33,6 +33,10 @@ function createNewPost(body, token) {
   return axios.post(`${URL}posts`, body, setConfig(token));
 }
 
+function getMyLikes({ token }) {
+  return axios.get(`${URL}/posts/liked`, setConfig(token));
+}
+
 export {
   getTrending,
   serverLogin,
@@ -41,4 +45,5 @@ export {
   getUserPosts,
   createNewPost,
   getPostsByHashtag,
+  getMyLikes,
 };
