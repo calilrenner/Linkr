@@ -26,13 +26,13 @@ export default function TimelinePost(props) {
         <>
             <Container>
                 <SideBarPost>
-                    <Link to={`/user/${id}`}><img src={avatar} alt='' /></Link>
+                    <Link to={`/user/${id}`}><img src={avatar} alt={username} /></Link>
                     <FiHeart />
                     <span>{likes.length === 1 ? `${likes.length} like` : `${likes.length} likes`}</span>
                 </SideBarPost>
                 <ContentPost>
                     <MsgPost>
-                        <span>{username}</span>
+                        <Link to={`/user/${id}`}><span>{username}</span></Link>
                         <span>
                             <ReactHashtag renderHashtag={(hashTagValue) => (
                                 <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>
