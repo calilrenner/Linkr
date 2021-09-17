@@ -7,6 +7,7 @@ import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../service/api.service";
 import Header from "../../components/Header";
 import Trending from "../../components/Trending";
+import CreateNewPost from "../../components/CreateNewPost";
 
 export default function Timeline() {
 
@@ -15,13 +16,16 @@ export default function Timeline() {
     const { userData }  = useContext(UserContext);
 
     useEffect(() => {
-            getPosts(userData.token)
-                .then(res => setPosts(res.data.posts))
-
-                .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'));
-
+            timelinePosts();
                 // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    function timelinePosts(){
+        getPosts(userData.token)
+            .then(res => setPosts(res.data.posts))
+
+            .catch(err => SetErrPosts('Houve uma falha ao obter os posts, por favor atualize a página'));
+    }
 
     function loadPosts() {
         if (errPosts !== '') {
@@ -46,7 +50,7 @@ export default function Timeline() {
                     <div>
                         <Header />
                         <Title>timeline</Title>
-                        <PostCreation />
+                        <CreateNewPost timelinePosts={timelinePosts}/>
                         {posts.map((post, index) => <TimelinePost key={index} {...post} />)}
                     </div>
                     <Trending />
@@ -110,19 +114,6 @@ margin: 0 calc((100% - 937px) / 2);
 
 @media (max-width: 1000px) {
     margin: 0;
-}
-`;
-
-const PostCreation = styled.div`
-width: 611px;
-height: 209px;
-border-radius: 16px;
-background-color: ${colors.white};
-margin-top: 43px;
-
-@media (max-width: 1000px) {
-    border-radius: 0;
-    width: 100vw;
 }
 `;
 

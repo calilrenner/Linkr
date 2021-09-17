@@ -79,6 +79,7 @@ const Form = styled.form`
     background-color: ${colors.blue};
     color: ${colors.white};
     font-weight: bold;
+    cursor: pointer;
   }
 
   a {

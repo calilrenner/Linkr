@@ -21,8 +21,12 @@ function getPosts(token) {
   return axios.get(`${URL}posts`, setConfig(token));
 }
 
-function getPostsById(id, token){
+function getUserPosts(id, token){
   return axios.get(`${URL}users/${id}/posts`, setConfig(token));
 }
 
-export { getTrending, serverLogin, registerUser, getPosts, getPostsById };
+function createNewPost(body, token){
+  return axios.post(`${URL}posts`, body, setConfig(token))
+}
+
+export { getTrending, serverLogin, registerUser, getPosts, createNewPost, getUserPosts };
