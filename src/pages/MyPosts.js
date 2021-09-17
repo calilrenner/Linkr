@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { colors } from "../globalStyles";
 import UserContext from "../contexts/UserContext";
-import { getPostsById } from "../service/api.service";
+import { getUserPosts } from "../service/api.service";
 
 import Header from "../components/Header";
 import Trending from "../components/Trending";
@@ -16,7 +16,7 @@ export default function MyPosts() {
     useEffect(() => {
         const id = userData.user.id;
         const token = userData.token;
-        const req = getPostsById(id, token);
+        const req = getUserPosts(id, token);
 
         req.then(res => setUserPosts(res.data.posts))
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
