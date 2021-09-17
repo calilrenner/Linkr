@@ -25,4 +25,15 @@ function getPostsByHashtag({ token }, hashtag) {
   return axios.get(`${URL}/hashtags/${hashtag}/posts`, setConfig(token));
 }
 
-export { getTrending, serverLogin, registerUser, getPosts, getPostsByHashtag };
+function createNewPost(body, token) {
+  return axios.post(`${URL}posts`, body, setConfig(token));
+}
+
+export {
+  getTrending,
+  serverLogin,
+  registerUser,
+  getPosts,
+  createNewPost,
+  getPostsByHashtag,
+};

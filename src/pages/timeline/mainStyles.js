@@ -60,17 +60,4 @@ const ErrorMsg = styled.div`
   margin-top: 50px;
 `;
 
-const PostCreation = styled.div`
-  width: 611px;
-  height: 209px;
-  border-radius: 16px;
-  background-color: ${colors.white};
-  margin-top: 43px;
-
-  @media (max-width: 1000px) {
-    border-radius: 0;
-    width: 100vw;
-  }
-`;
-
-export { Container, Title, Main, Loader, LoaderText, ErrorMsg, PostCreation };
+export { Container, Title, Main, Loader, LoaderText, ErrorMsg };

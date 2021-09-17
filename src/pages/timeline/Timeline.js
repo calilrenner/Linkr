@@ -4,6 +4,7 @@ import UserContext from "../../contexts/UserContext";
 import { getPosts } from "../../service/api.service";
 import Header from "../../components/Header";
 import Trending from "../../components/Trending";
+import CreateNewPost from "../../components/CreateNewPost";
 import {
   ErrorMsg,
   Container,
@@ -11,7 +12,6 @@ import {
   LoaderText,
   Main,
   Title,
-  PostCreation,
 } from "./mainStyles";
 
 export default function Timeline() {
@@ -20,6 +20,11 @@ export default function Timeline() {
   const { userData } = useContext(UserContext);
 
   useEffect(() => {
+    timelinePosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function timelinePosts() {
     getPosts(userData.token)
       .then((res) => setPosts(res.data.posts))
 
@@ -28,9 +33,7 @@ export default function Timeline() {
           "Houve uma falha ao obter os posts, por favor atualize a página"
         )
       );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }
 
   function loadPosts() {
     if (errPosts !== "") {
@@ -51,7 +54,7 @@ export default function Timeline() {
           <div>
             <Header />
             <Title>timeline</Title>
-            <PostCreation />
+            <CreateNewPost timelinePosts={timelinePosts} />
             {posts.map((post, index) => (
               <Post key={index} {...post} />
             ))}
