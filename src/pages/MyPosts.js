@@ -12,7 +12,6 @@ import TimelinePost from "./timeline/TimelinePost";
 export default function MyPosts() {
     const { userData } = useContext(UserContext);
     const [userPosts, setUserPosts] = useState([]);
-    console.log(userPosts)
 
     useEffect(() => {
         const id = userData.user.id;
