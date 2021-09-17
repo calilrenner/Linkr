@@ -56,49 +56,50 @@ export default function TimelinePost(props) {
     const [toolTipMyMsg, setToolTipMyMsg] = useState('')
     const [toolTipMsg, setToolTipMsg] = useState('');
 
-    let teste;
-    let teste2;
-    let teste3;
+    const [teste, setTeste] = useState([...likes.map(names => names['user.username'])])
+    const [teste2, setTeste2] = useState([...likes.map(ids => ids.userId)])
+    const [teste3, setTeste3] = useState('')
     const [teste4, setTeste4] = useState('')
-    useEffect(() => {
-        teste = likes.map(names => names['user.username']);
-        teste2 = likes.map(ids => ids.userId)
 
+    useEffect(() => {
         if(teste.length === 1) {
-            teste3 = teste[0]
+            setTeste3(teste[0]);
 
             if(teste2.includes(userData.user.id)) {
-                teste3 = 'Você' 
+                setTeste3('Você'); 
             }
 
         } else if (teste.length === 2) {
-            teste3 = `${teste[0]} e ${teste[1]}`
+            setTeste3(`${teste[0]} e ${teste[1]}`)
 
             if(teste2.includes(userData.user.id)) {
-                teste2 = teste2.filter(ids => ids !== userData.user.id)
-                teste = likes.filter((id => teste2.indexOf(id.userId) > -1))
-                teste3 = `Você e ${teste[0]['user.username']}` 
+                setTeste2([...teste2.filter(ids => ids !== userData.user.id)])
+                setTeste([...likes.filter((id => teste2.indexOf(id.userId) > -1))])
+                setTeste3(`Você e ${teste[0]['user.username']}`) 
             }
         } else if (teste.length === 3) {
-            teste3 = `${teste[0]}, ${teste[1]} e outra pessoa`
+            setTeste3(`${teste[0]}, ${teste[1]} e outra pessoa`)
 
             if(teste2.includes(userData.user.id)) {
-                teste2 = teste2.filter(ids => ids !== userData.user.id)
-                teste = likes.filter((id => teste2.indexOf(id.userId) > -1))
-                teste3 = `Você, ${teste[0]['user.username']} e outra pessoa` 
+                setTeste2([...teste2.filter(ids => ids !== userData.user.id)])
+                setTeste([...likes.filter((id => teste2.indexOf(id.userId) > -1))])
+                setTeste3(`Você, ${teste[0]['user.username']} e outra pessoa`) 
             }
         } else if (teste.length >= 4) {
-            teste3 = `${teste[0]}, ${teste[1]} e outras ${teste.length - 2} pessoas`
+            setTeste3(`${teste[0]}, ${teste[1]} e outras ${teste.length - 2} pessoas`)
 
             if(teste2.includes(userData.user.id)) {
-                teste2 = teste2.filter(ids => ids !== userData.user.id)
-                teste = likes.filter((id => teste2.indexOf(id.userId) > -1))
-                teste3 = `Você, ${teste[0]['user.username']} e outras ${teste.length - 1} pessoas` 
+                setTeste2([...teste2.filter(ids => ids !== userData.user.id)])
+                setTeste([...likes.filter((id => teste2.indexOf(id.userId) > -1))])
+                setTeste3(`Você, ${teste[0]['user.username']} e outras ${teste.length - 1} pessoas`) 
             }
         }
+
         setTeste4(teste3)
-    }, [likes]);
-    console.log(teste4)
+    }, [teste]);
+
+
+    console.log(teste3)
 
     function hoverLikes() {
        
@@ -136,7 +137,7 @@ export default function TimelinePost(props) {
                             <ReactHashtag renderHashtag={(hashTagValue) => (
                                 <Hashtag href={`/hashtag/${hashTagValue.replace('#', '')}`}>{hashTagValue}</Hashtag>
                             )}>
-                                {teste4 ? teste4 : text}
+                                {text}
                             </ReactHashtag>
                         </span>
 

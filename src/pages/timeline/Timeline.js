@@ -19,7 +19,7 @@ export default function Timeline() {
     useEffect(() => {
             timelinePosts();
                 // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [onChangeLike]);
 
     function timelinePosts(){
         getPosts(userData.token)
