@@ -39,16 +39,14 @@ export default function Post(props) {
               </ReactHashtag>
             </span>
           </MsgPost>
-          <LinkPost>
+          <a href={link} target="_blank" rel="noreferrer"><LinkPost>
             <span>
               <div>{linkTitle}</div>
               <div>{linkDescription}</div>
-              <a href={link} target="_blank" rel="noreferrer">
-                {link}
-              </a>
+              <p>{link}</p>
             </span>
             <img src={linkImage} alt="" />
-          </LinkPost>
+          </LinkPost> </a>
         </ContentPost>
       </Container>
     </>
@@ -142,7 +140,7 @@ const LinkPost = styled.div`
       hyphens: auto;
     }
 
-    a {
+    p {
       font-size: 11px;
       text-decoration: none;
       color: #cecece;
