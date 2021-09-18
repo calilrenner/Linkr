@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+  const { text, link, linkTitle, linkDescription, linkImage, user, likes } =
     props;
 
-  const { username, avatar } = user;
+  const { username, avatar, id } = user;
 
   return (
     <>
@@ -26,13 +26,17 @@ export default function Post(props) {
         </SideBarPost>
         <ContentPost>
           <MsgPost>
-          <Link to={`/user/${id}`}><span>{username}</span></Link>
+            <Link to={`/user/${id}`}>
+              <span>{username}</span>
+            </Link>
             <span>
               <ReactHashtag
                 renderHashtag={(hashTagValue) => (
-                  <Hashtag href={`/hashtag/${hashTagValue.replace("#", "")}`}>
+                  <Link to={`/hashtag/${hashTagValue.replace("#", "")}`}>
+                  <Hashtag>
                     {hashTagValue}
                   </Hashtag>
+                  </Link>
                 )}
               >
                 {text}

@@ -8,6 +8,7 @@ import UserContext from "./contexts/UserContext";
 import SignUp from "./pages/acessControl/SignUp";
 import MyPosts from "./pages/MyPosts";
 import MyLikes from "./pages/MyLikes";
+import UserPosts from "./pages/UserPosts";
 
 export default function App() {
   const [userData, setUserData] = useState({});
@@ -21,7 +22,7 @@ export default function App() {
           <Route path="/timeline" exact component={Timeline} />
           <Route path="/my-posts" exact component={MyPosts} />
           <Route path="/my-likes" exact component={MyLikes} />
-          <Route path="/user/:id" exact />
+          <Route path="/user/:id" exact component={UserPosts} />
           <Route path="/hashtag/:hashtag" exact component={Hashtag} />
         </UserContext.Provider>
       </Switch>
