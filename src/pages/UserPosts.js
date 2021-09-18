@@ -30,7 +30,9 @@ export default function UserPosts() {
       <Header />
       <Main>
         <Title>
-          {userPosts.length > 0 ? userPosts[0].user.username : "Carregando..."}
+          {userPosts.length > 0
+            ? `${userPosts[0].user.username}'s posts`
+            : "Carregando..."}
         </Title>
         {userPosts.length > 0 ? (
           userPosts.map((post, index) => <Post key={index} {...post} />)
