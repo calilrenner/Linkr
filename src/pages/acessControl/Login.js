@@ -6,7 +6,7 @@ import UserContext from "../../contexts/UserContext";
 import Loader from "react-loader-spinner";
 
 export default function Login() {
-  const { setUserData } = useContext(UserContext);
+  const { setLoginData } = useContext(UserContext);
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +28,7 @@ export default function Login() {
   }
 
   function login(user) {
-    setUserData(user);
+    setLoginData(user);
     setDisableForm(false);
     history.push("/timeline");
   }

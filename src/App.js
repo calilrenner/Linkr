@@ -10,24 +10,28 @@ import MyPosts from "./pages/MyPosts";
 import UserPosts from "./pages/UserPosts";
 
 export default function App() {
-  const [userData, setUserData] = useState({});
+  const [loginData, setLoginData] = useState({});
   const LOCAL_STORAGE_KEY = 'loggedUser.data';
-
+  const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
+  let userData;
+  
+  if(userDataJSON) {
+    userData = JSON.parse(userDataJSON);
+  } else {
+    userData = loginData;
+  }
+  
   useEffect(() => {
-    const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
-      setUserData(JSON.parse(userDataJSON));
-  }, [])
+  if (loginData.token) {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(loginData));
+  }
+  }, [loginData]);
 
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userData));
-  }, [userData]);
-
-console.log(userData.user)
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Switch>
-        <UserContext.Provider value={{ userData, setUserData }}>
+        <UserContext.Provider value={{ userData, setLoginData }}>
           <Route path="/" exact component={Login} />
           <Route path="/sign-up" exact component={SignUp} />
           <Route path="/timeline" exact component={Timeline} />
