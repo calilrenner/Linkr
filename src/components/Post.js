@@ -6,30 +6,55 @@ import ReactHashtag from "react-hashtag";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext, useState, useRef, useEffect } from "react";
+import { putEdit } from "../service/api.service";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, setOnEdit, onEdit } =
     props;
-
   const { username, avatar } = user;
-
   const { userData } = useContext(UserContext);
-
   const [editSelected, setEditSelect] = useState(false);
-
-  const [newText, setNewText] = useState('')
-
+  const [newText, setNewText] = useState(text);
+  const [editDisabled, setEditDisabled] = useState(false);
   const inputRef = useRef();
 
   useEffect(() => { 
     if(editSelected) {
       inputRef.current.focus();
     }
+    setNewText(text)
   }, [editSelected]);
+
+  function cancelEditOnEsc(e) {
+    if(e.code === 'Escape' && editSelected) {
+      setEditSelect(false);
+    }
+    if(e.code === 'Enter' && editSelected) {
+      setEditDisabled(true)
+      putEdit(newText, userData.token, id)
+      .then(res => {
+        setEditDisabled(false);
+        setEditSelect(false);
+
+        if(onEdit) {
+          setOnEdit(false)
+        } else {
+          setOnEdit(true)
+        }
+      })
+      .catch(err => {
+        setEditDisabled(false);
+        alert('Não foi possível salvar as alterações!')
+      })
+    }
+  }
+
+  console.log(newText)
+
 
   const edit = () => {
     if (editSelected) {
-      return <InputEditPost type='text' value={text} ref={inputRef} onChange={(e) => setNewText(e.target.value)} />
+      return <InputEditPost type='text' value={newText} ref={inputRef} onChange={(e) => setNewText(e.target.value)} onKeyUp={(e) => cancelEditOnEsc(e)} disabled={editDisabled}/>
     } else {
       return (
         <span>

@@ -33,6 +33,13 @@ function createNewPost(body, token) {
   return axios.post(`${URL}posts`, body, setConfig(token));
 }
 
+function putEdit(text, token, id) {
+  const body = {
+    text: text,
+  }
+  return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
+}
+
 export {
   getTrending,
   serverLogin,
@@ -41,4 +48,5 @@ export {
   getUserPosts,
   createNewPost,
   getPostsByHashtag,
+  putEdit
 };
