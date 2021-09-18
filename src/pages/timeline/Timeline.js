@@ -19,6 +19,8 @@ export default function Timeline() {
   const [errPosts, SetErrPosts] = useState("");
   const { userData } = useContext(UserContext);
 
+  console.log(userData)
+
   useEffect(() => {
     timelinePosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps

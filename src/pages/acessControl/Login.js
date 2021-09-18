@@ -12,24 +12,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [disableForm, setDisableForm] = useState(false);
 
-  const LOCAL_STORAGE_KEY_EMAIL = 'loggedUser.email';
-  const LOCAL_STORAGE_KEY_PASSWORD = 'loggedUser.password';
-
-  useEffect(() => {
-    const userEmailJSON = localStorage.getItem(LOCAL_STORAGE_KEY_EMAIL);
-    const userPasswordJSON = localStorage.getItem(LOCAL_STORAGE_KEY_PASSWORD);
-
-    if(userEmailJSON !== null && userPasswordJSON !== null) {
-      setEmail(JSON.parse(userEmailJSON));
-      setPassword(JSON.parse(userPasswordJSON));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY_EMAIL, JSON.stringify(email));
-    localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, JSON.stringify(password));
-  }, [email, password]);
-
   function handleLoginSubmit(e) {
     e.preventDefault();
     setDisableForm(true);
@@ -38,7 +20,7 @@ export default function Login() {
         email,
         password,
       };
-      serverLogin(userData).then(res => login(res.data)).catch(handleError);
+      serverLogin(userData).then(res => { login(res.data)}).catch(handleError);
     } else {
       alert("Preencha todos os campos!");
       setDisableForm(false);
