@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Container, TitleContainer, Form } from "./accesControlStyles";
 import { serverLogin } from "../../service/api.service";
@@ -11,6 +11,24 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disableForm, setDisableForm] = useState(false);
+
+  const LOCAL_STORAGE_KEY_EMAIL = 'loggedUser.email';
+  const LOCAL_STORAGE_KEY_PASSWORD = 'loggedUser.password';
+
+  useEffect(() => {
+    const userEmailJSON = localStorage.getItem(LOCAL_STORAGE_KEY_EMAIL);
+    const userPasswordJSON = localStorage.getItem(LOCAL_STORAGE_KEY_PASSWORD);
+
+    if(userEmailJSON !== null && userPasswordJSON !== null) {
+      setEmail(JSON.parse(userEmailJSON));
+      setPassword(JSON.parse(userPasswordJSON));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_EMAIL, JSON.stringify(email));
+    localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, JSON.stringify(password));
+  }, [email, password]);
 
   function handleLoginSubmit(e) {
     e.preventDefault();

@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Timeline from "./pages/timeline/Timeline";
 import Login from "./pages/acessControl/Login";
 import Hashtag from "./pages/timeline/Hashtag";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserContext from "./contexts/UserContext";
 import SignUp from "./pages/acessControl/SignUp";
 import MyPosts from "./pages/MyPosts";
@@ -11,6 +11,18 @@ import UserPosts from "./pages/UserPosts";
 
 export default function App() {
   const [userData, setUserData] = useState({});
+  const LOCAL_STORAGE_KEY = 'loggedUser.data';
+
+  useEffect(() => {
+    const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
+      setUserData(JSON.parse(userDataJSON));
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userData));
+  }, [userData]);
+
+console.log(userData.user)
   return (
     <BrowserRouter>
       <GlobalStyle />
