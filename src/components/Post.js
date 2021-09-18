@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
-import { useContext } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
@@ -15,16 +15,45 @@ export default function Post(props) {
 
   const { userData } = useContext(UserContext);
 
-   console.log(user);
+  const [editSelected, setEditSelect] = useState(false);
 
-//   function edit() {
-//     if(id !== userData.user.id) {
-//       return (
-//  {<EditIcon />
-//  <DeleteIcon />}
-//       )
-//     }
-//   }
+  const [newText, setNewText] = useState('')
+
+  const inputRef = useRef();
+
+  useEffect(() => { 
+    if(editSelected) {
+      inputRef.current.focus();
+    }
+  }, [editSelected]);
+
+  const edit = () => {
+    if (editSelected) {
+      return <InputEditPost type='text' value={text} ref={inputRef} onChange={(e) => setNewText(e.target.value)} />
+    } else {
+      return (
+        <span>
+          <ReactHashtag
+            renderHashtag={(hashTagValue) => (
+              <Hashtag href={`/hashtag/${hashTagValue.replace("#", "").toLowerCase()}`}>
+                {hashTagValue}
+              </Hashtag>
+            )}
+          >
+            {text}
+          </ReactHashtag>
+        </span>
+      )
+    }
+  }
+
+  function selectEdit() {
+    if(editSelected) {
+      setEditSelect(false);
+    } else {
+      setEditSelect(true);
+    }
+  }
 
 
   return (
@@ -46,21 +75,10 @@ export default function Post(props) {
             <div>
               <Link to={`/user/${id}`}><span>{username}</span></Link>
               <div>
-                {user.id === userData.user.id ? <EditIcon /> : ""}
-                {user.id === userData.user.id ? <DeleteIcon />  : ""}
+                {user.id === userData.user.id && <><EditIcon onClick={selectEdit}/><DeleteIcon /></>}
               </div>
             </div>
-            <span>
-              <ReactHashtag
-                renderHashtag={(hashTagValue) => (
-                  <Hashtag href={`/hashtag/${hashTagValue.replace("#", "").toLowerCase()}`}>
-                    {hashTagValue}
-                  </Hashtag>
-                )}
-              >
-                {text}
-              </ReactHashtag>
-            </span>
+            {edit()}
           </MsgPost>
           <a href={link} target="_blank" rel="noreferrer"><LinkPost>
             <span>
@@ -251,3 +269,10 @@ const Hashtag = styled.a`
   text-decoration: none;
   font-weight: 700;
 `;
+
+const InputEditPost = styled.input`
+  width: 100%;
+  height: 44px;
+  border-radius: 7px;
+  font-size: 14px;
+`
