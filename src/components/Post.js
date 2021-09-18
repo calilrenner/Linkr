@@ -12,7 +12,7 @@ import ReactTooltip from "react-tooltip";
 
 export default function Post(props) {
 
-    const { id, text, link, linkTitle, linkDescription, linkImage, user, likes,setOnChangeLike } = props;
+    const { id, text, link, linkTitle, linkDescription, linkImage, user, likes,setOnChangePost } = props;
     const { username, avatar } = user;
     const { userData } = useContext(UserContext);
     const [usersLikesArray, setUsersLikesArray] = useState([...likes.map(user => user.userId)]);
@@ -35,7 +35,7 @@ export default function Post(props) {
                 setLikesArrayLength(res.data.post.likes.length);
                 setActualLikes(res.data.post.likes);
             });
-            setOnChangeLike(true);
+            setOnChangePost(true);
         } 
         
         if(like) {
@@ -44,7 +44,7 @@ export default function Post(props) {
                 setLikesArrayLength(res.data.post.likes.length);
                 setActualLikes(res.data.post.likes);
             });
-            setOnChangeLike(false);
+            setOnChangePost(false);
         }
     }
     

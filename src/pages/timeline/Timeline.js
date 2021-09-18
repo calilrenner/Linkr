@@ -18,12 +18,12 @@ export default function Timeline() {
   const [posts, setPosts] = useState("");
   const [errPosts, SetErrPosts] = useState("");
   const { userData } = useContext(UserContext);
-  const [onChangeLike, setOnChangeLike] = useState(false);
+  const [onChangePost, setOnChangePost] = useState(false);
 
   useEffect(() => {
     timelinePosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onChangeLike]);
+  }, [onChangePost]);
 
   function timelinePosts() {
     getPosts(userData.token)
@@ -57,7 +57,7 @@ export default function Timeline() {
             <Title>timeline</Title>
             <CreateNewPost timelinePosts={timelinePosts} />
             {posts.map((post, index) => (
-              <Post key={index} {...post} setOnChangeLike={setOnChangeLike}/>
+              <Post key={index} {...post} setOnChangePost={setOnChangePost}/>
             ))}
           </div>
           <Trending />
