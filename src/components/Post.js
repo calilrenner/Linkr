@@ -91,7 +91,7 @@ export default function Post(props) {
         <>
             <Container>
                 <SideBarPost>
-                    <Link to={`/user/${id}`}><img src={avatar} alt='' /></Link>
+                    <Link to={`/user/${user.id}`}><img src={avatar} alt='' /></Link>
                     <div onClick={isliked} data-tip={toolTipMsg}>
                         {like ? <FaHeart color='red'/> : <FiHeart />}
                         <ReactTooltip />

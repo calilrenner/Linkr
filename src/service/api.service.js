@@ -29,7 +29,7 @@ function postUnlike(idPost, token) {
   return axios.post(`${URL}/posts/${idPost}/dislike`, '', setConfig(token))
 }
 
-function getUserPosts(id, token){
+function getUserPosts(id, { token }) {
   return axios.get(`${URL}users/${id}/posts`, setConfig(token));
 }
 
