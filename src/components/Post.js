@@ -9,7 +9,7 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { putEdit } from "../service/api.service";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, setOnEdit, onEdit } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, setOnChangePost, onChangePost } =
     props;
   const { username, avatar } = user;
   const { userData } = useContext(UserContext);
@@ -36,10 +36,10 @@ export default function Post(props) {
         setEditDisabled(false);
         setEditSelect(false);
 
-        if(onEdit) {
-          setOnEdit(false)
+        if(onChangePost) {
+          setOnChangePost(false)
         } else {
-          setOnEdit(true)
+          setOnChangePost(true)
         }
       })
       .catch(err => {
@@ -85,7 +85,7 @@ export default function Post(props) {
     <>
       <Container>
         <SideBarPost>
-          <Link to={`/user/${id}`}>
+          <Link to={`/user/${user.id}`}>
             <img src={avatar} alt="" />
           </Link>
           <FiHeart />
@@ -97,13 +97,15 @@ export default function Post(props) {
         </SideBarPost>
         <ContentPost>
           <MsgPost>
-            <div>
-              <Link to={`/user/${id}`}><span>{username}</span></Link>
               <div>
+              <Link to={`/user/${id}`}>
+              <span>{username}</span>
+            </Link>
+            <div>
                 {user.id === userData.user.id && <><EditIcon onClick={selectEdit}/><DeleteIcon /></>}
               </div>
-            </div>
-            {edit()}
+              </div>
+              {edit()}
           </MsgPost>
           <a href={link} target="_blank" rel="noreferrer"><LinkPost>
             <span>

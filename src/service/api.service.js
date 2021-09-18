@@ -21,7 +21,7 @@ function getPosts(token) {
   return axios.get(`${URL}posts`, setConfig(token));
 }
 
-function getUserPosts(id, token){
+function getUserPosts(id, { token }) {
   return axios.get(`${URL}users/${id}/posts`, setConfig(token));
 }
 
