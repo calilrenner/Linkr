@@ -85,7 +85,7 @@ export default function Post(props) {
         }
     }
     setToolTipMsg(preToolTipMsg)
-    }, [likes]);
+    }, [actualLikes]);
 
     return (
         <>
