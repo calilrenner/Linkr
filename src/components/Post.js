@@ -33,9 +33,7 @@ export default function Post(props) {
               <ReactHashtag
                 renderHashtag={(hashTagValue) => (
                   <Link to={`/hashtag/${hashTagValue.replace("#", "")}`}>
-                  <Hashtag>
-                    {hashTagValue}
-                  </Hashtag>
+                    <Hashtag>{hashTagValue}</Hashtag>
                   </Link>
                 )}
               >
@@ -44,13 +42,13 @@ export default function Post(props) {
             </span>
           </MsgPost>
           <LinkPost>
-            <span>
-              <div>{linkTitle}</div>
-              <div>{linkDescription}</div>
+            <div>
+              <span>{linkTitle}</span>
+              <span>{linkDescription}</span>
               <a href={link} target="_blank" rel="noreferrer">
                 {link}
               </a>
-            </span>
+            </div>
             <img src={linkImage} alt="" />
           </LinkPost>
         </ContentPost>
@@ -61,18 +59,18 @@ export default function Post(props) {
 
 const Container = styled.div`
   width: 611px;
-  height: 276px;
   background-color: ${colors.black};
   border: 1px solid #4d4d4d;
   border-radius: 16px;
   padding: 20px;
   display: flex;
   color: ${colors.white};
-  margin: 29px 0;
+  margin: 29px 0 29px 0;
 
   @media (max-width: 1000px) {
-    width: 100vw;
-    height: 60vw;
+    width: 100%;
+    justify-content: center;
+    margin: 20px 0 0 0;
     border-radius: 0;
   }
 `;
@@ -103,34 +101,14 @@ const LinkPost = styled.div`
   border-radius: 16px;
   height: 155px;
   width: 100%;
+  max-width: 500px;
 
-  span {
-    margin: 24px 19px;
-    min-width: 0;
+  div {
+    margin: 15px 15px;
 
-    div:first-child {
-      font-size: 16px;
-      margin-bottom: 5px;
-      color: #cecece;
-      display: block;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -o-text-overflow: ellipsis;
-      text-overflow: -o-ellipsis-lastline;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-      -webkit-hyphens: auto;
-      -ms-hyphens: auto;
-      hyphens: auto;
-    }
-
-    div:nth-child(2) {
+    * {
       font-size: 11px;
-      margin-bottom: 13px;
-      color: #9b9595;
+      color: #cecece;
       display: block;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -141,71 +119,59 @@ const LinkPost = styled.div`
       text-overflow: -o-ellipsis-lastline;
       overflow-wrap: break-word;
       word-wrap: break-word;
+      word-break: break-all;
       -webkit-hyphens: auto;
       -ms-hyphens: auto;
       hyphens: auto;
     }
 
+    span:first-child {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    span:nth-child(2) {
+      margin-bottom: 13px;
+      color: #9b9595;
+    }
+
     a {
-      font-size: 11px;
       text-decoration: none;
-      color: #cecece;
-      display: block;
-      display: -webkit-box;
       -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -o-text-overflow: ellipsis;
-      text-overflow: -o-ellipsis-lastline;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-      -webkit-hyphens: auto;
-      -ms-hyphens: auto;
-      hyphens: auto;
     }
   }
 
   img {
-    width: 40%;
+    width: 154px;
     height: 100%;
     border-radius: 0 16px 16px 0;
   }
 
   @media (max-width: 1000px) {
-    height: 65%;
+    height: 115px;
+    width: calc(100vw - 110px);
+    img {
+      width: 95px;
+    }
   }
 `;
 
 const MsgPost = styled.div`
   display: flex;
   flex-direction: column;
+  width: calc(100vw - 110px);
+  max-width: 500px;
 
   span {
-    font-size: 19px;
-    margin-bottom: 7px;
-  }
-
-  span:last-child {
+    margin-bottom: 15px;
     font-size: 17px;
     color: #cecece;
-    display: block;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    text-overflow: -o-ellipsis-lastline;
-    overflow-wrap: break-word;
     word-wrap: break-word;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
   }
 `;
 
 const ContentPost = styled.div`
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
