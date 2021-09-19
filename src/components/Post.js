@@ -7,6 +7,8 @@ import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext } from "react";
 
+Modal.setAppElement(document.querySelector(".root"));
+
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
     props;
