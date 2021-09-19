@@ -5,21 +5,19 @@ import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import ReactModal from "react-modal";
+import Modal from "react-modal";
 
 Modal.setAppElement(document.querySelector(".root"));
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
     props;
-
   const { username, avatar } = user;
-
   const { userData } = useContext(UserContext);
-
-  function deletePost() {
-    console.log("adfsdg")
-  }
+  const [modalOpen, setModalOpen] = useState(false);
+  console.log(modalOpen)
 
   return (
     <>
@@ -40,7 +38,12 @@ export default function Post(props) {
             <div>
               <Link to={`/user/${id}`}><span>{username}</span></Link>
               <div>
-                {user.id === userData.user.id ? <><EditIcon /><DeleteIcon onClick={deletePost} /></> : ""}
+                {user.id === userData.user.id && 
+                  <>
+                    <EditIcon />
+                    <DeleteIcon onClick={() => setModalOpen(!modalOpen)} />
+                  </> 
+                  }
               </div>
             </div>
             <span>
@@ -64,10 +67,37 @@ export default function Post(props) {
             <img src={linkImage} alt="" />
           </LinkPost> </a>
         </ContentPost>
+        {modalOpen ?
+          <StyledModal isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
+            
+          </StyledModal>
+          :
+          ""
+        }
       </Container>
     </>
   );
 }
+
+const StyledModal = styled(ReactModal)`
+    top: 50vh;
+    left: 50vw;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    max-width: 597px;
+    width: 100%;
+    height: 262px;
+    background: #333;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    padding: 0 110px 0 110px;
+`;
 
 const Container = styled.div`
   width: 611px;
@@ -79,6 +109,7 @@ const Container = styled.div`
   display: flex;
   color: ${colors.white};
   margin: 29px 0;
+
   @media (max-width: 1000px) {
     width: 100vw;
     height: 60vw;
