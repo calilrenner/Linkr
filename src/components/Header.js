@@ -116,7 +116,7 @@ const DropDown = styled.div`
     padding: 10px 0;
     cursor: pointer;
     transition: top 150ms ease-in-out;
-    z-index: -1;
+    z-index: ${props => props.top ? "0" : "-1"};
 
     p{
         color: ${colors.white};
