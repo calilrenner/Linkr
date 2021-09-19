@@ -10,7 +10,7 @@ import { useContext, useState } from "react";
 import DeleteModal from "./DeleteModal";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, timelinePosts } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, timelinePosts, setOnchangePost, onChangePost } =
     props;
   const { username, avatar } = user;
   const { userData } = useContext(UserContext);
@@ -33,7 +33,8 @@ export default function Post(props) {
         <ContentPost>
           <MsgPost>
             <div>
-              <Link to={`/user/${id}`}><span>{username}</span></Link>
+              <Link to={`/user/${user.id}`}>
+                <span>{username}</span></Link>
               <div>
                 {user.id === userData.user.id && 
                   <>
@@ -46,9 +47,11 @@ export default function Post(props) {
             <span>
               <ReactHashtag
                 renderHashtag={(hashTagValue) => (
-                  <Hashtag href={`/hashtag/${hashTagValue.replace("#", "").toLowerCase()}`}>
+                  <Link to={`/hashtag/${hashTagValue.replace("#", "")}`}>
+                  <Hashtag>
                     {hashTagValue}
                   </Hashtag>
+                  </Link>
                 )}
               >
                 {text}
@@ -70,6 +73,8 @@ export default function Post(props) {
             setModalOpen={setModalOpen}
             postId={id}
             timelinePosts={timelinePosts}
+            setOnchangePost={setOnchangePost}
+            onChangePost={onChangePost}
           />
         }
       </Container>

@@ -7,10 +7,9 @@ import { deletePost } from "../service/api.service";
 
 Modal.setAppElement(document.querySelector(".root"));
 
-export default function DeleteModal({ modalOpen, setModalOpen, postId, timelinePosts }) {
+export default function DeleteModal({ modalOpen, setModalOpen, postId, timelinePosts, setOnchangePost, onChangePost }) {
     const { userData } = useContext(UserContext);
     const [disabledButtons, setDisabledButtons] = useState(false);
-    console.log(timelinePosts)
 
     function deleteThisPost() {
         const token = userData.token;
@@ -22,10 +21,12 @@ export default function DeleteModal({ modalOpen, setModalOpen, postId, timelineP
         req.then(() => {
             setDisabledButtons(false);
             setModalOpen(!modalOpen);
+            setOnchangePost(!onChangePost)
         })
         req.catch(() => {;
             setDisabledButtons(false)
             setModalOpen(!modalOpen);
+            setOnchangePost(!onChangePost)
             alert("Não foi possível excluir o post. Tente novamente.");
         })
     }

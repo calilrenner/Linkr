@@ -51,7 +51,6 @@ const Content = styled.div`
     top: 0;
     right: 0;
     left: 0;
-    z-index: 10;
 
     h1{
         font-family: 'Passion One', cursive;
@@ -100,7 +99,6 @@ const Background = styled.div`
     height: 100vh;
     position: fixed;
     display: ${props => props.display ? "" : "none"};
-    z-index: 8;
 `;
 
 const DropDown = styled.div`
@@ -117,8 +115,8 @@ const DropDown = styled.div`
     justify-content: space-around;
     padding: 10px 0;
     cursor: pointer;
-    z-index: 9;
     transition: top 150ms ease-in-out;
+    z-index: -1;
 
     p{
         color: ${colors.white};

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext} from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Container, TitleContainer, Form } from "./accesControlStyles";
 import { serverLogin } from "../../service/api.service";
@@ -6,7 +6,7 @@ import UserContext from "../../contexts/UserContext";
 import Loader from "react-loader-spinner";
 
 export default function Login() {
-  const { setUserData } = useContext(UserContext);
+  const { setLoginData } = useContext(UserContext);
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +20,7 @@ export default function Login() {
         email,
         password,
       };
-      serverLogin(userData).then(res => login(res.data)).catch(handleError);
+      serverLogin(userData).then(res => { login(res.data)}).catch(handleError);
     } else {
       alert("Preencha todos os campos!");
       setDisableForm(false);
@@ -28,7 +28,7 @@ export default function Login() {
   }
 
   function login(user) {
-    setUserData(user);
+    setLoginData(user);
     setDisableForm(false);
     history.push("/timeline");
   }
