@@ -56,7 +56,7 @@ export default function Timeline() {
             <Title>timeline</Title>
             <CreateNewPost timelinePosts={timelinePosts} />
             {posts.map((post, index) => (
-              <Post key={index} {...post} />
+              <Post key={index} {...post} timelinePosts={timelinePosts}/>
             ))}
           </div>
           <Trending />

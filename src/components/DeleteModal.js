@@ -1,10 +1,34 @@
 import styled from "styled-components";
 import ReactModal from "react-modal";
 import Modal from "react-modal";
+import { useContext, useState } from "react";
+import UserContext from "../contexts/UserContext";
+import { deletePost } from "../service/api.service";
 
 Modal.setAppElement(document.querySelector(".root"));
 
-export default function DeleteModal({ modalOpen, setModalOpen }) {
+export default function DeleteModal({ modalOpen, setModalOpen, postId, timelinePosts }) {
+    const { userData } = useContext(UserContext);
+    const [disabledButtons, setDisabledButtons] = useState(false);
+    console.log(timelinePosts)
+
+    function deleteThisPost() {
+        const token = userData.token;
+        const id = postId;
+        const req = deletePost(id, token);
+
+        setDisabledButtons(true);
+
+        req.then(() => {
+            setDisabledButtons(false);
+            setModalOpen(!modalOpen);
+        })
+        req.catch(() => {;
+            setDisabledButtons(false)
+            setModalOpen(!modalOpen);
+            alert("Não foi possível excluir o post. Tente novamente.");
+        })
+    }
 
     return (
         <StyledModal isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
@@ -12,10 +36,10 @@ export default function DeleteModal({ modalOpen, setModalOpen }) {
                 Tem certeza que deseja excluir essa publicação?
             </Text>
             <div>
-                <GoBackButton onClick={() => setModalOpen(!modalOpen)}>
+                <GoBackButton onClick={() => setModalOpen(!modalOpen)} disabled={disabledButtons} >
                     Não, voltar
                 </GoBackButton>
-                <ConfirmButton>
+                <ConfirmButton onClick={deleteThisPost} disabled={disabledButtons} >
                     Sim, excluir
                 </ConfirmButton>
             </div>

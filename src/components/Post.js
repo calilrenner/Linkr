@@ -10,7 +10,7 @@ import { useContext, useState } from "react";
 import DeleteModal from "./DeleteModal";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, timelinePosts } =
     props;
   const { username, avatar } = user;
   const { userData } = useContext(UserContext);
@@ -64,7 +64,14 @@ export default function Post(props) {
             <img src={linkImage} alt="" />
           </LinkPost> </a>
         </ContentPost>
-        {modalOpen && <DeleteModal modalOpen={modalOpen} setModalOpen={setModalOpen} />}
+        {modalOpen && 
+          <DeleteModal
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            postId={id}
+            timelinePosts={timelinePosts}
+          />
+        }
       </Container>
     </>
   );
