@@ -33,9 +33,9 @@ export default function Post(props) {
               <ReactHashtag
                 renderHashtag={(hashTagValue) => (
                   <Link to={`/hashtag/${hashTagValue.replace("#", "")}`}>
-                  <Hashtag>
-                    {hashTagValue}
-                  </Hashtag>
+                    <Hashtag>
+                      {hashTagValue}
+                    </Hashtag>
                   </Link>
                 )}
               >
@@ -47,11 +47,15 @@ export default function Post(props) {
             <span>
               <div>{linkTitle}</div>
               <div>{linkDescription}</div>
-              <a href={link} target="_blank" rel="noreferrer">
-                {link}
-              </a>
+              <div>
+                <a href={link} target="_blank" rel="noreferrer">
+                  {link}
+                </a>
+              </div>
             </span>
-            <img src={linkImage} alt="" />
+            <div>
+              <img src={linkImage} alt="" />
+            </div>
           </LinkPost>
         </ContentPost>
       </Container>
@@ -104,11 +108,12 @@ const LinkPost = styled.div`
   height: 155px;
   width: 100%;
 
-  span {
+  > *: first-child {
+    width: 60%;
     margin: 24px 19px;
-    min-width: 0;
 
     div:first-child {
+      width: 100%;
       font-size: 16px;
       margin-bottom: 5px;
       color: #cecece;
@@ -122,12 +127,14 @@ const LinkPost = styled.div`
       text-overflow: -o-ellipsis-lastline;
       overflow-wrap: break-word;
       word-wrap: break-word;
+      word-break: break-all;
       -webkit-hyphens: auto;
       -ms-hyphens: auto;
       hyphens: auto;
     }
 
     div:nth-child(2) {
+      width: 100%;
       font-size: 11px;
       margin-bottom: 13px;
       color: #9b9595;
@@ -141,18 +148,24 @@ const LinkPost = styled.div`
       text-overflow: -o-ellipsis-lastline;
       overflow-wrap: break-word;
       word-wrap: break-word;
+      word-break: break-all;
       -webkit-hyphens: auto;
       -ms-hyphens: auto;
       hyphens: auto;
     }
 
+
+    div:nth-child(3) {
+      width: 100%;
+    }
+    
     a {
       font-size: 11px;
       text-decoration: none;
       color: #cecece;
-      display: block;
+      display: inline-block;
       display: -webkit-box;
-      -webkit-line-clamp: 1;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -160,14 +173,19 @@ const LinkPost = styled.div`
       text-overflow: -o-ellipsis-lastline;
       overflow-wrap: break-word;
       word-wrap: break-word;
-      -webkit-hyphens: auto;
-      -ms-hyphens: auto;
-      hyphens: auto;
+      word-break: break-all;
+      line-break: auto;
     }
   }
 
-  img {
+  > *:last-child {
     width: 40%;
+    heigth: 100%;
+    border-radius: 0 16px 16px 0;
+  }
+
+  img {
+    width: 100%;
     height: 100%;
     border-radius: 0 16px 16px 0;
   }
@@ -209,6 +227,7 @@ const ContentPost = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const Hashtag = styled.a`
