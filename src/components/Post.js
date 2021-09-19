@@ -6,10 +6,8 @@ import ReactHashtag from "react-hashtag";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext, useState } from "react";
-import ReactModal from "react-modal";
-import Modal from "react-modal";
 
-Modal.setAppElement(document.querySelector(".root"));
+import DeleteModal from "./DeleteModal";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
@@ -17,7 +15,6 @@ export default function Post(props) {
   const { username, avatar } = user;
   const { userData } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
-  console.log(modalOpen)
 
   return (
     <>
@@ -67,37 +64,11 @@ export default function Post(props) {
             <img src={linkImage} alt="" />
           </LinkPost> </a>
         </ContentPost>
-        {modalOpen ?
-          <StyledModal isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
-            
-          </StyledModal>
-          :
-          ""
-        }
+        {modalOpen && <DeleteModal modalOpen={modalOpen} setModalOpen={setModalOpen} />}
       </Container>
     </>
   );
 }
-
-const StyledModal = styled(ReactModal)`
-    top: 50vh;
-    left: 50vw;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    max-width: 597px;
-    width: 100%;
-    height: 262px;
-    background: #333;
-    border-radius: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    padding: 0 110px 0 110px;
-`;
 
 const Container = styled.div`
   width: 611px;
