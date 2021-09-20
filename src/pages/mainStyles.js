@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../globalStyles";
+import { colors } from "../globalStyles";
 import { VscLoading } from "react-icons/vsc";
 
 const Container = styled.div`
@@ -12,9 +12,14 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 43px;
   font-weight: bold;
-  margin-top: 140px;
+  margin-top: 85px;
   color: ${colors.white};
   font-family: "Oswald", sans-serif;
+
+  @media (max-width: 1000px) {
+    margin-left: 20px;
+    font-size: 33px;
+  }
 `;
 
 const Main = styled.div`

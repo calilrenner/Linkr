@@ -35,7 +35,7 @@ export default function Trending() {
 
 const TrendingContainer = styled.div`
   position: fixed;
-  top: 211px;
+  top: 150px;
   right: calc((100% - 937px) / 2);
   width: 301px;
   height: 406px;
@@ -59,7 +59,7 @@ const TrendingContainer = styled.div`
 
   ul {
     font-size: 19px;
-    margin: 20px 0 0 15px;
+    margin: 30px 0 0 15px;
   }
 
   li {
