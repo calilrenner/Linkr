@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext} from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Container, TitleContainer, Form } from "./accesControlStyles";
 import { serverLogin } from "../../service/api.service";
@@ -35,7 +35,7 @@ export default function Login() {
 
   function handleError(e) {
     const errorCode = e.response.status;
-    if (errorCode === "401") {
+    if (errorCode === 403) {
       alert("E-mail/senha incorretos");
     } else {
       alert("Ocorreu um erro inesperado");

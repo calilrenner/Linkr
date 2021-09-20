@@ -41,7 +41,11 @@ function createNewPost(body, token) {
   return axios.post(`${URL}posts`, body, setConfig(token));
 }
 
-function getMyLikes({ token }) {
+function deletePost(id, token) {
+  return axios.delete(`${URL}posts/${id}`, setConfig(token))
+}
+
+  function getMyLikes({ token }) {
   return axios.get(`${URL}/posts/liked`, setConfig(token));
 }
 
@@ -62,6 +66,7 @@ export {
   getUserPosts,
   createNewPost,
   getPostsByHashtag,
+  deletePost,
   getMyLikes,
-  putEdit,
+  putEdit
 };
