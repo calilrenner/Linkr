@@ -10,7 +10,7 @@ import Trending from "../components/Trending";
 import Post from "../components/Post";
 
 export default function MyPosts() {
-  const { userData } = useContext(UserContext);
+  const { userData, onChangePost } = useContext(UserContext);
   const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function MyPosts() {
     const req = getUserPosts(id, token);
 
     req.then((res) => setUserPosts(res.data.posts));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [onChangePost]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Main>

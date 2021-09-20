@@ -14,10 +14,10 @@ import ReactTooltip from "react-tooltip";
 
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, setOnChangePost, onChangePost } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
     props;
   const { username, avatar } = user;
-  const { userData } = useContext(UserContext);
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [editSelected, setEditSelect] = useState(false);
   const [newText, setNewText] = useState(text);
   const [editDisabled, setEditDisabled] = useState(false);
