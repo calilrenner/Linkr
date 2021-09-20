@@ -5,13 +5,15 @@ import { useContext, useState } from "react";
 
 import { colors } from "../globalStyles";
 import UserContext from "../contexts/UserContext";
+const LOCAL_STORAGE_KEY = "loggedUser.data";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData, setLoginData } = useContext(UserContext);
 
   function logout() {
-    setUserData(undefined);
+    setLoginData({});
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
   }
 
   return (
