@@ -33,15 +33,13 @@ export default function Post(props) {
   const [likesArrayLength, setLikesArrayLength] = useState(likes.length);
   const [actualLikes, setActualLikes] = useState(likes);
   const [modalOpen, setModalOpen] = useState(false);
-  let toolTipUsersNames;
-  let toolTipUsersIds;
-  let preToolTipMsg;
 
   useEffect(() => {
     if (editSelected) {
       inputRef.current.focus();
     }
     setNewText(text);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editSelected]);
 
   function cancelEditOnEsc(e) {
@@ -93,6 +91,10 @@ export default function Post(props) {
   }
 
   useEffect(() => {
+    let toolTipUsersNames;
+    let toolTipUsersIds;
+    let preToolTipMsg;
+
     toolTipUsersNames = actualLikes.map((names) =>
       names.username ? names.username : names["user.username"]
     );
