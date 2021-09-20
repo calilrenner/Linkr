@@ -6,8 +6,7 @@ import ReactHashtag from "react-hashtag";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext, useState, useRef, useEffect } from "react";
-import { putEdit } from "../service/api.service";
-import { postLike } from "../service/api.service";
+import { putEdit, postLike } from "../service/api.service";
 import { FaHeart } from "react-icons/fa";
 import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
@@ -350,10 +349,15 @@ const MsgPost = styled.div`
 
   span {
     margin-bottom: 15px;
-    font-size: 17px;
+    font-size: 19px;
     color: #cecece;
     word-wrap: break-word;
     word-break: break-all;
+  }
+
+  span:nth-child(2){
+    font-size: 17px;
+    margin-top: 10px;
   }
 
   div {
