@@ -8,7 +8,6 @@ import UserContext from "./contexts/UserContext";
 import SignUp from "./pages/acessControl/SignUp";
 import MyPosts from "./pages/MyPosts";
 import UserPosts from "./pages/UserPosts";
-import editOrDeleteContext from "./contexts/editOrDeleteContext";
 
 export default function App() {
   const [loginData, setLoginData] = useState({});
