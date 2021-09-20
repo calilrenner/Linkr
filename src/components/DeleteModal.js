@@ -7,8 +7,8 @@ import { deletePost } from "../service/api.service";
 
 Modal.setAppElement(document.querySelector(".root"));
 
-export default function DeleteModal({ modalOpen, setModalOpen, postId, timelinePosts, setOnchangePost, onChangePost }) {
-    const { userData } = useContext(UserContext);
+export default function DeleteModal({ modalOpen, setModalOpen, postId, timelinePosts }) {
+    const { userData, onChangePost, setOnchangePost } = useContext(UserContext);
     const [disabledButtons, setDisabledButtons] = useState(false);
 
     function deleteThisPost() {

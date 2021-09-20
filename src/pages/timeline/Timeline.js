@@ -17,8 +17,7 @@ import {
 export default function Timeline() {
   const [posts, setPosts] = useState("");
   const [errPosts, SetErrPosts] = useState("");
-  const { userData } = useContext(UserContext);
-  const [onChangePost, setOnchangePost] = useState(false);
+  const { userData, onChangePost } = useContext(UserContext);
 
   useEffect(() => {
     timelinePosts();
@@ -57,7 +56,7 @@ export default function Timeline() {
             <Title>timeline</Title>
             <CreateNewPost timelinePosts={timelinePosts} />
             {posts.map((post, index) => (
-              <Post key={index} {...post} timelinePosts={timelinePosts} setOnchangePost={setOnchangePost} onChangePost={onChangePost}/>
+              <Post key={index} {...post} timelinePosts={timelinePosts}/>
             ))}
           </div>
           <Trending />

@@ -10,10 +10,10 @@ import { useContext, useState } from "react";
 import DeleteModal from "./DeleteModal";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, timelinePosts, setOnchangePost, onChangePost } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, timelinePosts } =
     props;
   const { username, avatar } = user;
-  const { userData } = useContext(UserContext);
+  const { userData, onChangePost, setOnchangePost } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -73,8 +73,6 @@ export default function Post(props) {
             setModalOpen={setModalOpen}
             postId={id}
             timelinePosts={timelinePosts}
-            setOnchangePost={setOnchangePost}
-            onChangePost={onChangePost}
           />
         }
       </Container>
