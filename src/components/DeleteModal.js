@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ReactModal from "react-modal";
 import Modal from "react-modal";
 import { useContext, useState } from "react";
+import Loader from "react-loader-spinner";
 import UserContext from "../contexts/UserContext";
 import { deletePost } from "../service/api.service";
 
@@ -33,9 +34,14 @@ export default function DeleteModal({ modalOpen, setModalOpen, postId, timelineP
 
     return (
         <StyledModal isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
-            <Text>
-                Tem certeza que deseja excluir essa publicação?
+            <Text margin={disabledButtons}>
+                {disabledButtons ?
+                    "Excluindo..."
+                :
+                    "Tem certeza que deseja excluir essa publicação?"
+                }
             </Text>
+            {disabledButtons && <Loader type="ThreeDots" color="#ffffff" height="20px" />}
             <div>
                 <GoBackButton onClick={() => setModalOpen(!modalOpen)} disabled={disabledButtons} >
                     Não, voltar
@@ -66,6 +72,10 @@ const StyledModal = styled(ReactModal)`
     justify-content: center;
     position: fixed;
     padding: 0 110px 0 110px;
+
+    div{
+        margin-top: 20px;
+    }
 `;
 
 const Text = styled.p`
@@ -74,7 +84,7 @@ const Text = styled.p`
     font-size: 34px;
     line-height: 41px;
     color: #FFF;
-    margin-bottom: 40px;
+    margin-bottom: ${props => props.margin ? "20px" : "40px"};
 `;
 
 const GoBackButton = styled.button`

@@ -13,7 +13,7 @@ export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, timelinePosts } =
     props;
   const { username, avatar } = user;
-  const { userData, onChangePost, setOnchangePost } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
