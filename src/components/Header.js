@@ -72,26 +72,7 @@ const Content = styled.div`
   div {
     display: flex;
     align-items: center;
-    padding-left: 28px;
-    padding-right: 17px;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-
-    h1{
-        font-family: 'Passion One', cursive;
-        color: ${colors.white};
-        font-weight: bold;
-        font-size: 49px;
-        line-height: 54px;
-    }
-
-    div{
-        display: flex;
-        align-items: center;
-    }
-}
+  }
 `;
 
 const Image = styled.div`
