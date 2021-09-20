@@ -35,7 +35,7 @@ export default function Login() {
 
   function handleError(e) {
     const errorCode = e.response.status;
-    if (errorCode === "401") {
+    if (errorCode === 403) {
       alert("E-mail/senha incorretos");
     } else {
       alert("Ocorreu um erro inesperado");

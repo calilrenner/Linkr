@@ -9,7 +9,7 @@ import { deletePost } from "../service/api.service";
 Modal.setAppElement(document.querySelector(".root"));
 
 export default function DeleteModal({ modalOpen, setModalOpen, postId }) {
-    const { userData, onChangePost, setOnchangePost } = useContext(UserContext);
+    const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
     const [disabledButtons, setDisabledButtons] = useState(false);
 
     function deleteThisPost() {
@@ -22,12 +22,12 @@ export default function DeleteModal({ modalOpen, setModalOpen, postId }) {
         req.then(() => {
             setDisabledButtons(false);
             setModalOpen(!modalOpen);
-            setOnchangePost(!onChangePost)
+            setOnChangePost(!onChangePost)
         })
         req.catch(() => {;
             setDisabledButtons(false)
             setModalOpen(!modalOpen);
-            setOnchangePost(!onChangePost)
+            setOnChangePost(!onChangePost)
             alert("Não foi possível excluir o post. Tente novamente.");
         })
     }
