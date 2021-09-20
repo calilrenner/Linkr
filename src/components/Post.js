@@ -11,6 +11,8 @@ import { FaHeart } from "react-icons/fa";
 import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
 
+import DeleteModal from "./DeleteModal";
+
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
     props;
@@ -20,7 +22,6 @@ export default function Post(props) {
   const [newText, setNewText] = useState(text);
   const [editDisabled, setEditDisabled] = useState(false);
   const inputRef = useRef();
-
   const [usersLikesArray, setUsersLikesArray] = useState([
     ...likes.map((user) => user.userId),
   ]);
@@ -30,15 +31,14 @@ export default function Post(props) {
   );
   const [likesArrayLength, setLikesArrayLength] = useState(likes.length);
   const [actualLikes, setActualLikes] = useState(likes);
-  let toolTipUsersNames;
-  let toolTipUsersIds;
-  let preToolTipMsg;
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (editSelected) {
       inputRef.current.focus();
     }
     setNewText(text);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editSelected]);
 
   function cancelEditOnEsc(e) {
@@ -90,6 +90,10 @@ export default function Post(props) {
   }
 
   useEffect(() => {
+    let toolTipUsersNames;
+    let toolTipUsersIds;
+    let preToolTipMsg;
+
     toolTipUsersNames = actualLikes.map((names) =>
       names.username ? names.username : names["user.username"]
     );
@@ -143,6 +147,7 @@ export default function Post(props) {
       }
     }
     setToolTipMsg(preToolTipMsg);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actualLikes]);
 
   const edit = () => {
@@ -208,12 +213,12 @@ export default function Post(props) {
                 <span>{username}</span>
               </Link>
               <div>
-                {user.id === userData.user.id && (
+                {user.id === userData.user.id && 
                   <>
                     <EditIcon onClick={selectEdit} />
-                    <DeleteIcon />
-                  </>
-                )}
+                    <DeleteIcon onClick={() => setModalOpen(!modalOpen)} />
+                  </> 
+                  }
               </div>
             </div>
             {edit()}
@@ -229,9 +234,16 @@ export default function Post(props) {
             </LinkPost>{" "}
           </a>
         </ContentPost>
+        {modalOpen && 
+          <DeleteModal
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            postId={id}
+          />
+        }
       </Container>
     </>
-  );
+    )
 }
 
 const Container = styled.div`
@@ -257,14 +269,12 @@ const SideBarPost = styled.div`
   flex-direction: column;
   align-items: center;
   margin-right: 20px;
-
   img {
     width: 50px;
     height: 50px;
     margin-bottom: 19px;
     border-radius: 100%;
   }
-
   span {
     font-size: 11px;
     margin-top: 4px;
@@ -317,13 +327,11 @@ const LinkPost = styled.div`
       -webkit-line-clamp: 1;
     }
   }
-
   img {
     width: 154px;
     height: 100%;
     border-radius: 0 16px 16px 0;
   }
-
   @media (max-width: 1000px) {
     height: 115px;
     width: calc(100vw - 110px);
@@ -341,10 +349,15 @@ const MsgPost = styled.div`
 
   span {
     margin-bottom: 15px;
-    font-size: 17px;
+    font-size: 19px;
     color: #cecece;
     word-wrap: break-word;
     word-break: break-all;
+  }
+
+  span:nth-child(2){
+    font-size: 17px;
+    margin-top: 10px;
   }
 
   div {
@@ -357,11 +370,13 @@ const EditIcon = styled(MdModeEdit)`
   color: white;
   font-size: 16px;
   margin-right: 4px;
+  cursor: pointer;
 `;
 
 const DeleteIcon = styled(MdDelete)`
   color: white;
   font-size: 16px;
+  cursor: pointer;
 `;
 
 const ContentPost = styled.div`
