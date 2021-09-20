@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Container, TitleContainer, Form } from "./accesControlStyles";
 import { serverLogin } from "../../service/api.service";
@@ -8,9 +8,17 @@ import Loader from "react-loader-spinner";
 export default function Login() {
   const { setLoginData } = useContext(UserContext);
   const history = useHistory();
+  const LOCAL_STORAGE_KEY = "loggedUser.data";
+  const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disableForm, setDisableForm] = useState(false);
+
+  useEffect(() => {
+    if (userDataJSON) {
+      login(JSON.parse(userDataJSON));
+    }
+  }, []);
 
   function handleLoginSubmit(e) {
     e.preventDefault();
@@ -20,7 +28,11 @@ export default function Login() {
         email,
         password,
       };
-      serverLogin(userData).then(res => { login(res.data)}).catch(handleError);
+      serverLogin(userData)
+        .then((res) => {
+          login(res.data);
+        })
+        .catch(handleError);
     } else {
       alert("Preencha todos os campos!");
       setDisableForm(false);

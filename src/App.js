@@ -11,20 +11,20 @@ import UserPosts from "./pages/UserPosts";
 
 export default function App() {
   const [loginData, setLoginData] = useState({});
-  const LOCAL_STORAGE_KEY = 'loggedUser.data';
+  const LOCAL_STORAGE_KEY = "loggedUser.data";
   const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
   let userData;
-  
-  if(userDataJSON) {
+
+  if (userDataJSON) {
     userData = JSON.parse(userDataJSON);
   } else {
     userData = loginData;
   }
-  
+
   useEffect(() => {
-  if (loginData.token) {
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(loginData));
-  }
+    if (loginData.token) {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(loginData));
+    }
   }, [loginData]);
 
   return (
