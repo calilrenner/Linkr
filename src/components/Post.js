@@ -152,13 +152,13 @@ export default function Post(props) {
             </span>
           </MsgPost>
           <LinkPost>
-            <span>
-              <div>{linkTitle}</div>
-              <div>{linkDescription}</div>
+            <div>
+              <span>{linkTitle}</span>
+              <span>{linkDescription}</span>
               <a href={link} target="_blank" rel="noreferrer">
                 {link}
               </a>
-            </span>
+            </div>
             <img src={linkImage} alt="" />
           </LinkPost>
         </ContentPost>

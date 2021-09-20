@@ -2,7 +2,7 @@ import { GlobalStyle } from "./globalStyles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Timeline from "./pages/Timeline";
 import Login from "./pages/acessControl/Login";
-import Hashtag from "./pages/timeline/Hashtag";
+import Hashtag from "./pages/Hashtag";
 import { useState, useEffect } from "react";
 import UserContext from "./contexts/UserContext";
 import SignUp from "./pages/acessControl/SignUp";
