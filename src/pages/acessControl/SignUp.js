@@ -64,7 +64,7 @@ export default function SignUp() {
         <input
           disabled={disableForm}
           type="password"
-          placeholder="senha"
+          placeholder="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

@@ -3,7 +3,7 @@ import { colors } from "../../globalStyles";
 
 const Container = styled.div`
   display: flex;
-  @media (max-width: 614px) {
+  @media (max-width: 1000px) {
     flex-direction: column;
   }
 `;
@@ -33,7 +33,7 @@ const TitleContainer = styled.div`
     font-family: "Oswald", sans-serif;
   }
 
-  @media (max-width: 614px) {
+  @media (max-width: 1000px) {
     width: 100%;
     height: 175px;
     align-items: center;
@@ -88,7 +88,7 @@ const Form = styled.form`
     margin-top: 15px;
     text-decoration: underline;
   }
-  @media (max-width: 614px) {
+  @media (max-width: 1000px) {
     input,
     button {
       font-size: 22px;

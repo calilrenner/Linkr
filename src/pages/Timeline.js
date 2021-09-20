@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext } from "react";
-import Post from "../../components/Post";
-import UserContext from "../../contexts/UserContext";
-import { getPosts } from "../../service/api.service";
-import Header from "../../components/Header";
-import Trending from "../../components/Trending";
-import CreateNewPost from "../../components/CreateNewPost";
+import Post from "../components/Post";
+import UserContext from "../contexts/UserContext";
+import { getPosts } from "../service/api.service";
+import Header from "../components/Header";
+import Trending from "../components/Trending";
+import CreateNewPost from "../components/CreateNewPost";
 import {
   ErrorMsg,
   Container,
