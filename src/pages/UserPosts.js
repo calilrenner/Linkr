@@ -5,13 +5,7 @@ import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
-import {
-  Main,
-  Title,
-  Container,
-  Loader,
-  LoaderText,
-} from "./timeline/mainStyles";
+import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
 
 export default function UserPosts() {
   const { id } = useParams();

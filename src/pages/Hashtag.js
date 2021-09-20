@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { getPostsByHashtag } from "../../service/api.service";
-import UserContext from "../../contexts/UserContext";
-import Post from "../../components/Post";
-import Trending from "../../components/Trending";
-import Header from "../../components/Header";
+import { getPostsByHashtag } from "../service/api.service";
+import UserContext from "../contexts/UserContext";
+import Post from "../components/Post";
+import Trending from "../components/Trending";
+import Header from "../components/Header";
 import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
 
 export default function Hashtag() {
