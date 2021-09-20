@@ -18,7 +18,15 @@ function getTrending({ token }) {
 }
 
 function getPosts(token) {
-  return axios.get(`${URL}posts`, setConfig(token));
+  return axios.get(`${URL}/posts`, setConfig(token));
+}
+
+function postLike(idPost, token) {
+  return axios.post(`${URL}/posts/${idPost}/like`, '', setConfig(token));
+}
+
+function postUnlike(idPost, token) {
+  return axios.post(`${URL}/posts/${idPost}/dislike`, '', setConfig(token))
 }
 
 function getUserPosts(id, { token }) {
@@ -40,11 +48,13 @@ function putEdit(text, token, id) {
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
-export {
+export { 
+  registerUser,
   getTrending,
   serverLogin,
-  registerUser,
   getPosts,
+  postLike,
+  postUnlike,
   getUserPosts,
   createNewPost,
   getPostsByHashtag,

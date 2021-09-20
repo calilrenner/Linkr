@@ -18,7 +18,7 @@ export default function Timeline() {
   const [posts, setPosts] = useState("");
   const [errPosts, SetErrPosts] = useState("");
   const { userData } = useContext(UserContext);
-  const [onChangePost, setOnChangePost] = useState(false)
+  const [onChangePost, setOnChangePost] = useState(false);
 
   useEffect(() => {
     timelinePosts();
