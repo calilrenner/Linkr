@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useContext, useState } from "react";
+
 import { colors } from "../globalStyles";
 import UserContext from "../contexts/UserContext";
 const LOCAL_STORAGE_KEY = "loggedUser.data";

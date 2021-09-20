@@ -1,5 +1,5 @@
 import axios from "axios";
-const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/";
+const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/";
 
 function setConfig(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
@@ -22,11 +22,11 @@ function getPosts(token) {
 }
 
 function postLike(idPost, token) {
-  return axios.post(`${URL}/posts/${idPost}/like`, '', setConfig(token));
+  return axios.post(`${URL}/posts/${idPost}/like`, "", setConfig(token));
 }
 
 function postUnlike(idPost, token) {
-  return axios.post(`${URL}/posts/${idPost}/dislike`, '', setConfig(token))
+  return axios.post(`${URL}/posts/${idPost}/dislike`, "", setConfig(token));
 }
 
 function getUserPosts(id, { token }) {
@@ -40,7 +40,19 @@ function getPostsByHashtag({ token }, hashtag) {
 function createNewPost(body, token) {
   return axios.post(`${URL}posts`, body, setConfig(token));
 }
-export { 
+
+function getMyLikes({ token }) {
+  return axios.get(`${URL}/posts/liked`, setConfig(token));
+}
+
+function putEdit(text, token, id) {
+  const body = {
+    text: text,
+  };
+  return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
+}
+
+export {
   registerUser,
   getTrending,
   serverLogin,
@@ -50,4 +62,6 @@ export {
   getUserPosts,
   createNewPost,
   getPostsByHashtag,
+  getMyLikes,
+  putEdit,
 };
