@@ -3,27 +3,25 @@ import { colors } from "../globalStyles";
 import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import ReactHashtag from "react-hashtag";
+import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
+import { putEdit } from "../service/api.service";
 import { postLike } from "../service/api.service";
 import { FaHeart } from "react-icons/fa";
 import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
 
 export default function Post(props) {
-  const {
-    id,
-    text,
-    link,
-    linkTitle,
-    linkDescription,
-    linkImage,
-    user,
-    likes,
-    setOnChangePost,
-  } = props;
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+    props;
   const { username, avatar } = user;
-  const { userData } = useContext(UserContext);
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
+  const [editSelected, setEditSelect] = useState(false);
+  const [newText, setNewText] = useState(text);
+  const [editDisabled, setEditDisabled] = useState(false);
+  const inputRef = useRef();
+
   const [usersLikesArray, setUsersLikesArray] = useState([
     ...likes.map((user) => user.userId),
   ]);
@@ -36,6 +34,37 @@ export default function Post(props) {
   let toolTipUsersNames;
   let toolTipUsersIds;
   let preToolTipMsg;
+
+  useEffect(() => {
+    if (editSelected) {
+      inputRef.current.focus();
+    }
+    setNewText(text);
+  }, [editSelected]);
+
+  function cancelEditOnEsc(e) {
+    if (e.code === "Escape" && editSelected) {
+      setEditSelect(false);
+    }
+    if (e.code === "Enter" && editSelected) {
+      setEditDisabled(true);
+      putEdit(newText, userData.token, id)
+        .then((res) => {
+          setEditDisabled(false);
+          setEditSelect(false);
+
+          if (onChangePost) {
+            setOnChangePost(false);
+          } else {
+            setOnChangePost(true);
+          }
+        })
+        .catch((err) => {
+          setEditDisabled(false);
+          alert("Não foi possível salvar as alterações!");
+        });
+    }
+  }
 
   useEffect(() => {
     setUsersLikesArray([...likes.map((user) => user.userId)]);
@@ -117,6 +146,45 @@ export default function Post(props) {
     setToolTipMsg(preToolTipMsg);
   }, [actualLikes]);
 
+  const edit = () => {
+    if (editSelected) {
+      return (
+        <InputEditPost
+          type="text"
+          value={newText}
+          ref={inputRef}
+          onChange={(e) => setNewText(e.target.value)}
+          onKeyUp={(e) => cancelEditOnEsc(e)}
+          disabled={editDisabled}
+        />
+      );
+    } else {
+      return (
+        <span>
+          <ReactHashtag
+            renderHashtag={(hashTagValue) => (
+              <Link
+                to={`/hashtag/${hashTagValue.replace("#", "").toLowerCase()}`}
+              >
+                <Hashtag>{hashTagValue}</Hashtag>
+              </Link>
+            )}
+          >
+            {text}
+          </ReactHashtag>
+        </span>
+      );
+    }
+  };
+
+  function selectEdit() {
+    if (editSelected) {
+      setEditSelect(false);
+    } else {
+      setEditSelect(true);
+    }
+  }
+
   return (
     <>
       <Container>
@@ -136,31 +204,31 @@ export default function Post(props) {
         </SideBarPost>
         <ContentPost>
           <MsgPost>
-            <Link to={`/user/${id}`}>
-              <span>{username}</span>
-            </Link>
-            <span>
-              <ReactHashtag
-                renderHashtag={(hashTagValue) => (
-                  <Hashtag href={`/hashtag/${hashTagValue.replace("#", "")}`}>
-                    {hashTagValue}
-                  </Hashtag>
-                )}
-              >
-                {text}
-              </ReactHashtag>
-            </span>
-          </MsgPost>
-          <LinkPost>
             <div>
-              <span>{linkTitle}</span>
-              <span>{linkDescription}</span>
-              <a href={link} target="_blank" rel="noreferrer">
-                {link}
-              </a>
+              <Link to={`/user/${user.id}`}>
+                <span>{username}</span>
+              </Link>
+              <div>
+                {user.id === userData.user.id && (
+                  <>
+                    <EditIcon onClick={selectEdit} />
+                    <DeleteIcon />
+                  </>
+                )}
+              </div>
             </div>
-            <img src={linkImage} alt="" />
-          </LinkPost>
+            {edit()}
+          </MsgPost>
+          <a href={link} target="_blank" rel="noreferrer">
+            <LinkPost>
+              <div>
+                <span>{linkTitle}</span>
+                <span>{linkDescription}</span>
+                <p>{link}</p>
+              </div>
+              <img src={linkImage} alt="" />
+            </LinkPost>{" "}
+          </a>
         </ContentPost>
       </Container>
     </>
@@ -277,7 +345,24 @@ const MsgPost = styled.div`
     font-size: 17px;
     color: #cecece;
     word-wrap: break-word;
+    word-break: break-all;
   }
+
+  div {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+const EditIcon = styled(MdModeEdit)`
+  color: white;
+  font-size: 16px;
+  margin-right: 4px;
+`;
+
+const DeleteIcon = styled(MdDelete)`
+  color: white;
+  font-size: 16px;
 `;
 
 const ContentPost = styled.div`
@@ -285,10 +370,18 @@ const ContentPost = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 502px;
 `;
 
 const Hashtag = styled.a`
   color: white;
   text-decoration: none;
   font-weight: 700;
+`;
+
+const InputEditPost = styled.input`
+  width: 100%;
+  height: 44px;
+  border-radius: 7px;
+  font-size: 14px;
 `;

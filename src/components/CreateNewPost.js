@@ -115,6 +115,7 @@ const Text = styled.div`
 
   form {
     width: 100%;
+    max-width: 611px;
     display: flex;
     flex-direction: column;
   }
