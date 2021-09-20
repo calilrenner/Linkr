@@ -11,7 +11,7 @@ import UserPosts from "./pages/UserPosts";
 
 export default function App() {
   const [loginData, setLoginData] = useState({});
-  const [onChangePost, setOnchangePost] = useState(false);
+  const [onChangePost, setOnChangePost] = useState(false);
   const LOCAL_STORAGE_KEY = 'loggedUser.data';
   const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
   let userData;
@@ -32,7 +32,7 @@ export default function App() {
     <BrowserRouter>
       <GlobalStyle />
       <Switch>
-        <UserContext.Provider value={{ userData, setLoginData, onChangePost, setOnchangePost }}>
+        <UserContext.Provider value={{ userData, setLoginData, onChangePost, setOnChangePost }}>
           <Route path="/" exact component={Login} />
           <Route path="/sign-up" exact component={SignUp} />
           <Route path="/timeline" exact component={Timeline} />
