@@ -22,11 +22,11 @@ function getPosts(token) {
 }
 
 function postLike(idPost, token) {
-  return axios.post(`${URL}/posts/${idPost}/like`, '', setConfig(token));
+  return axios.post(`${URL}/posts/${idPost}/like`, "", setConfig(token));
 }
 
 function postUnlike(idPost, token) {
-  return axios.post(`${URL}/posts/${idPost}/dislike`, '', setConfig(token))
+  return axios.post(`${URL}/posts/${idPost}/dislike`, "", setConfig(token));
 }
 
 function getUserPosts(id, { token }) {
@@ -41,14 +41,18 @@ function createNewPost(body, token) {
   return axios.post(`${URL}posts`, body, setConfig(token));
 }
 
+function getMyLikes({ token }) {
+  return axios.get(`${URL}/posts/liked`, setConfig(token));
+}
+
 function putEdit(text, token, id) {
   const body = {
     text: text,
-  }
+  };
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
-export { 
+export {
   registerUser,
   getTrending,
   serverLogin,
@@ -58,5 +62,6 @@ export {
   getUserPosts,
   createNewPost,
   getPostsByHashtag,
-  putEdit
+  getMyLikes,
+  putEdit,
 };
