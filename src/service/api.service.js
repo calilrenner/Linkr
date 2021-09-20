@@ -40,8 +40,16 @@ function getPostsByHashtag({ token }, hashtag) {
 function createNewPost(body, token) {
   return axios.post(`${URL}posts`, body, setConfig(token));
 }
+
 function deletePost(id, token) {
   return axios.delete(`${URL}posts/${id}`, setConfig(token))
+}
+
+function putEdit(text, token, id) {
+  const body = {
+    text: text,
+  }
+  return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
 export { 
@@ -54,5 +62,6 @@ export {
   getUserPosts,
   createNewPost,
   getPostsByHashtag,
-  deletePost
+  deletePost,
+  putEdit
 };
