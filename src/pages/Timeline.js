@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import Post from "../components/Post";
 import UserContext from "../contexts/UserContext";
-import { getPosts } from "../service/api.service";
+import { getFollowsPosts, getPosts } from "../service/api.service";
 import Header from "../components/Header";
 import Trending from "../components/Trending";
 import CreateNewPost from "../components/CreateNewPost";
@@ -18,15 +18,20 @@ export default function Timeline() {
   const [posts, setPosts] = useState("");
   const [errPosts, SetErrPosts] = useState("");
   const { userData, onChangePost } = useContext(UserContext);
+  const [followsPosts, setFollowsPosts] = useState([]);
+  const [postsIds, setPostsIds] = useState([]);
+  const [lastPostId, setLastPostId] = useState(0);
 
   useEffect(() => {
     timelinePosts();
+    getFollowsPosts(userData.token, lastPostId).then(r => setFollowsPosts(r.data.users));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onChangePost]);
+  }, [onChangePost, lastPostId]);
 
   function timelinePosts() {
     getPosts(userData.token)
-      .then((res) => setPosts(res.data.posts))
+      .then((res) => 
+        setPosts(res.data.posts))
 
       .catch((err) =>
         SetErrPosts(
@@ -34,6 +39,25 @@ export default function Timeline() {
         )
       );
   }
+
+  useEffect(() =>
+  {
+    let higherId;
+    let num = Number.NEGATIVE_INFINITY;
+
+    if(posts.length > 0) {
+    setPostsIds([...new Set(posts.map(post => post.id))])
+    postsIds.forEach(el => {
+      if(el > num) {
+        num = el;
+      }
+      higherId = num;
+      setLastPostId(higherId)
+    })
+  }}// eslint-disable-next-line react-hooks/exhaustive-deps
+  , [posts])
+
+  console.log(followsPosts)
 
   function loadPosts() {
     if (errPosts !== "") {
@@ -55,9 +79,9 @@ export default function Timeline() {
             <Header />
             <Title>timeline</Title>
             <CreateNewPost timelinePosts={timelinePosts} />
-            {posts.map((post) => (
-              <Post key={post.id} {...post}/>
-            ))}
+            {posts.map((post) => <Post key={post.id} {...post} />
+            
+            )}
           </div>
           <Trending />
         </Main>
