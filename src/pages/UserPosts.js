@@ -6,6 +6,7 @@ import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
 import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
+import styled from "styled-components";
 
 export default function UserPosts() {
   const { id } = useParams();
@@ -37,7 +38,25 @@ export default function UserPosts() {
           </Container>
         )}
       </Main>
+      <Follow >Follow</Follow>
       <Trending />
     </>
   );
 }
+
+
+const Follow = styled.div`
+  width: 112px;
+  height: 31px;
+  background: #1877F2;
+  font-weight: bold;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 85px;
+  right: calc((100% - 937px) / 2);
+  font-size: 14px;
+`
