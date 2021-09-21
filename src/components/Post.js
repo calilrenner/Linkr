@@ -247,14 +247,18 @@ export default function Post(props) {
         </ContentPost>
         {modalOpen && 
           <DeleteModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          postId={id}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            postId={id}
           />
         }
       </Container>
       {showComments && 
-        <Comments postComments={postComments} />
+        <Comments 
+          postComments={postComments}
+          userId={user.id}
+          postId={id}
+        />
       }
     </>
   )

@@ -1,33 +1,63 @@
 import styled from "styled-components";
 import { FiSend } from "react-icons/fi";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserContext from "../contexts/UserContext";
+import { postNewComment } from "../service/api.service";
 
-export default function Comments() {
+export default function Comments({ postComments, userId, postId }) {
     const {userData} = useContext(UserContext);
+    const [myComment, setMyComment] = useState("");
+
+    function postMyComment(e) {
+        e.preventDefault();
+
+        const id = postId;
+        const body = {text: myComment};
+        const token = userData.token;
+        const req = postNewComment(id, body, token);
+        
+        req.then(() => setMyComment(""))
+        req.catch(() => alert("Não foi possível publicar o comentário. Por favor, tente novamente mais tarde."));
+    }
 
     return (
         <Box>
-            <Content>
-                <div>
-                    <Image></Image>
-                    <TextFields>
-                        <div>
-                            <User>Thiago</User>
-                            <Follow>• following</Follow>
-                        </div>
-                        <Comment>asfasfasfasfasfasf</Comment>
-                    </TextFields>
-                </div>
-                <Separator /> 
-            </Content>
+            {postComments.map(p => (
+                <Content key={p.id} >
+                    <div>
+                        <Image>
+                            <img src={p.user.avatar} alt={p.user.username} />
+                        </Image>
+                        <TextFields>
+                            <div>
+                                <User>{p.user.username}</User>
+                                <Follow>
+                                    {p.user.id === userId ? 
+                                        "• post’s author"
+                                    :
+                                        "asfasf" // -------IMPLEMENTAR----------
+                                    }
+                                    
+                                </Follow>
+                            </div>
+                            <Comment>{p.text}</Comment>
+                        </TextFields>
+                    </div>
+                    <Separator /> 
+                </Content>
+            ))}
             <WriteComment>
                 <Image>
                     <img src={userData.user.avatar} alt={userData.user.username} />
                 </Image>
-                <form>
-                    <Input placeholder="write a comment..." />
-                    <Button />
+                <form onSubmit={postMyComment}>
+                    <Input
+                        type="text" 
+                        placeholder="write a comment..." 
+                        value={myComment} 
+                        onChange={e => setMyComment(e.target.value)} 
+                    />
+                    <Button onClick={postMyComment} />
                 </form>
             </WriteComment>       
         </Box>

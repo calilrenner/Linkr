@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AiOutlineComment } from "react-icons/ai";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
@@ -9,7 +9,7 @@ export default function CommentIcon({showComments, setShowComments, postId, post
 
     useEffect(() => {
         getComments();
-      },[showComments]) // eslint-disable-line react-hooks/exhaustive-deps
+      },[postComments]) // eslint-disable-line react-hooks/exhaustive-deps
     
       function getComments() {
           const id = postId;
