@@ -4,7 +4,7 @@ import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { getPostComments } from "../service/api.service";
 
-export default function CommentIcon({showComments, setShowComments, postId, comments, setComments}){
+export default function CommentIcon({showComments, setShowComments, postId, postComments, setPostComments}){
     const {userData} = useContext(UserContext);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ export default function CommentIcon({showComments, setShowComments, postId, comm
           const token = userData.token;
           const req = getPostComments(id, token)
     
-          req.then(res => setComments(res.data.comments))
+          req.then(res => setPostComments(res.data.comments))
           req.catch(() => alert("Os comentários não foram carregados. Tente novamente mais tarde."))
       }
 
@@ -24,7 +24,7 @@ export default function CommentIcon({showComments, setShowComments, postId, comm
         <Box>
             <Icon onClick={() => setShowComments(!showComments)}/>
             <Text>
-                {comments ? comments.length : 0} {comments.length === 1 ? "comment" : "comments"}
+                {postComments ? postComments.length : 0} {postComments.length === 1 ? "comment" : "comments"}
             </Text>
         </Box>
     );
