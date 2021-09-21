@@ -57,7 +57,11 @@ function putEdit(text, token, id) {
 }
 
 function getFollowsPosts(token, id) {
-  return axios.get(`${URL}/following/posts?olderThan=${id}&earlierThan=${id - 1}`, setConfig(token));
+  return axios.get(`${URL}/following/posts`, setConfig(token));
+}
+
+function getFollows(token) {
+  return axios.get(`${URL}/users/follows`, setConfig(token))
 }
 
 export {
@@ -73,5 +77,6 @@ export {
   deletePost,
   getMyLikes,
   putEdit,
-  getFollowsPosts
+  getFollowsPosts,
+  getFollows
 };
