@@ -61,7 +61,11 @@ function postFollow(id, token) {
 }
 
 function postUnFollow(id, token) {
-  return axios.post(`${URL}/users/${id}/unfollow`, "",setConfig(token))
+  return axios.post(`${URL}/users/${id}/unfollow`, "", setConfig(token))
+}
+
+function getFollows(token) {
+  return axios.get(`${URL}/users/follows`, setConfig(token))
 }
 
 export {
@@ -78,5 +82,6 @@ export {
   getMyLikes,
   putEdit,
   postFollow,
-  postUnFollow
+  postUnFollow,
+  getFollows
 };

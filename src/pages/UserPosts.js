@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { getUserPosts, postFollow, postUnFollow } from "../service/api.service";
+import { getFollows, getUserPosts, postFollow, postUnFollow } from "../service/api.service";
 import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
@@ -13,23 +13,39 @@ export default function UserPosts() {
   const { userData } = useContext(UserContext);
   const [userPosts, setUserPosts] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [follows, setFollows] = useState([]);
+  const [followsId, setFollowsId] = useState([]);
   const [following, setFollowing] = useState(false);
 
   useEffect(
     () =>
-      getUserPosts(id, { token: userData.token }).then((r) =>
+      {getUserPosts(id, { token: userData.token }).then((r) =>
         setUserPosts(r.data.posts)
-      ),
-    [] // eslint-disable-line react-hooks/exhaustive-deps
+      )
+      getFollows(userData.token).then(r => setFollows(r.data.users))
+  },
+    [followsId] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  console.log(userData.user.id)
+  useEffect(
+    () => 
+    {
+      setFollowsId(follows.map(user => user.id))
+    // setFollowing(followsId.includes(parseInt(id)) || false)
+    },
+    [follows] // eslint-disable-line react-hooks/exhaustive-deps
+  )
+
+  useEffect(
+    () => 
+    setFollowing(followsId.includes(parseInt(id)) ? true : false),
+    [followsId] // eslint-disable-line react-hooks/exhaustive-deps
+    )
 
   function followUser() {
     setDisabled(true)
     postFollow(id, userData.token).then(() => {
       setDisabled(false)
-      setFollowing(true)
     }
     ).catch(() => {
       alert('Não foi possível executar a operação.')
@@ -41,7 +57,6 @@ export default function UserPosts() {
     setDisabled(true)
     postUnFollow(id, userData.token).then(() => {
       setDisabled(false)
-      setFollowing(false)
     }
     ).catch(() => {
       alert('Não foi possível executar a operação.')
@@ -67,7 +82,7 @@ export default function UserPosts() {
           </Container>
         )}
       </Main>
-      {id !== userData.user.id ? <Follow onClick={() => following ? unfollowUser() : followUser()} disabled={disabled} following={following}>{following ? 'Unfollow' : 'Follow'}</Follow> : ''}
+      {parseInt(id) !== userData.user.id ? <Follow onClick={() => following ? unfollowUser() : followUser()} disabled={disabled} following={following}>{following ? 'Unfollow' : 'Follow'}</Follow> : ''}
       <Trending />
     </>
   );
