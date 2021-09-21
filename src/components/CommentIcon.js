@@ -1,10 +1,10 @@
 import { AiOutlineComment } from "react-icons/ai";
 import styled from "styled-components";
 
-export default function CommentIcon(){
+export default function CommentIcon({showComments, setShowComments}){
     return (
         <Box>
-            <Icon />
+            <Icon onClick={() => setShowComments(!showComments)}/>
             <Text>10 comments</Text>
         </Box>
     );

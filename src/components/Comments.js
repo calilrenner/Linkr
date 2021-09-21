@@ -1,7 +1,28 @@
 import styled from "styled-components";
 import { FiSend } from "react-icons/fi";
+// import { useContext, useEffect } from "react";
 
-export default function Comments() {
+// import { getPostComments } from "../service/api.service";
+// import UserContext from "../contexts/UserContext";
+
+export default function Comments({ postId }) {
+    // const { userData } = useContext(UserContext);
+
+    // useEffect(() => {
+    //     getComments();
+    // },[]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    // function getComments() {
+    //     const token = userData.token;
+
+    //     req.then(res => {
+    //         console.log(res.data)
+    //     })
+    //     req.catch(() => {
+    //         alert("Comentários não carregados. Por favor, tente novamente mais tarde.");
+    //     })
+    // }
+
     return (
         <Box>
             <Content>
@@ -115,4 +136,5 @@ const Button = styled(FiSend)`
     position: absolute;
     right: 40px;
     bottom: 34px;
+    cursor: pointer;
 `;
