@@ -109,6 +109,8 @@ const Follow = styled.button`
   border: none;
 
   @media (max-width: 1000px) {
-    display: none;
+    position: absolute;
+    right: 20px;
+    width: 70px
   }
 `
