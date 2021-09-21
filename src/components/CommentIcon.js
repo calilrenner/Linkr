@@ -1,10 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AiOutlineComment } from "react-icons/ai";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { getPostComments } from "../service/api.service";
 
-export default function CommentIcon({showComments, setShowComments, postId}){
+export default function CommentIcon({showComments, setShowComments, postId, comments, setComments}){
     const {userData} = useContext(UserContext);
 
     useEffect(() => {
@@ -16,18 +16,16 @@ export default function CommentIcon({showComments, setShowComments, postId}){
           const token = userData.token;
           const req = getPostComments(id, token)
     
-          req.then(res => {
-              console.log(res.data)
-          })
-          req.catch(() => {
-              alert("Comentários não carregados. Por favor, tente novamente mais tarde.");
-          })
+          req.then(res => setComments(res.data.comments))
+          req.catch(() => alert("Os comentários não foram carregados. Tente novamente mais tarde."))
       }
 
     return (
         <Box>
             <Icon onClick={() => setShowComments(!showComments)}/>
-            <Text>10 comments</Text>
+            <Text>
+                {comments ? comments.length : 0} {comments.length === 1 ? "comment" : "comments"}
+            </Text>
         </Box>
     );
 }

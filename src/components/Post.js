@@ -35,6 +35,7 @@ export default function Post(props) {
   const [actualLikes, setActualLikes] = useState(likes);
   const [modalOpen, setModalOpen] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     if (editSelected) {
@@ -208,7 +209,13 @@ export default function Post(props) {
               ? `${likesArrayLength} like`
               : `${likesArrayLength} likes`}
           </span>
-          <CommentIcon showComments={showComments} setShowComments={setShowComments} postId={id} />
+          <CommentIcon 
+            showComments={showComments} 
+            setShowComments={setShowComments} 
+            postId={id}
+            comments={comments}
+            setComments={setComments} 
+          />
         </SideBarPost>
         <ContentPost>
           <MsgPost>
