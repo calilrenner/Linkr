@@ -1,7 +1,29 @@
+import { useContext, useEffect } from "react";
 import { AiOutlineComment } from "react-icons/ai";
 import styled from "styled-components";
+import UserContext from "../contexts/UserContext";
+import { getPostComments } from "../service/api.service";
 
-export default function CommentIcon({showComments, setShowComments}){
+export default function CommentIcon({showComments, setShowComments, postId}){
+    const {userData} = useContext(UserContext);
+
+    useEffect(() => {
+        getComments();
+      },[showComments]) // eslint-disable-line react-hooks/exhaustive-deps
+    
+      function getComments() {
+          const id = postId;
+          const token = userData.token;
+          const req = getPostComments(id, token)
+    
+          req.then(res => {
+              console.log(res.data)
+          })
+          req.catch(() => {
+              alert("Comentários não carregados. Por favor, tente novamente mais tarde.");
+          })
+      }
+
     return (
         <Box>
             <Icon onClick={() => setShowComments(!showComments)}/>

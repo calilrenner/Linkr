@@ -57,7 +57,7 @@ function putEdit(text, token, id) {
 }
 
 function getPostComments(id, token) {
-  return axios.get(`${URL}posts/${id}/comment`, setConfig(token))
+  return axios.get(`${URL}posts/${id}/comments`, setConfig(token))
 }
 
 export {

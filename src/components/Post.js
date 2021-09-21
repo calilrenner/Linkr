@@ -208,7 +208,7 @@ export default function Post(props) {
               ? `${likesArrayLength} like`
               : `${likesArrayLength} likes`}
           </span>
-          <CommentIcon showComments={showComments} setShowComments={setShowComments} />
+          <CommentIcon showComments={showComments} setShowComments={setShowComments} postId={id} />
         </SideBarPost>
         <ContentPost>
           <MsgPost>
@@ -247,7 +247,7 @@ export default function Post(props) {
         }
       </Container>
       {showComments && 
-        <Comments postId={id}/>
+        <Comments />
       }
     </>
   )

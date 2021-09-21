@@ -1,27 +1,10 @@
 import styled from "styled-components";
 import { FiSend } from "react-icons/fi";
-// import { useContext, useEffect } from "react";
+import { useContext } from "react";
+import UserContext from "../contexts/UserContext";
 
-// import { getPostComments } from "../service/api.service";
-// import UserContext from "../contexts/UserContext";
-
-export default function Comments({ postId }) {
-    // const { userData } = useContext(UserContext);
-
-    // useEffect(() => {
-    //     getComments();
-    // },[]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    // function getComments() {
-    //     const token = userData.token;
-
-    //     req.then(res => {
-    //         console.log(res.data)
-    //     })
-    //     req.catch(() => {
-    //         alert("Comentários não carregados. Por favor, tente novamente mais tarde.");
-    //     })
-    // }
+export default function Comments() {
+    const {userData} = useContext(UserContext);
 
     return (
         <Box>
@@ -39,7 +22,9 @@ export default function Comments({ postId }) {
                 <Separator /> 
             </Content>
             <WriteComment>
-                <Image></Image>
+                <Image>
+                    <img src={userData.user.avatar} alt={userData.user.username} />
+                </Image>
                 <form>
                     <Input placeholder="write a comment..." />
                     <Button />
@@ -75,6 +60,12 @@ const Image = styled.div`
     border-radius: 50%;
     background-color: #4e4e4e;
     margin-right: 18px;
+
+    img{
+        width: 39px;
+        height: 39px;
+        border-radius: 50%;
+    }
 `;
 
 const TextFields = styled.div`
