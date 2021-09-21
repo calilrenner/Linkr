@@ -24,7 +24,7 @@ export default function UserPosts() {
       )
       getFollows(userData.token).then(r => setFollows(r.data.users))
   },
-    [followsId] // eslint-disable-line react-hooks/exhaustive-deps
+    [following] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   useEffect(
@@ -38,7 +38,7 @@ export default function UserPosts() {
 
   useEffect(
     () => 
-    setFollowing(followsId.includes(parseInt(id)) ? true : false),
+    setFollowing(followsId.includes(parseInt(id)) || false),
     [followsId] // eslint-disable-line react-hooks/exhaustive-deps
     )
 
@@ -46,6 +46,7 @@ export default function UserPosts() {
     setDisabled(true)
     postFollow(id, userData.token).then(() => {
       setDisabled(false)
+      setFollowing(true);
     }
     ).catch(() => {
       alert('Não foi possível executar a operação.')
@@ -57,6 +58,7 @@ export default function UserPosts() {
     setDisabled(true)
     postUnFollow(id, userData.token).then(() => {
       setDisabled(false)
+      setFollowing(false)
     }
     ).catch(() => {
       alert('Não foi possível executar a operação.')
@@ -82,7 +84,7 @@ export default function UserPosts() {
           </Container>
         )}
       </Main>
-      {parseInt(id) !== userData.user.id ? <Follow onClick={() => following ? unfollowUser() : followUser()} disabled={disabled} following={following}>{following ? 'Unfollow' : 'Follow'}</Follow> : ''}
+      {parseInt(id) !== userData.user.id && <Follow onClick={() => following ? unfollowUser() : followUser()} disabled={disabled} following={following}>{disabled ? 'Loading...' : (following ? 'Unfollow' : 'Follow')}</Follow>}
       <Trending />
     </>
   );
@@ -105,4 +107,8 @@ const Follow = styled.button`
   font-size: 14px;
   cursor: pointer;
   border: none;
+
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `
