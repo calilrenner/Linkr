@@ -23,7 +23,7 @@ export default function UserPosts() {
       )
       getFollows(userData.token).then(r => setFollows(r.data.users))
     },
-    [following] // eslint-disable-line react-hooks/exhaustive-deps
+    [following] 
   );
 
   useEffect(
@@ -31,13 +31,13 @@ export default function UserPosts() {
       setFollowsId(follows.map(user => user.id))
       // setFollowing(followsId.includes(parseInt(id)) || false)
     },
-    [follows] // eslint-disable-line react-hooks/exhaustive-deps
+    [follows]
   )
 
   useEffect(
     () =>
       setFollowing(followsId.includes(parseInt(id)) || false),
-    [followsId] // eslint-disable-line react-hooks/exhaustive-deps
+    [followsId]
   )
 
   function followUser() {

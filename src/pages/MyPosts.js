@@ -16,7 +16,7 @@ export default function MyPosts() {
     const req = getUserPosts(id, token);
 
     req.then((res) => setUserPosts(res.data.posts));
-  }, [onChangePost]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [onChangePost]); 
 
   return (
     <Main>

@@ -14,8 +14,7 @@ export default function CommentIcon({showComments, setShowComments, postId, post
     
           req.then(res => setPostComments(res.data.comments))
           req.catch(() => alert("Os comentários não foram carregados. Tente novamente mais tarde."))
-      },[myComment]) // eslint-disable-line react-hooks/exhaustive-deps
-
+      },[myComment]) 
     return (
         <Box>
             <Icon onClick={() => setShowComments(!showComments)}/>

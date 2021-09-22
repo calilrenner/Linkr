@@ -14,7 +14,7 @@ export default function MyLikes() {
     getMyLikes({ token: userData.token }).then((r) =>
       setLikedPosts(r.data.posts)
     );
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); 
   return (
     <>
       <Header />

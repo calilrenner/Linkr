@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 export default function Comments({ postComments, userId, postId, myComment, setMyComment }) {
     const {userData, onChangePost, setOnChangePost, followsId } = useContext(UserContext);
-    console.log(postComments)
 
     function postMyComment(e) {
         e.preventDefault();
