@@ -144,6 +144,10 @@ const Separator = styled.div`
     width: 560px;
     margin: 16px 0;
     border: 1px solid #353535;
+
+    @media(max-width: 1000px){
+        width: 100%;
+    }
 `;
 
 const WriteComment = styled.div`
