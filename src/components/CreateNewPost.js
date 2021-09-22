@@ -13,23 +13,33 @@ export default function Post({ timelinePosts }) {
   const [buttonText, setButtonText] = useState("Publish");
   const [disabled, setDisabled] = useState(false);
   const [startLocation, setStartLocation] = useState(false);
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const geloc = {
+    'geolocation': {
+      'latitude': latitude,
+      'longitude': longitude
+    }
+  }
 
   function createPost(e) {
     e.preventDefault();
+    
 
     setButtonText("Publishing...");
     setDisabled(true);
 
-    const body = { link, text };
+    const body = { link, text, geloc };
     const token = userData.token;
     const req = createNewPost(body, token);
 
-    req.then(() => {
+    req.then((r) => {
       timelinePosts();
       setButtonText("Publish");
       setDisabled(false);
       setLink("");
       setText("");
+      console.log(geloc)
     });
     req.catch(() => {
       alert("Houve um erro ao publicar seu link");
@@ -41,7 +51,10 @@ export default function Post({ timelinePosts }) {
   function askLocation() {
     if ('geolocation' in navigator && !startLocation) {
           navigator.geolocation.getCurrentPosition((position) => 
-          console.log(position), (error) => 
+          {
+            setLongitude(position.coords.longitude)
+            setLatitude(position.coords.latitude)
+          }, (error) => 
           {
               alert('Não foi possível iniciar localização');
               setStartLocation(false);

@@ -18,6 +18,8 @@ export default function MyPosts() {
     req.then((res) => setUserPosts(res.data.posts));
   }, [onChangePost]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  console.log(userPosts);
+
   return (
     <Main>
       <div>
