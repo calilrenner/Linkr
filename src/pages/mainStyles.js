@@ -24,6 +24,10 @@ const Title = styled.h1`
     margin-top: 140px;
     margin-left: 20px;
     font-size: 33px;
+    margin-bottom: 31px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 `;
 

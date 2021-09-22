@@ -59,6 +59,17 @@ function putEdit(text, token, id) {
 function userSearch(query, { token }) {
   return axios.get(`${URL}/users/search/?username=${query}`, setConfig(token));
 }
+function postFollow(id, token) {
+  return axios.post(`${URL}/users/${id}/follow`, "", setConfig(token));
+}
+
+function postUnFollow(id, token) {
+  return axios.post(`${URL}/users/${id}/unfollow`, "", setConfig(token));
+}
+
+function getFollows(token) {
+  return axios.get(`${URL}/users/follows`, setConfig(token));
+}
 
 export {
   registerUser,
@@ -74,4 +85,7 @@ export {
   getMyLikes,
   putEdit,
   userSearch,
+  postFollow,
+  postUnFollow,
+  getFollows,
 };
