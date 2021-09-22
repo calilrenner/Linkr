@@ -18,7 +18,7 @@ import {
 
 export default function Timeline() {
   const [posts, setPosts] = useState("");
-  const [errPosts, SetErrPosts] = useState("");
+  const [errPosts, setErrPosts] = useState("");
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [followedPosts, setFollowedPosts] = useState([]);
   const [postsIds, setPostsIds] = useState([]);
@@ -33,14 +33,11 @@ export default function Timeline() {
       })
 
     .catch((err) =>
-      SetErrPosts(
+      setErrPosts(
         "Houve uma falha ao obter os posts, por favor atualize a página"
       )
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onChangePost]);
-
-
 
   useEffect(() =>
   {
@@ -54,19 +51,15 @@ export default function Timeline() {
       })
       }
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   , [posts])
 
   useEffect(() => 
   {
     getFollows(userData.token).then(r => setFollowedUsers(r.data.users))
-    getFollowsPosts(userData.token, lastPostId).then(r => setFollowedPosts(r.data.posts));
+    getFollowsPosts(userData.token).then(r => setFollowedPosts(r.data.posts.filter(post => post.user.id !== userData.user.id)));
     setOnChangePost(!onChangePost);
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   ,[lastPostId])
-
-  console.log(followedUsers)
 
   function returnPosts() {
     if(followedUsers.length === 0) {

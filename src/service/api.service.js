@@ -56,7 +56,7 @@ function putEdit(text, token, id) {
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
-function getFollowsPosts(token, id) {
+function getFollowsPosts(token) {
   return axios.get(`${URL}/following/posts`, setConfig(token));
 }
 
