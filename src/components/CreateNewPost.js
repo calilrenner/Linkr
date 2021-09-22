@@ -15,12 +15,10 @@ export default function Post({ timelinePosts }) {
   const [startLocation, setStartLocation] = useState(false);
   const [longitude, setLongitude] = useState("");
   const [latitude, setLatitude] = useState("");
-  const geloc = {
-    'geolocation': {
-      'latitude': latitude,
-      'longitude': longitude
+  const geolocation =  {
+      latitude,
+      longitude
     }
-  }
 
   function createPost(e) {
     e.preventDefault();
@@ -29,7 +27,7 @@ export default function Post({ timelinePosts }) {
     setButtonText("Publishing...");
     setDisabled(true);
 
-    const body = { link, text, geloc };
+    const body = { link, text, geolocation };
     const token = userData.token;
     const req = createNewPost(body, token);
 
@@ -39,7 +37,6 @@ export default function Post({ timelinePosts }) {
       setDisabled(false);
       setLink("");
       setText("");
-      console.log(geloc)
     });
     req.catch(() => {
       alert("Houve um erro ao publicar seu link");
