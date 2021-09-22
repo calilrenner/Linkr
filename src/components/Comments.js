@@ -3,9 +3,11 @@ import { FiSend } from "react-icons/fi";
 import { useContext } from "react";
 import UserContext from "../contexts/UserContext";
 import { postNewComment } from "../service/api.service";
+import { Link } from "react-router-dom";
 
 export default function Comments({ postComments, userId, postId, myComment, setMyComment }) {
-    const {userData, onChangePost, setOnChangePost } = useContext(UserContext);
+    const {userData, onChangePost, setOnChangePost, followsId } = useContext(UserContext);
+    console.log(postComments)
 
     function postMyComment(e) {
         e.preventDefault();
@@ -22,22 +24,32 @@ export default function Comments({ postComments, userId, postId, myComment, setM
         req.catch(() => alert("Não foi possível publicar o comentário. Por favor, tente novamente mais tarde."));
     }
 
+    function checkIfIfollowTheCommentUser(commentUser) {
+        return followsId.find(f => f === commentUser);
+    }
+
     return (
         <Box>
             {postComments.map(p => (
                 <Content key={p.id} >
                     <div>
-                        <Image>
-                            <img src={p.user.avatar} alt={p.user.username} />
-                        </Image>
+                        <Link to={`/user/${p.user.id}`}>
+                            <Image>
+                                <img src={p.user.avatar} alt={p.user.username} />
+                            </Image>
+                        </Link>
                         <TextFields>
                             <div>
-                                <User>{p.user.username}</User>
+                                <Link to={`/user/${p.user.id}`}>
+                                    <User>{p.user.username}</User>
+                                </Link>
                                 <Follow>
                                     {p.user.id === userId ? 
                                         "• post’s author"
+                                    : checkIfIfollowTheCommentUser(p.user.id) ?
+                                        "• following" 
                                     :
-                                        "asfasf" // -------IMPLEMENTAR----------
+                                        ""
                                     }                                    
                                 </Follow>
                             </div>
