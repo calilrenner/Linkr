@@ -5,7 +5,7 @@ import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
-import { Loader, Main, Title } from "./mainStyles";
+import { Loader, Main, Title, Text } from "./mainStyles";
 
 export default function MyLikes() {
   const { userData } = useContext(UserContext);
@@ -26,9 +26,9 @@ export default function MyLikes() {
         <Title>my likes</Title>
         {load ?
           (likedPosts.length === 0 ?
-            <Title>
+            <Text>
               Você ainda não curtiu nada ☹️
-            </Title>
+            </Text>
             :
             likedPosts.map((post, index) => (
               <Post key={index} {...post} />
@@ -47,4 +47,10 @@ export default function MyLikes() {
 
 const Container = styled.div`
   margin: 0 150px;
+
+  @media(max-width: 1000px){
+    display: flex;
+    justify-content: center;
+    margin-top: -150px;
+  }
 `;

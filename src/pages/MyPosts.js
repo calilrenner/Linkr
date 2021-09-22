@@ -5,7 +5,7 @@ import { getUserPosts } from "../service/api.service";
 import Header from "../components/Header";
 import Trending from "../components/Trending";
 import Post from "../components/Post";
-import { Main, Title, Loader } from "./mainStyles";
+import { Main, Title, Loader, Text } from "./mainStyles";
 
 export default function MyPosts() {
   const { userData, onChangePost } = useContext(UserContext);
@@ -30,9 +30,9 @@ export default function MyPosts() {
         <Title>my posts</Title>
         {load ? 
           (userPosts.length === 0 ?
-            <Title>
+            <Text>
               Você ainda não curtiu nada ☹️
-            </Title>
+            </Text>
             :
             userPosts.map((u, i) => (
               <Post key={i} {...u} />
@@ -51,4 +51,10 @@ export default function MyPosts() {
 
 const Container = styled.div`
   margin: 0 150px;
+
+  @media(max-width: 1000px){
+    display: flex;
+    justify-content: center;
+    margin-top: -150px;
+  }
 `;
