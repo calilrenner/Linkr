@@ -14,7 +14,7 @@ import DeleteModal from "./DeleteModal";
 import Localization from "./Localization";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, geolocation } =
     props;
   const { username, avatar } = user;
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -32,6 +32,8 @@ export default function Post(props) {
   const [likesArrayLength, setLikesArrayLength] = useState(likes.length);
   const [actualLikes, setActualLikes] = useState(likes);
   const [modalOpen, setModalOpen] = useState(false);
+
+  
 
   useEffect(() => {
     if (editSelected) {
@@ -213,7 +215,7 @@ export default function Post(props) {
               <Link to={`/user/${user.id}`}>
                 <span>{username}</span>
               </Link>
-              {/* <Localization /> */}
+              {geolocation && <Localization geolocation={geolocation}/>}
               </div>
               <div>
                 {user.id === userData.user.id && 

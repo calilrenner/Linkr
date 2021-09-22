@@ -15,7 +15,7 @@ export default function Post({ timelinePosts }) {
   const [startLocation, setStartLocation] = useState(false);
   const [longitude, setLongitude] = useState("");
   const [latitude, setLatitude] = useState("");
-  const geolocation =  {
+  const geolocation = {
       latitude,
       longitude
     }

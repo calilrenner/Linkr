@@ -1,33 +1,43 @@
-// import { IoLocationOutline } from 'react-icons/io5';
-// import { useState } from 'react';
+import { IoLocationSharp } from 'react-icons/io5';
+import { useState } from 'react';
+import { withGoogleMap, GoogleMap, Marker, withScriptjs } from "react-google-maps";
+import styled from 'styled-components';
 
-// export default function Localization() {
-//     const [startLocation, setStartLocation] = useState(false);
+export default function Localization(geolocation) {
+    const [getLocation, setGetLocation] = useState(false);
 
-//     function askLocation() {
-//         if('geolocation' in navigator) {
-//             navigator.geolocation.getCurrentPosition((position) => 
-//             console.log(position), (error) => 
-//             {
-//                 alert('Não foi possível iniciar localização');
-//                 setStartLocation(false);
-//             }
-//         )
-//         } else {
-//             alert('Não foi possível iniciar localização');
-//             setStartLocation(false);
-//         };
-//     }
+    console.log(parseFloat(geolocation.geolocation.latitude))
+    console.log(parseFloat(geolocation.geolocation.longitude))
 
+    function gMaps() {
+        return (
+            <GoogleMap defaultZoom={8} defaultCenter={{ lat: parseFloat(geolocation.geolocation.latitude), lng: parseFloat(geolocation.geolocation.longitude) }}>
+                <Marker position={{ lat: parseFloat(geolocation.geolocation.latitude), lng: parseFloat(geolocation.geolocation.longitude) }} />
+            </GoogleMap>
+        );
+    }
 
-//     return (
-//         <div onClick={() => {
-//             setStartLocation(!startLocation);
-//             askLocation();
-//             }
-//         }>
-//             {<IoLocationOutline />}
-//         </div>
-//     )
-// }
+    const WrappedMap = withScriptjs(withGoogleMap(gMaps))
+
+    return (
+        <div onClick={() => setGetLocation(!getLocation)}>
+            <IoLocationSharp />
+            {getLocation && 
+            <Map>
+                <WrappedMap 
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places" 
+                    loadingElement={<div style={{height: '100%'}} />}
+                    containerElement={<div style={{height: '100%'}} />}
+                    mapElement={<div style={{height: '100%'}} />}
+                />
+            </Map>}
+        </div>
+    )
+}
+
+const Map = styled.div`
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+`
 
