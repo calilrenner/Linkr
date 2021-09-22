@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import UserContext from "../contexts/UserContext";
 import { createNewPost } from "../service/api.service";
-import Localization from "./Localization";
 import { IoLocationOutline } from 'react-icons/io5';
 
 
@@ -13,8 +12,7 @@ export default function Post({ timelinePosts }) {
   const [text, setText] = useState("");
   const [buttonText, setButtonText] = useState("Publish");
   const [disabled, setDisabled] = useState(false);
-  const [startLocation, setStartLocation] = useState(true);
-  
+  const [startLocation, setStartLocation] = useState(false);
 
   function createPost(e) {
     e.preventDefault();
@@ -41,19 +39,19 @@ export default function Post({ timelinePosts }) {
   }
 
   function askLocation() {
-    if('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => 
-        console.log(position), (error) => 
-        {
-            alert('Não foi possível iniciar localização');
-            setStartLocation(false);
-        }
-    )
+    if ('geolocation' in navigator && !startLocation) {
+          navigator.geolocation.getCurrentPosition((position) => 
+          console.log(position), (error) => 
+          {
+              alert('Não foi possível iniciar localização');
+              setStartLocation(false);
+          }
+      )
     } else {
-        alert('Não foi possível iniciar localização');
-        setStartLocation(false);
+      alert('Não foi possível iniciar localização');
+      setStartLocation(false);
     };
-}
+  }
 
   return (
     <>
@@ -82,11 +80,13 @@ export default function Post({ timelinePosts }) {
             <Footer >
               <div>
                 <IoLocation onClick={() => {
-                    setStartLocation(!startLocation);
-                    askLocation();
-                    }
-                } startLocation={startLocation}/>
-                <TextLocation>{startLocation ? 'Localização ativada' : 'Localização desativada'}</TextLocation>
+                  setStartLocation(!startLocation);
+                  askLocation();
+                }
+                } startLocation={startLocation} />
+                <TextLocation startLocation={startLocation}>
+                  {startLocation ? 'Localização ativada' : 'Localização desativada'}
+                </TextLocation>
               </div>
               <Button type="submit" disabled={disabled}>
                 {buttonText}
