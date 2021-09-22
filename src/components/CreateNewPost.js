@@ -3,6 +3,9 @@ import styled from "styled-components";
 
 import UserContext from "../contexts/UserContext";
 import { createNewPost } from "../service/api.service";
+import Localization from "./Localization";
+import { IoLocationOutline } from 'react-icons/io5';
+
 
 export default function Post({ timelinePosts }) {
   const { userData } = useContext(UserContext);
@@ -10,6 +13,8 @@ export default function Post({ timelinePosts }) {
   const [text, setText] = useState("");
   const [buttonText, setButtonText] = useState("Publish");
   const [disabled, setDisabled] = useState(false);
+  const [startLocation, setStartLocation] = useState(true);
+  
 
   function createPost(e) {
     e.preventDefault();
@@ -35,6 +40,21 @@ export default function Post({ timelinePosts }) {
     });
   }
 
+  function askLocation() {
+    if('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => 
+        console.log(position), (error) => 
+        {
+            alert('Não foi possível iniciar localização');
+            setStartLocation(false);
+        }
+    )
+    } else {
+        alert('Não foi possível iniciar localização');
+        setStartLocation(false);
+    };
+}
+
   return (
     <>
       <Content>
@@ -59,9 +79,19 @@ export default function Post({ timelinePosts }) {
               onChange={(e) => setText(e.target.value)}
               disabled={disabled}
             />
-            <Button type="submit" disabled={disabled}>
-              {buttonText}
-            </Button>
+            <Footer >
+              <div>
+                <IoLocation onClick={() => {
+                    setStartLocation(!startLocation);
+                    askLocation();
+                    }
+                } startLocation={startLocation}/>
+                <TextLocation>{startLocation ? 'Localização ativada' : 'Localização desativada'}</TextLocation>
+              </div>
+              <Button type="submit" disabled={disabled}>
+                {buttonText}
+              </Button>
+            </Footer>
           </form>
         </Text>
       </Content>
@@ -159,6 +189,18 @@ const TextInput = styled.textarea`
   margin-bottom: 5px;
 `;
 
+const Footer = styled.footer`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > *:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`
+
 const Button = styled.button`
   width: 112px;
   height: 31px;
@@ -172,4 +214,14 @@ const Button = styled.button`
   line-height: 17px;
   cursor: ${(props) => (props.disabled ? "" : "pointer")};
   align-self: flex-end;
-`;
+`
+
+const IoLocation = styled(IoLocationOutline)`
+  color: ${props => props.startLocation ? '#238700' : '#949494'};
+  margin-right: 2px;
+`
+
+const TextLocation = styled.span`
+  color: ${props => props.startLocation ? '#238700' : '#949494'};
+  font-size: 13px;
+`

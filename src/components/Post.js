@@ -10,8 +10,8 @@ import { putEdit, postLike } from "../service/api.service";
 import { FaHeart } from "react-icons/fa";
 import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
-
 import DeleteModal from "./DeleteModal";
+import Localization from "./Localization";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
@@ -209,9 +209,12 @@ export default function Post(props) {
         <ContentPost>
           <MsgPost>
             <div>
+              <div>
               <Link to={`/user/${user.id}`}>
                 <span>{username}</span>
               </Link>
+              {/* <Localization /> */}
+              </div>
               <div>
                 {user.id === userData.user.id && 
                   <>
@@ -353,6 +356,7 @@ const MsgPost = styled.div`
     color: #cecece;
     word-wrap: break-word;
     word-break: break-all;
+    margin-right: 15px;
   }
 
   span:nth-child(2){
