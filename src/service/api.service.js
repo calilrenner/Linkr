@@ -64,6 +64,18 @@ function postNewComment(id, body, token) {
   return axios.post(`${URL}posts/${id}/comment`, body, setConfig(token))
 }
 
+function postFollow(id, token) {
+  return axios.post(`${URL}/users/${id}/follow`, "",setConfig(token))
+}
+
+function postUnFollow(id, token) {
+  return axios.post(`${URL}/users/${id}/unfollow`, "", setConfig(token))
+}
+
+function getFollows(token) {
+  return axios.get(`${URL}/users/follows`, setConfig(token))
+}
+
 export {
   registerUser,
   getTrending,
@@ -78,5 +90,8 @@ export {
   getMyLikes,
   putEdit,
   getPostComments,
-  postNewComment
+  postNewComment,
+  postFollow,
+  postUnFollow,
+  getFollows
 };
