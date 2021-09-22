@@ -33,7 +33,7 @@ export default function Post(props) {
   const [actualLikes, setActualLikes] = useState(likes);
   const [modalOpen, setModalOpen] = useState(false);
 
-  
+  console.log(geolocation)
 
   useEffect(() => {
     if (editSelected) {
