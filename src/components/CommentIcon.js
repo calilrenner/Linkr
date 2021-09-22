@@ -4,21 +4,17 @@ import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { getPostComments } from "../service/api.service";
 
-export default function CommentIcon({showComments, setShowComments, postId, postComments, setPostComments}){
+export default function CommentIcon({showComments, setShowComments, postId, postComments, setPostComments, myComment}){
     const {userData} = useContext(UserContext);
 
     useEffect(() => {
-        getComments();
-      },[postComments]) // eslint-disable-line react-hooks/exhaustive-deps
-    
-      function getComments() {
-          const id = postId;
+        const id = postId;
           const token = userData.token;
           const req = getPostComments(id, token)
     
           req.then(res => setPostComments(res.data.comments))
           req.catch(() => alert("Os comentários não foram carregados. Tente novamente mais tarde."))
-      }
+      },[myComment]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Box>

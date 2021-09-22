@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { FiSend } from "react-icons/fi";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import UserContext from "../contexts/UserContext";
 import { postNewComment } from "../service/api.service";
 
-export default function Comments({ postComments, userId, postId }) {
-    const {userData} = useContext(UserContext);
-    const [myComment, setMyComment] = useState("");
+export default function Comments({ postComments, userId, postId, myComment, setMyComment }) {
+    const {userData, onChangePost, setOnChangePost } = useContext(UserContext);
 
     function postMyComment(e) {
         e.preventDefault();
@@ -16,7 +15,10 @@ export default function Comments({ postComments, userId, postId }) {
         const token = userData.token;
         const req = postNewComment(id, body, token);
         
-        req.then(() => setMyComment(""))
+        req.then(() => {
+            setMyComment("");
+            setOnChangePost(!onChangePost)
+        })
         req.catch(() => alert("Não foi possível publicar o comentário. Por favor, tente novamente mais tarde."));
     }
 
@@ -36,8 +38,7 @@ export default function Comments({ postComments, userId, postId }) {
                                         "• post’s author"
                                     :
                                         "asfasf" // -------IMPLEMENTAR----------
-                                    }
-                                    
+                                    }                                    
                                 </Follow>
                             </div>
                             <Comment>{p.text}</Comment>
@@ -64,24 +65,28 @@ export default function Comments({ postComments, userId, postId }) {
     );
 }
 
-const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
 
 const Box = styled.div`
     position: relative;
-    z-index: 1;
     width: 611px;
     margin-top: -68px;
     background: #1E1E1E;
     padding: 88px 25px 0 25px;
     display: flex;
     flex-direction: column;
-
+    
     div{
         display: flex;
     }
+
+    @media (max-width: 1000px) {
+        width: 100%;
+  }
+`;
+
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
 const Image = styled.div`
@@ -132,6 +137,14 @@ const Separator = styled.div`
 
 const WriteComment = styled.div`
     margin-bottom: 25px;
+
+    @media (max-width: 1000px) {
+        width: 100%;
+
+        form{
+            width: 100%;
+        }
+    }
 `;
 
 const Input = styled.input`
@@ -148,6 +161,10 @@ const Input = styled.input`
         font-style: italic;
         font-size: 14px;
         line-height: 17px; 
+    }
+
+    @media (max-width: 1000px) {
+        width: 100%;
     }
 `;
 

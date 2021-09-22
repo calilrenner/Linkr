@@ -36,6 +36,7 @@ export default function Post(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [postComments, setPostComments] = useState([]);
+  const [myComment, setMyComment] = useState("");
 
   useEffect(() => {
     if (editSelected) {
@@ -201,7 +202,7 @@ export default function Post(props) {
             <img src={avatar} alt="" />
           </Link>
           <div onClick={isliked} data-tip={toolTipMsg}>
-            {like ? <FaHeart color="red" /> : <FiHeart />}
+            {like ? <FaHeart color="red" cursor="pointer" /> : <FiHeart cursor="pointer"/>}
             <ReactTooltip />
           </div>
           <span>
@@ -214,7 +215,8 @@ export default function Post(props) {
             setShowComments={setShowComments} 
             postId={id}
             postComments={postComments}
-            setPostComments={setPostComments} 
+            setPostComments={setPostComments}
+            myComment={myComment} 
           />
         </SideBarPost>
         <ContentPost>
@@ -258,6 +260,8 @@ export default function Post(props) {
           postComments={postComments}
           userId={user.id}
           postId={id}
+          myComment={myComment}
+          setMyComment={setMyComment}
         />
       }
     </>
