@@ -5,6 +5,7 @@ import { getPosts } from "../service/api.service";
 import Header from "../components/Header";
 import Trending from "../components/Trending";
 import CreateNewPost from "../components/CreateNewPost";
+import SearchUser from "../components/SearchUser";
 import {
   ErrorMsg,
   Container,
@@ -53,10 +54,11 @@ export default function Timeline() {
         <Main>
           <div>
             <Header />
+            {window.innerWidth < 1000 ? <SearchUser /> : ""}
             <Title>timeline</Title>
             <CreateNewPost timelinePosts={timelinePosts} />
             {posts.map((post) => (
-              <Post key={post.id} {...post}/>
+              <Post key={post.id} {...post} />
             ))}
           </div>
           <Trending />

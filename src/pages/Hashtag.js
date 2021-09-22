@@ -6,6 +6,7 @@ import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
 import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
+import SearchUser from "../components/SearchUser";
 
 export default function Hashtag() {
   const { hashtag } = useParams();
@@ -22,6 +23,7 @@ export default function Hashtag() {
     <>
       <Header />
       <Main>
+        {window.innerWidth < 1000 ? <SearchUser /> : ""}
         <Title># {hashtag}</Title>
         {hashtagPosts.posts ? (
           hashtagPosts.posts.map((post, index) => (

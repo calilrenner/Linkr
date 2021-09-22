@@ -5,6 +5,7 @@ import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
 import { Main, Title } from "./mainStyles";
+import SearchUser from "../components/SearchUser";
 
 export default function MyLikes() {
   const { userData } = useContext(UserContext);
@@ -19,6 +20,7 @@ export default function MyLikes() {
     <>
       <Header />
       <Main>
+        {window.innerWidth < 1000 ? <SearchUser /> : ""}
         <Title>my likes</Title>
         {likedPosts.length > 0 ? (
           likedPosts.map((post, index) => <Post key={index} {...post} />)

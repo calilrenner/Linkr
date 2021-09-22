@@ -5,6 +5,7 @@ import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
+import SearchUser from "../components/SearchUser";
 import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
 
 export default function UserPosts() {
@@ -17,12 +18,13 @@ export default function UserPosts() {
       getUserPosts(id, { token: userData.token }).then((r) =>
         setUserPosts(r.data.posts)
       ),
-    [] // eslint-disable-line react-hooks/exhaustive-deps
+    [id]
   );
   return (
     <>
       <Header />
       <Main>
+        {window.innerWidth < 1000 ? <SearchUser /> : ""}
         <Title>
           {userPosts.length > 0
             ? `${userPosts[0].user.username}'s posts`

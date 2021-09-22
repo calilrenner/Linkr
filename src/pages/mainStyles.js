@@ -10,6 +10,10 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
+  max-width: 450px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 43px;
   font-weight: bold;
   margin-top: 85px;
@@ -60,6 +64,7 @@ const LoaderText = styled.h1`
     }
   }
 `;
+
 const ErrorMsg = styled.div`
   display: flex;
   justify-content: center;

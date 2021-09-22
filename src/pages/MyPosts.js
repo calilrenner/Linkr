@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Trending from "../components/Trending";
 import Post from "../components/Post";
 import { Main, Title } from "./mainStyles";
+import SearchUser from "../components/SearchUser";
 
 export default function MyPosts() {
   const { userData, onChangePost } = useContext(UserContext);
@@ -22,6 +23,7 @@ export default function MyPosts() {
     <Main>
       <div>
         <Header />
+        {window.innerWidth < 1000 ? <SearchUser /> : ""}
         <Title>my posts</Title>
         {userPosts.map((u, i) => (
           <Post key={i} {...u} />
