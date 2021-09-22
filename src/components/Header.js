@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useContext, useState } from "react";
-
+import SearchUser from "./SearchUser";
 import { colors } from "../globalStyles";
 import UserContext from "../contexts/UserContext";
 const LOCAL_STORAGE_KEY = "loggedUser.data";
@@ -10,7 +10,6 @@ const LOCAL_STORAGE_KEY = "loggedUser.data";
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { userData, setLoginData } = useContext(UserContext);
-
   function logout() {
     setLoginData({});
     localStorage.removeItem(LOCAL_STORAGE_KEY);
@@ -22,6 +21,7 @@ export default function Header() {
         <Link to="/timeline">
           <h1>linkr</h1>
         </Link>
+        {window.innerWidth > 1000 ? <SearchUser /> : ""}
         <div>
           {!showMenu ? (
             <ArrowDown onClick={() => setShowMenu(!showMenu)} />
@@ -55,8 +55,8 @@ const Content = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 28px;
-  padding-right: 17px;
+  padding-left: 24px;
+  padding-right: 24px;
   position: fixed;
   top: 0;
   right: 0;

@@ -42,10 +42,10 @@ function createNewPost(body, token) {
 }
 
 function deletePost(id, token) {
-  return axios.delete(`${URL}posts/${id}`, setConfig(token))
+  return axios.delete(`${URL}posts/${id}`, setConfig(token));
 }
 
-  function getMyLikes({ token }) {
+function getMyLikes({ token }) {
   return axios.get(`${URL}/posts/liked`, setConfig(token));
 }
 
@@ -54,6 +54,10 @@ function putEdit(text, token, id) {
     text: text,
   };
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
+}
+
+function userSearch(query, { token }) {
+  return axios.get(`${URL}/users/search/?username=${query}`, setConfig(token));
 }
 
 export {
@@ -68,5 +72,6 @@ export {
   getPostsByHashtag,
   deletePost,
   getMyLikes,
-  putEdit
+  putEdit,
+  userSearch,
 };

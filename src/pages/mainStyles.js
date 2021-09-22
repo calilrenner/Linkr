@@ -17,6 +17,7 @@ const Title = styled.h1`
   font-family: "Oswald", sans-serif;
 
   @media (max-width: 1000px) {
+    margin-top: 140px;
     margin-left: 20px;
     font-size: 33px;
   }
