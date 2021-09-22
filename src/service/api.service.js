@@ -60,6 +60,14 @@ function getFollowsPosts(token, id) {
   return axios.get(`${URL}/following/posts`, setConfig(token));
 }
 
+function postFollow(id, token) {
+  return axios.post(`${URL}/users/${id}/follow`, "",setConfig(token))
+}
+
+function postUnFollow(id, token) {
+  return axios.post(`${URL}/users/${id}/unfollow`, "", setConfig(token))
+}
+
 function getFollows(token) {
   return axios.get(`${URL}/users/follows`, setConfig(token))
 }
@@ -78,5 +86,7 @@ export {
   getMyLikes,
   putEdit,
   getFollowsPosts,
+  postFollow,
+  postUnFollow,
   getFollows
 };

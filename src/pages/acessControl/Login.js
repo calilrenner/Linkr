@@ -19,8 +19,8 @@ export default function Login() {
       login(JSON.parse(userDataJSON));
     }
   }, 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  []);
+  []
+  );
 
   function handleLoginSubmit(e) {
     e.preventDefault();
