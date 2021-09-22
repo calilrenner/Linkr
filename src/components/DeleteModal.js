@@ -33,7 +33,7 @@ export default function DeleteModal({ modalOpen, setModalOpen, postId }) {
     }
 
     return (
-        <StyledModal isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
+        <StyledModal style={customStyles} isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
             <Text margin={disabledButtons}>
                 {disabledButtons ?
                     "Excluindo..."
@@ -77,6 +77,10 @@ const StyledModal = styled(ReactModal)`
         margin-top: 20px;
     }
 `;
+
+const customStyles = {
+    overlay: {zIndex: 1000}
+};
 
 const Text = styled.p`
     font-family: "Lato", sans-serif;
