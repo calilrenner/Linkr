@@ -23,27 +23,20 @@ export default function UserPosts() {
   const [followsId, setFollowsId] = useState([]);
   const [following, setFollowing] = useState(false);
 
-  useEffect(
-    () => {
-      getUserPosts(id, { token: userData.token }).then((r) =>
-        setUserPosts(r.data.posts)
-      );
-      getFollows(userData.token).then((r) => setFollows(r.data.users));
-    },
-    [following, id] // eslint-disable-line react-hooks/exhaustive-deps
-  );
+  useEffect(() => {
+    getUserPosts(id, { token: userData.token }).then((r) =>
+      setUserPosts(r.data.posts)
+    );
+    getFollows(userData.token).then((r) => setFollows(r.data.users));
+  }, [following, id]);
 
-  useEffect(
-    () => {
-      setFollowsId(follows.map((user) => user.id));
-      // setFollowing(followsId.includes(parseInt(id)) || false)
-    },
-    [follows] // eslint-disable-line react-hooks/exhaustive-deps
-  );
+  useEffect(() => {
+    setFollowsId(follows.map((user) => user.id));
+  }, [follows]);
 
   useEffect(
     () => setFollowing(followsId.includes(parseInt(id)) || false),
-    [followsId] // eslint-disable-line react-hooks/exhaustive-deps
+    [followsId]
   );
 
   function followUser() {
@@ -76,7 +69,7 @@ export default function UserPosts() {
     <>
       <Header />
       <Main>
-        {window.innerWidth < 1000 ? <SearchUser /> : ""}
+        {window.innerWidth < 1000 && <SearchUser />}
         <Title>
           {userPosts.length > 0
             ? `${userPosts[0].user.username}'s posts`

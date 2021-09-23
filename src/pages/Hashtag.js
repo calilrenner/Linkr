@@ -23,7 +23,7 @@ export default function Hashtag() {
     <>
       <Header />
       <Main>
-        {window.innerWidth < 1000 ? <SearchUser /> : ""}
+        {window.innerWidth < 1000 && <SearchUser />}
         <Title># {hashtag}</Title>
         {hashtagPosts.posts ? (
           hashtagPosts.posts.map((post, index) => (

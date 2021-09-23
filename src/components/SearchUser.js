@@ -26,13 +26,11 @@ export default function SearchUser() {
         <Result key={index}>
           <img src={user.avatar} alt={user.username + "'s avatar"} />
           <span>{user.username}</span>
-          {user.isFollowingLoggedUser ? (
+          {user.isFollowingLoggedUser && (
             <TextContainer>
               <Dot />
               <span>following</span>
             </TextContainer>
-          ) : (
-            ""
           )}
         </Result>
       </Link>
@@ -41,10 +39,8 @@ export default function SearchUser() {
 
   return (
     <>
-      {searchField.length > 2 ? (
+      {searchField.length > 2 && (
         <BlockContent onClick={() => setSearchField("")} />
-      ) : (
-        ""
       )}
       <Container>
         <DebounceSearchField
@@ -57,25 +53,25 @@ export default function SearchUser() {
           onChange={(e) => setSearchField(e.target.value)}
         />
         <SearchIcon />
-        {searchField.length > 2 && searchResult.length === 0 ? (
+        {searchField.length > 2 && searchResult.length === 0 && (
           <a>
             <Result>
               <span>Nenhum resultado...</span>
             </Result>
           </a>
-        ) : (
-          ""
         )}
-        {searchResult.length > 0 && searchField
-          ? searchResult.map((user, index) =>
-              user.isFollowingLoggedUser ? renderResult(user, index) : ""
-            )
-          : ""}
-        {searchResult.length > 0 && searchField
-          ? searchResult.map((user, index) =>
-              !user.isFollowingLoggedUser ? renderResult(user, index) : ""
-            )
-          : ""}
+        {searchResult.length > 0 &&
+          searchField &&
+          searchResult.map(
+            (user, index) =>
+              user.isFollowingLoggedUser && renderResult(user, index)
+          )}
+        {searchResult.length > 0 &&
+          searchField &&
+          searchResult.map(
+            (user, index) =>
+              !user.isFollowingLoggedUser && renderResult(user, index)
+          )}
       </Container>
     </>
   );
@@ -113,6 +109,7 @@ const Container = styled.div`
     top: 80px;
   }
 `;
+
 const DebounceSearchField = styled(DebounceInput)`
   width: 100%;
   height: 45px;
@@ -170,6 +167,7 @@ const TextContainer = styled.div`
     font-size: 19px;
   }
 `;
+
 const Dot = styled.div`
   margin: 5px 0 0 5px;
   width: 6px;

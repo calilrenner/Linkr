@@ -21,7 +21,7 @@ export default function Header() {
         <Link to="/timeline">
           <h1>linkr</h1>
         </Link>
-        {window.innerWidth > 1000 ? <SearchUser /> : ""}
+        {window.innerWidth > 1000 && <SearchUser />}
         <div>
           {!showMenu ? (
             <ArrowDown onClick={() => setShowMenu(!showMenu)} />

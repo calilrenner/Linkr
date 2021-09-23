@@ -75,4 +75,17 @@ const ErrorMsg = styled.div`
   margin-top: 50px;
 `;
 
-export { Container, Title, Main, Loader, LoaderText, ErrorMsg };
+const Text = styled.div`
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 85px;
+  color: #FFF;
+  font-family: "Oswald", sans-serif;
+
+  @media(max-width: 1000px){
+    font-size: 25px;
+    margin-left: 20px;
+  }
+`;
+
+export { Container, Title, Main, Loader, LoaderText, ErrorMsg, Text };

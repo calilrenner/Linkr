@@ -22,7 +22,6 @@ export default function Timeline() {
 
   useEffect(() => {
     timelinePosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onChangePost]);
 
   function timelinePosts() {
@@ -54,7 +53,7 @@ export default function Timeline() {
         <Main>
           <div>
             <Header />
-            {window.innerWidth < 1000 ? <SearchUser /> : ""}
+            {window.innerWidth < 1000 && <SearchUser />}
             <Title>timeline</Title>
             <CreateNewPost timelinePosts={timelinePosts} />
             {posts.map((post) => (
