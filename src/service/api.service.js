@@ -42,10 +42,10 @@ function createNewPost(body, token) {
 }
 
 function deletePost(id, token) {
-  return axios.delete(`${URL}posts/${id}`, setConfig(token))
+  return axios.delete(`${URL}posts/${id}`, setConfig(token));
 }
 
-  function getMyLikes({ token }) {
+function getMyLikes({ token }) {
   return axios.get(`${URL}/posts/liked`, setConfig(token));
 }
 
@@ -56,20 +56,26 @@ function putEdit(text, token, id) {
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
+<<<<<<< HEAD
 function getFollowsPosts(token) {
   return axios.get(`${URL}/following/posts`, setConfig(token));
 }
 
+=======
+function userSearch(query, { token }) {
+  return axios.get(`${URL}/users/search/?username=${query}`, setConfig(token));
+}
+>>>>>>> main
 function postFollow(id, token) {
-  return axios.post(`${URL}/users/${id}/follow`, "",setConfig(token))
+  return axios.post(`${URL}/users/${id}/follow`, "", setConfig(token));
 }
 
 function postUnFollow(id, token) {
-  return axios.post(`${URL}/users/${id}/unfollow`, "", setConfig(token))
+  return axios.post(`${URL}/users/${id}/unfollow`, "", setConfig(token));
 }
 
 function getFollows(token) {
-  return axios.get(`${URL}/users/follows`, setConfig(token))
+  return axios.get(`${URL}/users/follows`, setConfig(token));
 }
 
 export {
@@ -85,8 +91,12 @@ export {
   deletePost,
   getMyLikes,
   putEdit,
+<<<<<<< HEAD
   getFollowsPosts,
+=======
+  userSearch,
+>>>>>>> main
   postFollow,
   postUnFollow,
-  getFollows
+  getFollows,
 };
