@@ -56,16 +56,14 @@ function putEdit(text, token, id) {
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
-<<<<<<< HEAD
 function getFollowsPosts(token) {
   return axios.get(`${URL}/following/posts`, setConfig(token));
 }
 
-=======
 function userSearch(query, { token }) {
   return axios.get(`${URL}/users/search/?username=${query}`, setConfig(token));
 }
->>>>>>> main
+
 function postFollow(id, token) {
   return axios.post(`${URL}/users/${id}/follow`, "", setConfig(token));
 }
@@ -91,11 +89,8 @@ export {
   deletePost,
   getMyLikes,
   putEdit,
-<<<<<<< HEAD
   getFollowsPosts,
-=======
   userSearch,
->>>>>>> main
   postFollow,
   postUnFollow,
   getFollows,

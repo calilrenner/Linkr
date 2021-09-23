@@ -5,12 +5,9 @@ import { getFollowsPosts, getPosts, getFollows } from "../service/api.service";
 import Header from "../components/Header";
 import Trending from "../components/Trending";
 import CreateNewPost from "../components/CreateNewPost";
-<<<<<<< HEAD
 import styled from "styled-components";
 import { colors } from "../globalStyles";
-=======
 import SearchUser from "../components/SearchUser";
->>>>>>> main
 import {
   ErrorMsg,
   Container,
@@ -28,7 +25,6 @@ export default function Timeline() {
   const [followedUsers, setFollowedUsers] = useState([]);
 
   useEffect(() => {
-<<<<<<< HEAD
     getPosts(userData.token)
     .then((res) => setPosts(res.data.posts))
 
@@ -37,18 +33,14 @@ export default function Timeline() {
         "Houve uma falha ao obter os posts, por favor atualize a página"
       )
     );
-=======
-    timelinePosts();
->>>>>>> main
   }, [onChangePost]);
 
   useEffect(() => 
   {
     getFollows(userData.token).then(r => setFollowedUsers(r.data.users))
     getFollowsPosts(userData.token).then(r => setFollowedPosts(r.data.posts.filter(post => post.user.id !== userData.user.id)));
-    setOnChangePost(!onChangePost);
   }
-  ,[posts])
+  ,[onChangePost])
 
   function returnPosts() {
     if(followedUsers.length === 0) {
@@ -67,6 +59,8 @@ export default function Timeline() {
         )
       }
     }
+
+    console.log(followedPosts)
 
   function loadPosts() {
     if (errPosts !== "") {
@@ -88,15 +82,8 @@ export default function Timeline() {
             <Header />
             {window.innerWidth < 1000 && <SearchUser />}
             <Title>timeline</Title>
-<<<<<<< HEAD
             <CreateNewPost />
             {returnPosts()}
-=======
-            <CreateNewPost timelinePosts={timelinePosts} />
-            {posts.map((post) => (
-              <Post key={post.id} {...post} />
-            ))}
->>>>>>> main
           </div>
           <Trending />
         </Main>
@@ -108,7 +95,7 @@ export default function Timeline() {
 }
 
 const NoFollow = styled.div`
-  font-weigth: bold;
+  font-weight: bold;
   font-size: 43px;
   color: #fff;
   width: 611px;
