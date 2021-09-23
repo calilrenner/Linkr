@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef, useCallback } from "react";
 import Post from "../components/Post";
 import UserContext from "../contexts/UserContext";
 import { getPosts } from "../service/api.service";
@@ -17,23 +17,46 @@ import {
 export default function Timeline() {
   const [posts, setPosts] = useState("");
   const [errPosts, SetErrPosts] = useState("");
-  const { userData, onChangePost } = useContext(UserContext);
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
+  const [postsIds, setPostsIds] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
+  const observer = useRef();
+  const lastPostRef = useCallback(node => {
+    if(observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(entries => {
+        if(entries[0].isIntersecting) console.log(node)
+      })
+      if(node) observer.current.observe(node)
+  }, [loading, hasMore]);
+
+  function postRepost(post) {
+    if(post.repostId) {
+      return post.repostId;
+    } else {
+      return post.id;
+    }
+  }
 
   useEffect(() => {
     timelinePosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onChangePost]);
 
   function timelinePosts() {
     getPosts(userData.token)
-      .then((res) => setPosts(res.data.posts))
-
+      .then((res) => {
+        setPosts(res.data.posts);
+        // setPostsIds(res.data.posts.map(post => postRepost(post)));
+        // console.log(postsIds);
+      })
       .catch((err) =>
         SetErrPosts(
           "Houve uma falha ao obter os posts, por favor atualize a página"
         )
       );
   }
+
 
   function loadPosts() {
     if (errPosts !== "") {
@@ -55,9 +78,14 @@ export default function Timeline() {
             <Header />
             <Title>timeline</Title>
             <CreateNewPost timelinePosts={timelinePosts} />
-            {posts.map((post) => (
-              <Post key={post.id} {...post}/>
-            ))}
+            {posts.map((post, index) => {
+                if(posts.length === index + 1) {
+                  return <div ref={lastPostRef} key={post.id}><Post {...post}/></div>
+                } else {
+                  return <Post key={post} {...post}/>
+                }
+              }
+            )}
           </div>
           <Trending />
         </Main>
