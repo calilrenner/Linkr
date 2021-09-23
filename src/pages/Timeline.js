@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import Post from "../components/Post";
 import UserContext from "../contexts/UserContext";
-import { getFollowsPosts, getPosts, getFollows } from "../service/api.service";
+import { getFollowsPosts, getFollows } from "../service/api.service";
 import Header from "../components/Header";
 import Trending from "../components/Trending";
 import CreateNewPost from "../components/CreateNewPost";
@@ -9,7 +9,6 @@ import styled from "styled-components";
 import { colors } from "../globalStyles";
 import SearchUser from "../components/SearchUser";
 import {
-  ErrorMsg,
   Container,
   Loader,
   LoaderText,
@@ -18,22 +17,9 @@ import {
 } from "./mainStyles";
 
 export default function Timeline() {
-  const [posts, setPosts] = useState("");
-  const [errPosts, setErrPosts] = useState("");
-  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
-  const [followedPosts, setFollowedPosts] = useState([]);
+  const { userData, onChangePost } = useContext(UserContext);
+  const [followedPosts, setFollowedPosts] = useState("");
   const [followedUsers, setFollowedUsers] = useState([]);
-
-  useEffect(() => {
-    getPosts(userData.token)
-    .then((res) => setPosts(res.data.posts))
-
-    .catch((err) =>
-      setErrPosts(
-        "Houve uma falha ao obter os posts, por favor atualize a página"
-      )
-    );
-  }, [onChangePost]);
 
   useEffect(() => 
   {
@@ -41,6 +27,8 @@ export default function Timeline() {
     getFollowsPosts(userData.token).then(r => setFollowedPosts(r.data.posts.filter(post => post.user.id !== userData.user.id)));
   }
   ,[onChangePost])
+
+  console.log(userData.user.id, followedUsers, userData.token, followedPosts)
 
   function returnPosts() {
     if(followedUsers.length === 0) {
@@ -63,19 +51,14 @@ export default function Timeline() {
     console.log(followedPosts)
 
   function loadPosts() {
-    if (errPosts !== "") {
-      return <ErrorMsg>{errPosts}</ErrorMsg>;
-    }
-    if (posts === "") {
+    if (followedPosts === "") {
       return (
         <Container>
           <Loader />
           <LoaderText>Carregando...</LoaderText>
         </Container>
       );
-    } else if (posts.length === 0) {
-      return <ErrorMsg>Nenhum post encontrado</ErrorMsg>;
-    } else {
+    }  else {
       return (
         <Main>
           <div>
