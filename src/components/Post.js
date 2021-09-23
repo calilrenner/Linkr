@@ -12,6 +12,7 @@ import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
 
 import DeleteModal from "./DeleteModal";
+import Repost from "./Repost";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
@@ -205,6 +206,7 @@ export default function Post(props) {
               ? `${likesArrayLength} like`
               : `${likesArrayLength} likes`}
           </span>
+          <Repost />
         </SideBarPost>
         <ContentPost>
           <MsgPost>
