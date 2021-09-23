@@ -13,13 +13,14 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disableForm, setDisableForm] = useState(false);
-  const effect = 1;
 
   useEffect(() => {
     if (userDataJSON) {
       login(JSON.parse(userDataJSON));
     }
-  }, [effect]);
+  }, 
+  []
+  );
 
   function handleLoginSubmit(e) {
     e.preventDefault();

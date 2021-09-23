@@ -56,6 +56,18 @@ function putEdit(text, token, id) {
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
+function postFollow(id, token) {
+  return axios.post(`${URL}/users/${id}/follow`, "",setConfig(token))
+}
+
+function postUnFollow(id, token) {
+  return axios.post(`${URL}/users/${id}/unfollow`, "", setConfig(token))
+}
+
+function getFollows(token) {
+  return axios.get(`${URL}/users/follows`, setConfig(token))
+}
+
 export {
   registerUser,
   getTrending,
@@ -68,5 +80,8 @@ export {
   getPostsByHashtag,
   deletePost,
   getMyLikes,
-  putEdit
+  putEdit,
+  postFollow,
+  postUnFollow,
+  getFollows
 };
