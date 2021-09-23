@@ -138,6 +138,15 @@ const Comment = styled.p`
     line-height: 17px;
     color: #ACACAC;
     margin-top: 3px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 `;
 
 const Separator = styled.div`
