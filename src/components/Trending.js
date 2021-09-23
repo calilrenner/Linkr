@@ -7,7 +7,7 @@ import UserContext from "../contexts/UserContext";
 
 export default function Trending() {
   const { userData } = useContext(UserContext);
-
+  const [hashtagInput, setHashtagInput] = useState("");
   const [trending, setTrending] = useState([]);
 
   useEffect(
@@ -29,6 +29,8 @@ export default function Trending() {
             ))
           : ""}
       </ul>
+      <StyledInput type="text" placeholder="type a hastag"></StyledInput>
+      <StyledSpan>#</StyledSpan>
     </TrendingContainer>
   );
 }
@@ -59,11 +61,11 @@ const TrendingContainer = styled.div`
 
   ul {
     font-size: 19px;
-    margin: 30px 0 0 15px;
+    margin: 15px 0 0 15px;
   }
 
   li {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-family: "Lato", sans-serif;
   }
   a {
@@ -72,4 +74,30 @@ const TrendingContainer = styled.div`
   @media (max-width: 1024px) {
     display: none;
   }
+`;
+
+const StyledInput = styled.input`
+  width: 269px;
+  height: 35px;
+  position: absolute;
+  bottom: 18px;
+  left: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #252525;
+  padding-left: 35px;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: bold;
+  color: ${colors.white};
+  outline: none;
+`;
+
+const StyledSpan = styled.span`
+  position: absolute;
+  left: 25px;
+  bottom: 27px;
+  color: ${colors.white};
+  font-size: 19px;
+  font-weight: bold;
 `;
