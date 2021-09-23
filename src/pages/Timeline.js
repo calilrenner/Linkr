@@ -21,16 +21,11 @@ export default function Timeline() {
   const [errPosts, setErrPosts] = useState("");
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [followedPosts, setFollowedPosts] = useState([]);
-  const [postsIds, setPostsIds] = useState([]);
-  const [lastPostId, setLastPostId] = useState(0);
   const [followedUsers, setFollowedUsers] = useState([]);
 
   useEffect(() => {
     getPosts(userData.token)
-    .then((res) => 
-      {
-        setPosts(res.data.posts);
-      })
+    .then((res) => setPosts(res.data.posts))
 
     .catch((err) =>
       setErrPosts(
@@ -39,27 +34,13 @@ export default function Timeline() {
     );
   }, [onChangePost]);
 
-  useEffect(() =>
-  {
-    let num = Number.NEGATIVE_INFINITY;
-    if(posts.length > 0) {
-      setPostsIds([...new Set(posts.map(post => post.id))])
-      postsIds.forEach(el => {
-        if(el > num) {
-          setLastPostId(el)
-        }
-      })
-      }
-  }
-  , [posts])
-
   useEffect(() => 
   {
     getFollows(userData.token).then(r => setFollowedUsers(r.data.users))
     getFollowsPosts(userData.token).then(r => setFollowedPosts(r.data.posts.filter(post => post.user.id !== userData.user.id)));
     setOnChangePost(!onChangePost);
   }
-  ,[lastPostId])
+  ,[posts])
 
   function returnPosts() {
     if(followedUsers.length === 0) {
