@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import Post from "../components/Post";
 import UserContext from "../contexts/UserContext";
 import { getPosts } from "../service/api.service";
@@ -17,7 +17,30 @@ import {
 export default function Timeline() {
   const [posts, setPosts] = useState("");
   const [errPosts, SetErrPosts] = useState("");
-  const { userData, onChangePost } = useContext(UserContext);
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
+
+  const useInterval = (callBackFunction, delay) => {
+    const savedCallBackFunction = useRef();
+
+    useEffect(() => {
+      savedCallBackFunction.current = callBackFunction;
+    }, [callBackFunction])
+
+    useEffect(() => {
+      const newQueuePosts = () => {
+        savedCallBackFunction.current();
+      }
+      if(delay !== null) {
+        let update = setInterval(newQueuePosts, delay);
+        return () => clearInterval(update);
+      }
+    }, [delay])
+  }
+
+  useInterval(() => {
+    setOnChangePost(!onChangePost)
+    console.log(onChangePost)
+  }, 1000);
 
   useEffect(() => {
     timelinePosts();
