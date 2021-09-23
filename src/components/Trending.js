@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../globalStyles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { getTrending } from "../service/api.service";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../contexts/UserContext";
@@ -9,12 +9,18 @@ export default function Trending() {
   const { userData } = useContext(UserContext);
   const [hashtagInput, setHashtagInput] = useState("");
   const [trending, setTrending] = useState([]);
+  const history = useHistory();
 
   useEffect(
     () =>
       getTrending({ token: userData.token }).then((r) => setTrending(r.data)),
     [userData.token]
   );
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    history.push(`/hashtag/${hashtagInput}`);
+  }
   return (
     <TrendingContainer>
       <div>
@@ -29,7 +35,13 @@ export default function Trending() {
             ))
           : ""}
       </ul>
-      <StyledInput type="text" placeholder="type a hastag"></StyledInput>
+      <form onSubmit={handleSubmit}>
+        <StyledInput
+          type="text"
+          placeholder="type a hastag"
+          onChange={(e) => setHashtagInput(e.target.value)}
+        ></StyledInput>
+      </form>
       <StyledSpan>#</StyledSpan>
     </TrendingContainer>
   );
