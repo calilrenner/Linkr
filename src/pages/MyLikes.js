@@ -18,6 +18,8 @@ export default function MyLikes() {
   const [postsIds, setPostsIds] = useState([]);
   const [trasnfer, setTrasnfer] = useState(false)
   const [pageNumber, setPageNumber] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [newLikedPosts, setNewLikedPosts] = useState([]);
 
   function postRepost(post) {
     if(post.repostId) {
@@ -27,15 +29,22 @@ export default function MyLikes() {
     }
   }
 
+  console.log(likedPosts)
+
   useEffect(() => {
     getMyLikes({ token: userData.token }).then((r) => {
       setLikedPosts(r.data.posts)
       setLoad(true);
       setTrasnfer(!trasnfer)
-      setPageNumber(prevPageNumber => prevPageNumber + 1);
     }
     );
   }, []);
+
+  useEffect(() => {
+    if(likedPosts.length > 0) {
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [likedPosts])
 
   useEffect(() => {
     if(likedPosts.length > 0) {
@@ -56,12 +65,13 @@ export default function MyLikes() {
 
   function scrollInfinity() {
     loadMoreLikedPosts(firstPostId, userData.token).then(r => {
-      setLikedPosts([...likedPosts, ...r.data.posts]);
-      setPageNumber(prevPageNumber => prevPageNumber + 1);
+      setNewLikedPosts([...r.data.posts])
+      setHasMore(newLikedPosts.length > 0)
+      setLikedPosts([...likedPosts, ...newLikedPosts]);
     })
   }
 
-  console.log(likedPosts, firstPostId)
+  console.log(likedPosts)
 
 
   return (
@@ -91,7 +101,7 @@ export default function MyLikes() {
         <InfiniteScroll
           pageStart={0}
           loadMore={scrollInfinity}
-          hasMore={likedPosts.length > 0}
+          hasMore={hasMore}
           loader={<LoaderText key={0}>Loading ...</LoaderText>}
         >
             {likedPosts.map((post, index) => (

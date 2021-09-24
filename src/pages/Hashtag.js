@@ -18,6 +18,8 @@ export default function Hashtag() {
   const [postsIds, setPostsIds] = useState([]);
   const [trasnfer, setTrasnfer] = useState(false)
   const [pageNumber, setPageNumber] = useState(0);
+  const [newHashTagPosts, setNewHashTagPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
   function postRepost(post) {
     if(post.repostId) {
@@ -32,10 +34,15 @@ export default function Hashtag() {
       {
         setHashtagPosts(r.data.posts)
         setTrasnfer(!trasnfer)
-        setPageNumber(prevPageNumber => prevPageNumber + 1);
       }
     );
   }, [hashtag, userData.token]);
+
+  useEffect(() => {
+    if(hashtagPosts.length > 0) {
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [hashtagPosts])
 
   useEffect(() => {
     if(hashtagPosts.length > 0) {
@@ -56,8 +63,9 @@ export default function Hashtag() {
 
   function scrollInfinity() {
     loadMoreHashTagPosts(hashtag, firstPostId, userData.token).then(r => {
-      setHashtagPosts([...hashtagPosts, ...r.data.posts]);
-      setPageNumber(prevPageNumber => prevPageNumber + 1);
+      setNewHashTagPosts([...r.data.posts])
+      setHasMore(newHashTagPosts.length > 0)
+      setHashtagPosts([...hashtagPosts, ...newHashTagPosts]);
     })
   }
 
@@ -76,7 +84,7 @@ export default function Hashtag() {
         <InfiniteScroll
           pageStart={0}
           loadMore={scrollInfinity}
-          hasMore={hashtagPosts.length > 0}
+          hasMore={hasMore}
           loader={<LoaderText key={0}>Loading ...</LoaderText>}
         >
             {hashtagPosts.map((post, index) => (

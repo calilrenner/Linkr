@@ -14,7 +14,7 @@ import ReactTooltip from "react-tooltip";
 import DeleteModal from "./DeleteModal";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostId } =
     props;
   const { username, avatar } = user;
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -38,7 +38,6 @@ export default function Post(props) {
       inputRef.current.focus();
     }
     setNewText(text);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editSelected]);
 
   function cancelEditOnEsc(e) {

@@ -25,8 +25,9 @@ export default function Timeline() {
   const [trasnfer, setTrasnfer] = useState(false)
   let higher = Number.POSITIVE_INFINITY;
   const [firstPostId, setFirstPostId] = useState(0);
-
   const [pageNumber, setPageNumber] = useState(0);
+  const [newPosts, setNewPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
   function postRepost(post) {
     if(post.repostId) {
@@ -41,7 +42,6 @@ export default function Timeline() {
       .then((res) => {
         setPosts(res.data.posts);
         setTrasnfer(!trasnfer);
-        setPageNumber(prevPageNumber => prevPageNumber + 1)
       })
       .catch((err) =>
         SetErrPosts(
@@ -49,6 +49,12 @@ export default function Timeline() {
         )
       )
   }, [onChangePost]);
+
+  useEffect(() => {
+    if(posts.length > 0) {
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [posts])
 
   useEffect(() => {
     if(posts.length > 0) {
@@ -69,11 +75,12 @@ export default function Timeline() {
 
   function scrollInfinity() {
     loadMorePosts(firstPostId, userData.token).then(r => {
-      setPosts([...posts, ...r.data.posts]);
-      setPageNumber(prevPageNumber => prevPageNumber + 1);
+      setNewPosts([...r.data.posts])
+      setHasMore(newPosts.length > 0)
+      setPosts([...posts, ...newPosts]);
     })
   }
-  
+
   function loadPosts() {
     if (errPosts !== "") {
       return <ErrorMsg>{errPosts}</ErrorMsg>;
@@ -97,11 +104,11 @@ export default function Timeline() {
             <InfiniteScroll
               pageStart={0}
               loadMore={scrollInfinity}
-              hasMore={posts.length > 0}
+              hasMore={hasMore}
               loader={<LoaderText key={0}>Loading ...</LoaderText>}
         >
-            {posts.map((post) => (
-            <Post key={postsIds} {...post} />))}
+            {posts.map((post, index) => (
+            <Post key={post.id} {...post} />))}
         </InfiniteScroll>
           </div>
           <Trending />

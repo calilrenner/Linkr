@@ -23,6 +23,8 @@ export default function UserPosts() {
   const [postsIds, setPostsIds] = useState([]);
   const [firstPostId, setFirstPostId] = useState(0);
   const [pageNumber, setPageNumber] = useState(0);
+  const [newUserPosts, setNewUserPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
   function postRepost(post) {
     if(post.repostId) {
@@ -37,7 +39,6 @@ export default function UserPosts() {
       getUserPosts(id, { token: userData.token }).then((r) => {
         setUserPosts(r.data.posts)
         setTrasnfer(!trasnfer)
-        setPageNumber(prevPageNumber => prevPageNumber + 1);
       }
         
       )
@@ -45,6 +46,12 @@ export default function UserPosts() {
     },
     [following]
   );
+
+  useEffect(() => {
+    if(userPosts.length > 0) {
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [userPosts])
 
   useEffect(
     () => {
@@ -78,8 +85,9 @@ export default function UserPosts() {
 
   function scrollInfinity() {
     loadMoreUserPosts(id, firstPostId, userData.token).then(r => {
-      setUserPosts([...userPosts, ...r.data.posts]);
-      setPageNumber(prevPageNumber => prevPageNumber + 1);
+      setNewUserPosts([...r.data.posts])
+      setHasMore(newUserPosts.length > 0)
+      setUserPosts([...userPosts, ...newUserPosts]);
     })
   }
 
@@ -128,7 +136,7 @@ export default function UserPosts() {
       <InfiniteScroll
           pageStart={0}
           loadMore={scrollInfinity}
-          hasMore={userPosts.length > 0}
+          hasMore={hasMore}
           loader={<LoaderText key={0}>Loading ...</LoaderText>}
         >
             {userPosts.map((post, index) => (
