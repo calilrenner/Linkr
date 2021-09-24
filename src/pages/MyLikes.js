@@ -5,39 +5,98 @@ import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
-import { Loader, Main, Title, Text } from "./mainStyles";
+import { Loader, Main, Title, Text, LoaderText } from "./mainStyles";
+import InfiniteScroll from 'react-infinite-scroller';
+import { loadMoreLikedPosts } from "../service/scrollApi.service";
 
 export default function MyLikes() {
   const { userData } = useContext(UserContext);
   const [likedPosts, setLikedPosts] = useState({});
   const [load, setLoad] = useState(false);
+  let higher = Number.POSITIVE_INFINITY;
+  const [firstPostId, setFirstPostId] = useState(0);
+  const [postsIds, setPostsIds] = useState([]);
+  const [trasnfer, setTrasnfer] = useState(false)
+  const [pageNumber, setPageNumber] = useState(0);
+
+  function postRepost(post) {
+    if(post.repostId) {
+      return post.repostId;
+    } else {
+      return post.id;
+    }
+  }
 
   useEffect(() => {
     getMyLikes({ token: userData.token }).then((r) => {
       setLikedPosts(r.data.posts)
       setLoad(true);
+      setTrasnfer(!trasnfer)
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
     }
     );
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if(likedPosts.length > 0) {
+        setPostsIds(likedPosts.map(post => postRepost(post)));
+    }
+  }, [likedPosts, trasnfer])
+
+  useEffect(() => {
+    if(postsIds.length !== 0) {
+      postsIds.forEach(id => {
+        if(id < higher) {
+          higher = id;
+          setFirstPostId(higher);
+        }
+      })
+    };
+  }, [postsIds, likedPosts])
+
+  function scrollInfinity() {
+    loadMoreLikedPosts(firstPostId, userData.token).then(r => {
+      setLikedPosts([...likedPosts, ...r.data.posts]);
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
+    })
+  }
+
+  console.log(likedPosts, firstPostId)
+
+
   return (
     <>
       <Header />
       <Main>
         <Title>my likes</Title>
-        {load ?
-          (likedPosts.length === 0 ?
-            <Text>
-              Você ainda não curtiu nada ☹️
-            </Text>
+        {
+          pageNumber === 0 ?
+          (
+            load ?
+            (likedPosts.length === 0 ?
+              <Text>
+                Você ainda não curtiu nada ☹️
+              </Text>
+              :
+              likedPosts.map((post, index) => (
+                <Post key={index} {...post} />
+              ))
+            )
             :
-            likedPosts.map((post, index) => (
-              <Post key={index} {...post} />
-            ))
+            <Container>
+              <Loader />
+            </Container>
           )
-          :
-          <Container>
-            <Loader />
-          </Container>
+        :
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={scrollInfinity}
+          hasMore={likedPosts.length > 0}
+          loader={<LoaderText key={0}>Loading ...</LoaderText>}
+        >
+            {likedPosts.map((post, index) => (
+            <Post key={index} {...post} />))}
+        </InfiniteScroll>
         }
       </Main>
       <Trending />
