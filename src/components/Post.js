@@ -20,7 +20,6 @@ export default function Post(props) {
     props;
   const { username, avatar } = user;
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
-  console.log(userData.user.id)
   const [editSelected, setEditSelect] = useState(false);
   const [newText, setNewText] = useState(text);
   const [editDisabled, setEditDisabled] = useState(false);
