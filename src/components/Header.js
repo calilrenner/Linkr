@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useContext, useState } from "react";
 import SearchUser from "./SearchUser";
@@ -10,9 +10,13 @@ const LOCAL_STORAGE_KEY = "loggedUser.data";
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { userData, setLoginData } = useContext(UserContext);
+  const history = useHistory();
   function logout() {
     setLoginData({});
     localStorage.removeItem(LOCAL_STORAGE_KEY);
+  }
+  if (!userData.user) {
+    history.push("/");
   }
 
   return (
@@ -29,7 +33,10 @@ export default function Header() {
             <ArrowUp onClick={() => setShowMenu(!showMenu)} />
           )}
           <Image onClick={() => setShowMenu(!showMenu)}>
-            <img src={userData.user.avatar} alt={userData.user.username} />
+            <img
+              src={userData.user && userData.user.avatar}
+              alt={userData.user && userData.user.username}
+            />
           </Image>
         </div>
       </Content>

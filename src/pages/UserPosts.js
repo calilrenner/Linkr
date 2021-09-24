@@ -5,13 +5,14 @@ import {
   getUserPosts,
   postFollow,
   postUnFollow,
+  getShownUser,
 } from "../service/api.service";
 import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
 import SearchUser from "../components/SearchUser";
-import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
+import { Main, Title, Container, Loader, LoaderText, Text } from "./mainStyles";
 import styled from "styled-components";
 
 export default function UserPosts() {
@@ -22,10 +23,16 @@ export default function UserPosts() {
   const [follows, setFollows] = useState([]);
   const [followsId, setFollowsId] = useState([]);
   const [following, setFollowing] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [shownUser, setShownUser] = useState({});
 
   useEffect(() => {
-    getUserPosts(id, { token: userData.token }).then((r) =>
-      setUserPosts(r.data.posts)
+    getUserPosts(id, { token: userData.token }).then((r) => {
+      setUserPosts(r.data.posts);
+      setLoad(true);
+    });
+    getShownUser(id, { token: userData.token }).then((r) =>
+      setShownUser(r.data.user)
     );
     getFollows(userData.token).then((r) => setFollows(r.data.users));
   }, [following, id]);
@@ -71,12 +78,14 @@ export default function UserPosts() {
       <Main>
         {window.innerWidth < 1000 && <SearchUser />}
         <Title>
-          {userPosts.length > 0
-            ? `${userPosts[0].user.username}'s posts`
-            : "Carregando..."}
+          {load ? `${shownUser.username}'s posts` : "Carregando..."}
         </Title>
-        {userPosts.length > 0 ? (
-          userPosts.map((post, index) => <Post key={index} {...post} />)
+        {load ? (
+          userPosts.length === 0 ? (
+            <Text>Este usuáro ainda não postou nada ☹️</Text>
+          ) : (
+            userPosts.map((post, index) => <Post key={index} {...post} />)
+          )
         ) : (
           <Container>
             <Loader />

@@ -71,6 +71,10 @@ function getFollows(token) {
   return axios.get(`${URL}/users/follows`, setConfig(token));
 }
 
+function getShownUser(id, { token }) {
+  return axios.get(`${URL}/users/${id}`, setConfig(token));
+}
+
 export {
   registerUser,
   getTrending,
@@ -88,4 +92,5 @@ export {
   postFollow,
   postUnFollow,
   getFollows,
+  getShownUser,
 };
