@@ -73,7 +73,7 @@ export default function Timeline() {
       setPageNumber(prevPageNumber => prevPageNumber + 1);
     })
   }
-
+  
   function loadPosts() {
     if (errPosts !== "") {
       return <ErrorMsg>{errPosts}</ErrorMsg>;
@@ -100,8 +100,8 @@ export default function Timeline() {
               hasMore={posts.length > 0}
               loader={<LoaderText key={0}>Loading ...</LoaderText>}
         >
-            {posts.map((post, index) => (
-            <Post key={index} {...post} />))}
+            {posts.map((post) => (
+            <Post key={postsIds} {...post} />))}
         </InfiniteScroll>
           </div>
           <Trending />

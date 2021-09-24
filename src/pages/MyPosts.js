@@ -10,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { loadMoreMyPosts } from "../service/scrollApi.service";
 
 export default function MyPosts() {
-  const { userData, onChangePost } = useContext(UserContext);
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [userPosts, setUserPosts] = useState([]);
   const [load, setLoad] = useState(false);
   let higher = Number.POSITIVE_INFINITY;
@@ -18,6 +18,8 @@ export default function MyPosts() {
   const [postsIds, setPostsIds] = useState([]);
   const [trasnfer, setTrasnfer] = useState(false)
   const [pageNumber, setPageNumber] = useState(0);
+  const [newUserPosts, setNewUserPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
   function postRepost(post) {
     if(post.repostId) {
@@ -36,10 +38,14 @@ export default function MyPosts() {
       setUserPosts(res.data.posts)
       setLoad(true)
       setTrasnfer(!trasnfer)
-      setPageNumber(prevPageNumber => prevPageNumber + 1);
-      console.log(res.data)
     });
-  }, [onChangePost]);
+  }, [onChangePost, hasMore]);
+
+  useEffect(() => {
+    if(userPosts.length > 0) {
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [userPosts])
 
   useEffect(() => {
     if(userPosts.length > 0) {
@@ -60,10 +66,13 @@ export default function MyPosts() {
 
   function scrollInfinity() {
     loadMoreMyPosts(userData.user.id, firstPostId, userData.token).then(r => {
-      setPageNumber(prevPageNumber => prevPageNumber + 1);
-      setUserPosts([...userPosts, ...r.data.posts]);
+      setNewUserPosts([...r.data.posts])
+      setHasMore(newUserPosts.length > 0)
+      setUserPosts([...userPosts, ...newUserPosts]);
     })
   }
+
+  console.log(userPosts)
 
   return (
     <Main>
@@ -71,7 +80,7 @@ export default function MyPosts() {
         <Header />
         <Title>my posts</Title>
         {
-          pageNumber === 0 ?
+          pageNumber === 0 || userPosts.length === 0?
         (
           load ? 
           (userPosts.length === 0 ?
@@ -93,7 +102,7 @@ export default function MyPosts() {
         <InfiniteScroll
           pageStart={0}
           loadMore={scrollInfinity}
-          hasMore={userPosts.length > 0}
+          hasMore={hasMore}
           loader={<LoaderText key={0}>Loading ...</LoaderText>}
         >
             {userPosts.map((post, index) => (
