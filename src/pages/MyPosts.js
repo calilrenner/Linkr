@@ -10,7 +10,7 @@ import SearchUser from "../components/SearchUser";
 import { useHistory } from "react-router-dom";
 
 export default function MyPosts() {
-  const { userData, setUserData, onChangePost } = useContext(UserContext);
+  const { userData, onChangePost } = useContext(UserContext);
   const [userPosts, setUserPosts] = useState([]);
   const [load, setLoad] = useState(false);
   const history = useHistory();
@@ -19,10 +19,12 @@ export default function MyPosts() {
     if (!userData.token) {
       history.push("/");
     }
-    getUserPosts(userData.id, { token: userData.token }).then((res) => {
-      setUserPosts(res.data.posts);
-      setLoad(true);
-    });
+    if (userData.token) {
+      getUserPosts(userData.user.id, { token: userData.token }).then((res) => {
+        setUserPosts(res.data.posts);
+        setLoad(true);
+      });
+    }
   }, [onChangePost]);
 
   return (

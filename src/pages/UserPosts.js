@@ -97,7 +97,7 @@ export default function UserPosts() {
           </Container>
         )}
       </Main>
-      {parseInt(id) !== userData.id && (
+      {load && parseInt(id) !== userData.user.id && (
         <Follow
           onClick={() => (following ? unfollowUser() : followUser())}
           disabled={disabled}
