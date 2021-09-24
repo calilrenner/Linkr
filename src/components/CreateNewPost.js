@@ -77,6 +77,7 @@ const Content = styled.div`
   border-radius: 16px;
   display: flex;
   margin-top: 25px;
+  margin-bottom: 38px;
 
   @media (max-width: 1000px) {
     border-radius: 0;
