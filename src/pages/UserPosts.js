@@ -97,8 +97,6 @@ export default function UserPosts() {
     })
   }
 
-  console.log(userPosts)
-
   function followUser() {
     setDisabled(true);
     postFollow(id, userData.token)

@@ -82,8 +82,6 @@ export default function Timeline() {
     })
   }
 
-  console.log(posts)
-
   function loadPosts() {
     if (errPosts !== "") {
       return <ErrorMsg>{errPosts}</ErrorMsg>;
