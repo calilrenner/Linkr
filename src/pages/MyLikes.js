@@ -10,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { loadMoreLikedPosts } from "../service/scrollApi.service";
 
 export default function MyLikes() {
-  const { userData } = useContext(UserContext);
+  const { userData, onChangePosts } = useContext(UserContext);
   const [likedPosts, setLikedPosts] = useState({});
   const [load, setLoad] = useState(false);
   let higher = Number.POSITIVE_INFINITY;
@@ -29,8 +29,6 @@ export default function MyLikes() {
     }
   }
 
-  console.log(likedPosts)
-
   useEffect(() => {
     getMyLikes({ token: userData.token }).then((r) => {
       setLikedPosts(r.data.posts)
@@ -38,7 +36,7 @@ export default function MyLikes() {
       setTrasnfer(!trasnfer)
     }
     );
-  }, []);
+  }, [onChangePosts]);
 
   useEffect(() => {
     if(likedPosts.length > 0) {
@@ -70,9 +68,6 @@ export default function MyLikes() {
       setLikedPosts([...likedPosts, ...newLikedPosts]);
     })
   }
-
-  console.log(likedPosts)
-
 
   return (
     <>
