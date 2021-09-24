@@ -41,7 +41,7 @@ export default function Timeline() {
   useInterval(() => {
     setOnChangePost(!onChangePost)
     console.log(onChangePost)
-  }, 1000);
+  }, 15000);
 
   useEffect(() => {
     timelinePosts();
