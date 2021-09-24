@@ -86,8 +86,6 @@ export default function Timeline() {
     }
   }, [postsIds, posts])
 
-  console.log(lastPostId, firstPostId)
-
   const lastPostRef = useCallback(node => {
     if(observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(entries => {
