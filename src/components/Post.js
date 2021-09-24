@@ -260,7 +260,7 @@ const Container = styled.div`
   padding: 20px;
   display: flex;
   color: ${colors.white};
-  margin: 29px 0 29px 0;
+  margin: 29px 0;
 
   @media (max-width: 1000px) {
     width: 100%;
