@@ -10,8 +10,9 @@ import { putEdit, postLike } from "../service/api.service";
 import { FaHeart } from "react-icons/fa";
 import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
-
+import getYoutubeID from "get-youtube-id";
 import DeleteModal from "./DeleteModal";
+import Youtube from "react-youtube";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
@@ -213,37 +214,41 @@ export default function Post(props) {
                 <span>{username}</span>
               </Link>
               <div>
-                {user.id === userData.user.id && 
+                {user.id === userData.user.id && (
                   <>
                     <EditIcon onClick={selectEdit} />
                     <DeleteIcon onClick={() => setModalOpen(!modalOpen)} />
-                  </> 
-                  }
+                  </>
+                )}
               </div>
             </div>
             {edit()}
           </MsgPost>
-          <a href={link} target="_blank" rel="noreferrer">
-            <LinkPost>
-              <div>
-                <span>{linkTitle}</span>
-                <span>{linkDescription}</span>
-                <p>{link}</p>
-              </div>
-              <img src={linkImage} alt="" />
-            </LinkPost>{" "}
-          </a>
+          {getYoutubeID(link) ? (
+            <StyledYoutube videoId={getYoutubeID(link)} />
+          ) : (
+            <a href={link} target="_blank" rel="noreferrer">
+              <LinkPost>
+                <div>
+                  <span>{linkTitle}</span>
+                  <span>{linkDescription}</span>
+                  <p>{link}</p>
+                </div>
+                <img src={linkImage} alt="" />
+              </LinkPost>{" "}
+            </a>
+          )}
         </ContentPost>
-        {modalOpen && 
+        {modalOpen && (
           <DeleteModal
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             postId={id}
           />
-        }
+        )}
       </Container>
     </>
-    )
+  );
 }
 
 const Container = styled.div`
@@ -355,7 +360,7 @@ const MsgPost = styled.div`
     word-break: break-all;
   }
 
-  span:nth-child(2){
+  span:nth-child(2) {
     font-size: 17px;
     margin-top: 10px;
   }
@@ -398,4 +403,10 @@ const InputEditPost = styled.input`
   height: 44px;
   border-radius: 7px;
   font-size: 14px;
+`;
+
+const StyledYoutube = styled(Youtube)`
+  width: 500px;
+  height: 300px;
+  border-radius: 16px;
 `;
