@@ -6,39 +6,36 @@ import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
 import { Loader, Main, Title, Text } from "./mainStyles";
+import SearchUser from "../components/SearchUser";
 
 export default function MyLikes() {
-  const { userData } = useContext(UserContext);
+  const { userData, onChangePost } = useContext(UserContext);
   const [likedPosts, setLikedPosts] = useState({});
   const [load, setLoad] = useState(false);
 
   useEffect(() => {
     getMyLikes({ token: userData.token }).then((r) => {
-      setLikedPosts(r.data.posts)
+      setLikedPosts(r.data.posts);
       setLoad(true);
-    }
-    );
-  }, []); 
+    });
+  }, [onChangePost]);
   return (
     <>
       <Header />
       <Main>
+        {window.innerWidth < 1000 && <SearchUser />}
         <Title>my likes</Title>
-        {load ?
-          (likedPosts.length === 0 ?
-            <Text>
-              Você ainda não curtiu nada ☹️
-            </Text>
-            :
-            likedPosts.map((post, index) => (
-              <Post key={index} {...post} />
-            ))
+        {load ? (
+          likedPosts.length === 0 ? (
+            <Text>Você ainda não curtiu nada ☹️</Text>
+          ) : (
+            likedPosts.map((post, index) => <Post key={index} {...post} />)
           )
-          :
+        ) : (
           <Container>
             <Loader />
           </Container>
-        }
+        )}
       </Main>
       <Trending />
     </>
@@ -48,7 +45,7 @@ export default function MyLikes() {
 const Container = styled.div`
   margin: 0 150px;
 
-  @media(max-width: 1000px){
+  @media (max-width: 1000px) {
     display: flex;
     justify-content: center;
     margin-top: -150px;
