@@ -24,7 +24,7 @@ export default function Timeline() {
   useEffect(() => 
   {
     getFollows(userData.token).then(r => setFollowedUsers(r.data.users))
-    getFollowsPosts(userData.token).then(r => setFollowedPosts(r.data.posts.filter(post => post.user.id !== userData.user.id)));
+    getFollowsPosts(userData.token).then(r => setFollowedPosts(r.data.posts));
   }
   ,[onChangePost])
 
@@ -45,8 +45,6 @@ export default function Timeline() {
         )
       }
     }
-
-    console.log(followedPosts)
 
   function loadPosts() {
     if (followedPosts === "") {

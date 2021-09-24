@@ -11,7 +11,6 @@ import MyLikes from "./pages/MyLikes";
 import UserPosts from "./pages/UserPosts";
 
 export default function App() {
-  console.warn = () => {};
   const [loginData, setLoginData] = useState({});
   const [onChangePost, setOnChangePost] = useState(false);
   const LOCAL_STORAGE_KEY = "loggedUser.data";
