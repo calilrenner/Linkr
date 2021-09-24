@@ -5,8 +5,12 @@ import { getPosts } from "../service/api.service";
 import Header from "../components/Header";
 import Trending from "../components/Trending";
 import CreateNewPost from "../components/CreateNewPost";
+<<<<<<< HEAD
 import InfiniteScroll from 'react-infinite-scroller';
 import { loadMorePosts } from "../service/scrollApi.service";
+=======
+import SearchUser from "../components/SearchUser";
+>>>>>>> main
 import {
   ErrorMsg,
   Container,
@@ -29,6 +33,7 @@ export default function Timeline() {
   const [newPosts, setNewPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
 
+<<<<<<< HEAD
   function postRepost(post) {
     if(post.repostId) {
       return post.repostId;
@@ -36,6 +41,11 @@ export default function Timeline() {
       return post.id;
     }
   }
+=======
+  useEffect(() => {
+    timelinePosts();
+  }, [onChangePost]);
+>>>>>>> main
 
   useEffect(() => {
     getPosts(userData.token)
@@ -101,7 +111,9 @@ export default function Timeline() {
         <Main>
           <div>
             <Header />
+            {window.innerWidth < 1000 && <SearchUser />}
             <Title>timeline</Title>
+<<<<<<< HEAD
             <CreateNewPost />
             <InfiniteScroll
               pageStart={0}
@@ -112,6 +124,12 @@ export default function Timeline() {
             {posts.map((post, index) => (
             <Post key={post.id} {...post} />))}
         </InfiniteScroll>
+=======
+            <CreateNewPost timelinePosts={timelinePosts} />
+            {posts.map((post) => (
+              <Post key={post.id} {...post} />
+            ))}
+>>>>>>> main
           </div>
           <Trending />
         </Main>

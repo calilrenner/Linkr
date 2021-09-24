@@ -6,8 +6,12 @@ import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
 import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
+<<<<<<< HEAD
 import InfiniteScroll from 'react-infinite-scroller';
 import { loadMoreHashTagPosts } from "../service/scrollApi.service";
+=======
+import SearchUser from "../components/SearchUser";
+>>>>>>> main
 
 export default function Hashtag() {
   const { hashtag } = useParams();
@@ -73,6 +77,7 @@ export default function Hashtag() {
     <>
       <Header />
       <Main>
+        {window.innerWidth < 1000 && <SearchUser />}
         <Title># {hashtag}</Title>
         {
           pageNumber === 0 ? 

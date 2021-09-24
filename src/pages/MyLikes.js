@@ -5,12 +5,20 @@ import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
+<<<<<<< HEAD
 import { Loader, Main, Title, Text, LoaderText } from "./mainStyles";
 import InfiniteScroll from 'react-infinite-scroller';
 import { loadMoreLikedPosts } from "../service/scrollApi.service";
 
 export default function MyLikes() {
   const { userData, onChangePosts } = useContext(UserContext);
+=======
+import { Loader, Main, Title, Text } from "./mainStyles";
+import SearchUser from "../components/SearchUser";
+
+export default function MyLikes() {
+  const { userData, onChangePost } = useContext(UserContext);
+>>>>>>> main
   const [likedPosts, setLikedPosts] = useState({});
   const [load, setLoad] = useState(false);
   let higher = Number.POSITIVE_INFINITY;
@@ -31,8 +39,9 @@ export default function MyLikes() {
 
   useEffect(() => {
     getMyLikes({ token: userData.token }).then((r) => {
-      setLikedPosts(r.data.posts)
+      setLikedPosts(r.data.posts);
       setLoad(true);
+<<<<<<< HEAD
       setTrasnfer(!trasnfer)
     }
     );
@@ -69,11 +78,17 @@ export default function MyLikes() {
     })
   }
 
+=======
+    });
+  }, [onChangePost]);
+>>>>>>> main
   return (
     <>
       <Header />
       <Main>
+        {window.innerWidth < 1000 && <SearchUser />}
         <Title>my likes</Title>
+<<<<<<< HEAD
         {
           pageNumber === 0 ?
           (
@@ -103,6 +118,19 @@ export default function MyLikes() {
             <Post key={index} {...post} />))}
         </InfiniteScroll>
         }
+=======
+        {load ? (
+          likedPosts.length === 0 ? (
+            <Text>Você ainda não curtiu nada ☹️</Text>
+          ) : (
+            likedPosts.map((post, index) => <Post key={index} {...post} />)
+          )
+        ) : (
+          <Container>
+            <Loader />
+          </Container>
+        )}
+>>>>>>> main
       </Main>
       <Trending />
     </>
@@ -112,7 +140,7 @@ export default function MyLikes() {
 const Container = styled.div`
   margin: 0 150px;
 
-  @media(max-width: 1000px){
+  @media (max-width: 1000px) {
     display: flex;
     justify-content: center;
     margin-top: -150px;
