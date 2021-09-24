@@ -15,6 +15,7 @@ import {
   Title,
 } from "./mainStyles";
 
+
 export default function Timeline() {
   const [posts, setPosts] = useState("");
   const [errPosts, SetErrPosts] = useState("");
@@ -26,26 +27,13 @@ export default function Timeline() {
   const [lastPostId, setLastPostId] = useState(0);
   const [firstPostId, setFirstPostId] = useState(0);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
   const observer = useRef();
   function setConfig() {
     return { headers: { Authorization: `Bearer ${userData.token}` } };
   }
-
-  const lastPostRef = useCallback(node => {
-    if(observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(entries => {
-        if(entries[0].isIntersecting) {
-
-          axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/following/posts', setConfig())
-            .then(res => console.log(res.data))
-          console.log(lastPostId, firstPostId)
-    
-        }
-      })
-      if(node) observer.current.observe(node)
-  }, [loading, hasMore]);
 
   function postRepost(post) {
     if(post.repostId) {
@@ -64,6 +52,7 @@ export default function Timeline() {
       .then((res) => {
         setPosts(res.data.posts);
         setTrasnfer(!trasnfer);
+        setPageNumber(prevPageNumber => prevPageNumber + 1)
       })
       .catch((err) =>
         SetErrPosts(
@@ -99,18 +88,35 @@ export default function Timeline() {
 
   console.log(lastPostId, firstPostId)
 
+  const lastPostRef = useCallback(node => {
+    if(observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(entries => {
+        if(entries[0].isIntersecting) {
+          setPosts("");
+          axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts?olderThan=${firstPostId}`, setConfig())
+            .then(res => {
+              setPosts([...posts, ...res.data.posts])
+              setPageNumber(prevPageNumber => prevPageNumber + 1)
+            })
+        }
+      })
+      if(node) observer.current.observe(node)
+  }, [loading, hasMore, lastPostId, firstPostId]);
+
+  console.log(posts)
+
   function loadPosts() {
     if (errPosts !== "") {
       return <ErrorMsg>{errPosts}</ErrorMsg>;
     }
-    if (posts === "") {
+    if (posts === "" && pageNumber === 0) {
       return (
         <Container>
           <Loader />
           <LoaderText>Carregando...</LoaderText>
         </Container>
       );
-    } else if (posts.length === 0) {
+    } else if (posts.length === 0 && pageNumber === 0) {
       return <ErrorMsg>Nenhum post encontrado</ErrorMsg>;
     } else {
       return (
@@ -118,10 +124,12 @@ export default function Timeline() {
           <div>
             <Header />
             <Title>timeline</Title>
-            <CreateNewPost timelinePosts={timelinePosts} />
-            {posts.map((post, index) => {
+            <CreateNewPost />
+            {posts.length > 0 && posts.map((post, index) => {
                 if(posts.length === index + 1) {
-                  return <div ref={lastPostRef} key={post.id}><Post {...post}/></div>
+                  return (
+                    <div ref={lastPostRef} key={post.id}><Post {...post}/></div>
+                  )
                 } else {
                   return <Post key={post} {...post}/>
                 }

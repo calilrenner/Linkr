@@ -4,8 +4,8 @@ import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { createNewPost } from "../service/api.service";
 
-export default function Post({ timelinePosts }) {
-  const { userData } = useContext(UserContext);
+export default function Post() {
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [link, setLink] = useState("");
   const [text, setText] = useState("");
   const [buttonText, setButtonText] = useState("Publish");
@@ -22,7 +22,7 @@ export default function Post({ timelinePosts }) {
     const req = createNewPost(body, token);
 
     req.then(() => {
-      timelinePosts();
+      setOnChangePost(!onChangePost)
       setButtonText("Publish");
       setDisabled(false);
       setLink("");
