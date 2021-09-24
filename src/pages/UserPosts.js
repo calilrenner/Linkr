@@ -40,7 +40,6 @@ export default function UserPosts() {
     }
   }
 
-<<<<<<< HEAD
   useEffect(
     () => {
       getUserPosts(id, { token: userData.token }).then((r) => {
@@ -72,23 +71,6 @@ export default function UserPosts() {
       setFollowing(followsId.includes(parseInt(id)) || false),
     [followsId]
   )
-=======
-  useEffect(() => {
-    getUserPosts(id, { token: userData.token }).then((r) =>
-      setUserPosts(r.data.posts)
-    );
-    getFollows(userData.token).then((r) => setFollows(r.data.users));
-  }, [following, id]);
-
-  useEffect(() => {
-    setFollowsId(follows.map((user) => user.id));
-  }, [follows]);
-
-  useEffect(
-    () => setFollowing(followsId.includes(parseInt(id)) || false),
-    [followsId]
-  );
->>>>>>> main
 
   useEffect(() => {
     if(userPosts.length > 0) {

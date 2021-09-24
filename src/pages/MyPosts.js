@@ -5,14 +5,10 @@ import { getUserPosts } from "../service/api.service";
 import Header from "../components/Header";
 import Trending from "../components/Trending";
 import Post from "../components/Post";
-<<<<<<< HEAD
 import { Main, Title, Loader, Text, LoaderText } from "./mainStyles";
 import InfiniteScroll from 'react-infinite-scroller';
 import { loadMoreMyPosts } from "../service/scrollApi.service";
-=======
-import { Main, Title, Loader, Text } from "./mainStyles";
 import SearchUser from "../components/SearchUser";
->>>>>>> main
 
 export default function MyPosts() {
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -40,7 +36,6 @@ export default function MyPosts() {
     const req = getUserPosts(id, token);
 
     req.then((res) => {
-<<<<<<< HEAD
       setUserPosts(res.data.posts)
       setLoad(true)
       setTrasnfer(!trasnfer)
@@ -77,22 +72,13 @@ export default function MyPosts() {
       setUserPosts([...userPosts, ...newUserPosts]);
     })
   }
-
-  console.log(userPosts)
-=======
-      setUserPosts(res.data.posts);
-      setLoad(true);
-    });
-  }, [onChangePost]);
->>>>>>> main
-
+  
   return (
     <Main>
       <div>
         <Header />
         {window.innerWidth < 1000 && <SearchUser />}
         <Title>my posts</Title>
-<<<<<<< HEAD
         {
           pageNumber === 0 || userPosts.length === 0?
         (
@@ -105,19 +91,13 @@ export default function MyPosts() {
             userPosts.map((u, i) => (
               <Post key={i} {...u} />
             ))
-=======
-        {load ? (
-          userPosts.length === 0 ? (
-            <Text>Você ainda não postou nada ☹️</Text>
-          ) : (
-            userPosts.map((u, i) => <Post key={i} {...u} />)
->>>>>>> main
           )
-        ) : (
+        : 
+        (
           <Container>
             <Loader />
           </Container>
-<<<<<<< HEAD
+        )
         )
         :
         (
@@ -132,9 +112,6 @@ export default function MyPosts() {
         </InfiniteScroll>
         )
         }
-=======
-        )}
->>>>>>> main
       </div>
       <Trending />
     </Main>
