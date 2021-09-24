@@ -1,11 +1,16 @@
 import { BiRepost } from "react-icons/bi";
 import styled from 'styled-components';
 
-export default function RepostedBy({repostedBy}) {
+export default function RepostedBy({repostedBy, userId}) {
+
+    function whoMakesThePost() {
+        return repostedBy.id === userId ? "you" : repostedBy.username
+    }
+
     return (
         <Content>
             <BiRepost size="20"/>
-            <span>Re-posted by <strong>{repostedBy.username}</strong></span>
+            <span>Re-posted by <strong>{whoMakesThePost()}</strong></span>
         </Content>
     );
 }

@@ -20,6 +20,7 @@ export default function Post(props) {
     props;
   const { username, avatar } = user;
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
+  console.log(userData.user.id)
   const [editSelected, setEditSelect] = useState(false);
   const [newText, setNewText] = useState(text);
   const [editDisabled, setEditDisabled] = useState(false);
@@ -194,7 +195,7 @@ export default function Post(props) {
   return (
     <>
       {repostedBy !== undefined &&
-        <RepostedBy repostedBy={repostedBy} />
+        <RepostedBy repostedBy={repostedBy} userId={userData.user.id} />
       }
       <Container>
         <SideBarPost>
@@ -255,7 +256,6 @@ export default function Post(props) {
 const Container = styled.div`
   width: 611px;
   background-color: ${colors.black};
-  border: 1px solid #4d4d4d;
   border-radius: 16px;
   padding: 20px;
   display: flex;
