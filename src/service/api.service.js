@@ -71,6 +71,10 @@ function getFollows(token) {
   return axios.get(`${URL}/users/follows`, setConfig(token));
 }
 
+function repost(id, token) {
+  return axios.post(`${URL}posts/${id}/share`, {}, setConfig(token))
+}
+
 export {
   registerUser,
   getTrending,
@@ -88,4 +92,5 @@ export {
   postFollow,
   postUnFollow,
   getFollows,
+  repost
 };

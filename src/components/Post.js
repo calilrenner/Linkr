@@ -12,9 +12,11 @@ import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
 
 import DeleteModal from "./DeleteModal";
+import RepostedBy from "./RepostedBy";
+import Repost from "./Repost";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostCount, repostedBy } =
     props;
   const { username, avatar } = user;
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -191,6 +193,9 @@ export default function Post(props) {
 
   return (
     <>
+      {repostedBy !== undefined &&
+        <RepostedBy repostedBy={repostedBy} />
+      }
       <Container>
         <SideBarPost>
           <Link to={`/user/${user.id}`}>
@@ -205,6 +210,7 @@ export default function Post(props) {
               ? `${likesArrayLength} like`
               : `${likesArrayLength} likes`}
           </span>
+          <Repost postId={id} repostCount={repostCount} />
         </SideBarPost>
         <ContentPost>
           <MsgPost>
