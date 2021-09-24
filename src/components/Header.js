@@ -1,22 +1,19 @@
 import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useContext, useState } from "react";
 import SearchUser from "./SearchUser";
 import { colors } from "../globalStyles";
 import UserContext from "../contexts/UserContext";
-const LOCAL_STORAGE_KEY = "loggedUser.data";
+import { removeLoggedUser } from "../service/loginPersistance.service";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
-  const { userData, setLoginData } = useContext(UserContext);
-  const history = useHistory();
+  const { userData, setUserData } = useContext(UserContext);
+
   function logout() {
-    setLoginData({});
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-  }
-  if (!userData.user) {
-    history.push("/");
+    removeLoggedUser();
+    setUserData({});
   }
 
   return (
@@ -33,10 +30,7 @@ export default function Header() {
             <ArrowUp onClick={() => setShowMenu(!showMenu)} />
           )}
           <Image onClick={() => setShowMenu(!showMenu)}>
-            <img
-              src={userData.user && userData.user.avatar}
-              alt={userData.user && userData.user.username}
-            />
+            <img src={userData.user.avatar} alt={userData.user.username} />
           </Image>
         </div>
       </Content>
