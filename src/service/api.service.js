@@ -14,7 +14,7 @@ function serverLogin(userData) {
 }
 
 function getTrending({ token }) {
-  return axios.get(`${URL}hashtags/trending`, setConfig(token));
+  return axios.get(`${URL}hashtags/trending`, {}, setConfig(token));
 }
 
 function getPosts(token) {
@@ -68,6 +68,10 @@ function getFollows(token) {
   return axios.get(`${URL}/users/follows`, setConfig(token))
 }
 
+function repost(id, body, token){
+  return axios.post(`${URL}posts/${id}/share`, body, setConfig(token))
+}
+
 export {
   registerUser,
   getTrending,
@@ -83,5 +87,6 @@ export {
   putEdit,
   postFollow,
   postUnFollow,
-  getFollows
+  getFollows,
+  repost
 };

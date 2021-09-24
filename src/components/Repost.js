@@ -1,15 +1,33 @@
 import styled from "styled-components";
 import { BiRepost } from "react-icons/bi";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Loader from "react-loader-spinner";
 import { StyledModal, Text, GoBackButton, ConfirmButton, customStyles } from "./modalStyles";
+import UserContext from "../contexts/UserContext";
+import { repost } from "../service/api.service";
 
-export default function Repost() {
+export default function Repost({ postId, repostCount }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [disabledButtons, setDisabledButtons] = useState(false);
+    const { userData, onChangePost ,setOnChangePost } = useContext(UserContext);
 
     function repostThisPost() {
         setDisabledButtons(true);
+
+        const id = postId;
+        const token = userData.token;
+        const req = repost(id, token);
+
+        req.then(() =>{
+            repostCount++;
+            setOnChangePost(!onChangePost);
+            setModalOpen(!modalOpen);
+        })
+        req.catch(() => {
+            setDisabledButtons(false)
+            setModalOpen(!modalOpen);
+            alert("Houve uma falha ao repostar. Tente novamente.")
+        })
     }
 
     return (
@@ -17,7 +35,7 @@ export default function Repost() {
             <Box>
                 <Icon onClick={() => setModalOpen(!modalOpen)} />
                 <Quantity>
-                    1 comment
+                    {repostCount} {repostCount === 1 ? "re-post" : "re-posts"}
                 </Quantity>
             </Box>
             <StyledModal style={customStyles} isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>

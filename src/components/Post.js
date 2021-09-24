@@ -15,7 +15,7 @@ import DeleteModal from "./DeleteModal";
 import Repost from "./Repost";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostCount } =
     props;
   const { username, avatar } = user;
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -206,7 +206,7 @@ export default function Post(props) {
               ? `${likesArrayLength} like`
               : `${likesArrayLength} likes`}
           </span>
-          <Repost />
+          <Repost postId={id} repostCount={repostCount} />
         </SideBarPost>
         <ContentPost>
           <MsgPost>
