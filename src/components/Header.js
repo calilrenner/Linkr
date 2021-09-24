@@ -30,7 +30,10 @@ export default function Header() {
             <ArrowUp onClick={() => setShowMenu(!showMenu)} />
           )}
           <Image onClick={() => setShowMenu(!showMenu)}>
-            <img src={userData.user.avatar} alt={userData.user.username} />
+            <img
+              src={userData.token && userData.user.avatar}
+              alt={userData.token && userData.user.username}
+            />
           </Image>
         </div>
       </Content>

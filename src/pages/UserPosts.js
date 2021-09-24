@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import {
   getFollows,
   getUserPosts,
@@ -25,8 +25,12 @@ export default function UserPosts() {
   const [following, setFollowing] = useState(false);
   const [load, setLoad] = useState(false);
   const [shownUser, setShownUser] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
+    if (!userData.token) {
+      history.push("/");
+    }
     getUserPosts(id, { token: userData.token }).then((r) => {
       setUserPosts(r.data.posts);
       setLoad(true);
@@ -93,7 +97,7 @@ export default function UserPosts() {
           </Container>
         )}
       </Main>
-      {parseInt(id) !== userData.user.id && (
+      {parseInt(id) !== userData.id && (
         <Follow
           onClick={() => (following ? unfollowUser() : followUser())}
           disabled={disabled}

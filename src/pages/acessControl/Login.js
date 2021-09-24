@@ -46,6 +46,7 @@ export default function Login() {
     setUserData(user);
     storeLoggedUser(user);
     setDisableForm(false);
+    console.log(history);
     history.push("/timeline");
   }
 

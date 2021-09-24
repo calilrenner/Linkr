@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import Post from "../components/Post";
 import UserContext from "../contexts/UserContext";
 import { getPosts } from "../service/api.service";
@@ -6,6 +7,7 @@ import Header from "../components/Header";
 import Trending from "../components/Trending";
 import CreateNewPost from "../components/CreateNewPost";
 import SearchUser from "../components/SearchUser";
+import { getLoggedUser } from "../service/loginPersistance.service";
 import {
   ErrorMsg,
   Container,
@@ -18,9 +20,13 @@ import {
 export default function Timeline() {
   const [posts, setPosts] = useState("");
   const [errPosts, SetErrPosts] = useState("");
-  const { userData, onChangePost } = useContext(UserContext);
+  const { userData, setUserData, onChangePost } = useContext(UserContext);
+  const history = useHistory();
 
   useEffect(() => {
+    if (!userData.token) {
+      history.push("/");
+    }
     timelinePosts();
   }, [onChangePost]);
 
