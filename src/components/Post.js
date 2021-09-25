@@ -14,6 +14,8 @@ import ReactTooltip from "react-tooltip";
 import DeleteModal from "./DeleteModal";
 import RepostedBy from "./RepostedBy";
 import Repost from "./Repost";
+import CommentIcon from "./CommentIcon";
+import Comments from "./Comments";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostCount, repostedBy } =
@@ -34,6 +36,9 @@ export default function Post(props) {
   const [likesArrayLength, setLikesArrayLength] = useState(likes.length);
   const [actualLikes, setActualLikes] = useState(likes);
   const [modalOpen, setModalOpen] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const [postComments, setPostComments] = useState([]);
+  const [myComment, setMyComment] = useState("");
 
   useEffect(() => {
     if (editSelected) {
@@ -202,7 +207,7 @@ export default function Post(props) {
             <img src={avatar} alt="" />
           </Link>
           <div onClick={isliked} data-tip={toolTipMsg}>
-            {like ? <FaHeart color="red" /> : <FiHeart />}
+            {like ? <FaHeart color="red" cursor="pointer" /> : <FiHeart cursor="pointer"/>}
             <ReactTooltip />
           </div>
           <span>
@@ -210,6 +215,14 @@ export default function Post(props) {
               ? `${likesArrayLength} like`
               : `${likesArrayLength} likes`}
           </span>
+          <CommentIcon 
+            showComments={showComments} 
+            setShowComments={setShowComments} 
+            postId={id}
+            postComments={postComments}
+            setPostComments={setPostComments}
+            myComment={myComment} 
+          />
           <Repost postId={id} repostCount={repostCount} />
         </SideBarPost>
         <ContentPost>
@@ -248,18 +261,29 @@ export default function Post(props) {
           />
         }
       </Container>
+      {showComments && 
+        <Comments 
+          postComments={postComments}
+          userId={user.id}
+          postId={id}
+          myComment={myComment}
+          setMyComment={setMyComment}
+        />
+      }
     </>
-    )
+  )
 }
 
 const Container = styled.div`
   width: 611px;
   background-color: ${colors.black};
   border-radius: 16px;
-  padding: 20px;
+  padding: 18px 18px 18px 11px;
   display: flex;
   color: ${colors.white};
-  margin: 29px 0 29px 0;
+  margin-top: 29px;
+  position: relative;
+  z-index: 2;
 
   @media (max-width: 1000px) {
     width: 100%;
@@ -273,7 +297,6 @@ const SideBarPost = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 20px;
   img {
     width: 50px;
     height: 50px;
@@ -390,6 +413,7 @@ const ContentPost = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 502px;
+  margin-left: 12px;
 `;
 
 const Hashtag = styled.a`
