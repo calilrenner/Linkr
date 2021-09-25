@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import Post from "../components/Post";
 import UserContext from "../contexts/UserContext";
 import { getFollowsPosts, getFollows } from "../service/api.service";
@@ -17,9 +17,31 @@ import {
 } from "./mainStyles";
 
 export default function Timeline() {
-  const { userData, onChangePost } = useContext(UserContext);
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [followedPosts, setFollowedPosts] = useState("");
   const [followedUsers, setFollowedUsers] = useState([]);
+
+  const useInterval = (callBackFunction, delay) => {
+    const savedCallBackFunction = useRef();
+
+    useEffect(() => {
+      savedCallBackFunction.current = callBackFunction;
+    }, [callBackFunction])
+
+    useEffect(() => {
+      const newQueuePosts = () => {
+        savedCallBackFunction.current();
+      }
+      if(delay !== null) {
+        let update = setInterval(newQueuePosts, delay);
+        return () => clearInterval(update);
+      }
+    }, [delay])
+  }
+
+  useInterval(() => {
+    setOnChangePost(!onChangePost)
+  }, 15000);
 
   useEffect(() => 
   {
