@@ -22,7 +22,7 @@ function MapContainer({geolocation, google, getLocation, setGetLocation, name}) 
                 </MapHeader>
                 <Map
                 google={google}
-                zoom={10}
+                zoom={7}
                 initialCenter={{ lat: parseFloat(geolocation.latitude), lng: parseFloat(geolocation.longitude)}}
                 style={style}
                 fullscreenControl={false}
@@ -60,7 +60,7 @@ function MapContainer({geolocation, google, getLocation, setGetLocation, name}) 
         right: 0;
         width: 100vw;
         height: 100vh;
-        background-color: #FFFFFFE5;
+        background-color: rgb(255, 255, 255, 0.25);
         display: flex;
         justify-content: center;
         align-items: center;

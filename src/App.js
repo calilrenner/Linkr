@@ -17,6 +17,7 @@ export default function App() {
   const [followsId, setFollowsId] = useState([]);
   const LOCAL_STORAGE_KEY = "loggedUser.data";
   const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
+  const [getLocation, setGetLocation] = useState(false);
   let userData;
 
   if (userDataJSON) {
@@ -36,7 +37,7 @@ export default function App() {
       <GlobalStyle />
       <Switch>
         <UserContext.Provider
-          value={{ userData, setLoginData, onChangePost, setOnChangePost, followsId, setFollowsId }}
+          value={{ userData, setLoginData, onChangePost, setOnChangePost, followsId, setFollowsId, getLocation, setGetLocation}}
         >
           <Route path="/" exact component={Login} />
           <Route path="/sign-up" exact component={SignUp} />

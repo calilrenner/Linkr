@@ -33,7 +33,7 @@ export default function DeleteModal({ modalOpen, setModalOpen, postId }) {
     }
 
     return (
-        <StyledModal style={customStyles} isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
+        <StyledModal isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
             <Text margin={disabledButtons}>
                 {disabledButtons ?
                     "Excluindo..."

@@ -19,7 +19,7 @@ export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, geolocation } =
     props;
   const { username, avatar } = user;
-  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
+  const { userData, onChangePost, setOnChangePost, setGetLocation, getLocation } = useContext(UserContext);
   const [editSelected, setEditSelect] = useState(false);
   const [newText, setNewText] = useState(text);
   const [editDisabled, setEditDisabled] = useState(false);
@@ -194,7 +194,7 @@ export default function Post(props) {
 
   return (
     <>
-      <Container>
+      <Container getLocation={getLocation}>
         <SideBarPost>
           <Link to={`/user/${user.id}`}>
             <img src={avatar} alt="" />
@@ -278,7 +278,7 @@ const Container = styled.div`
   color: ${colors.white};
   margin-top: 29px;
   position: relative;
-  z-index: 2;
+  z-index: ${props => props.getLocation ? '' : '2'};
 
   @media (max-width: 1000px) {
     width: 100%;
