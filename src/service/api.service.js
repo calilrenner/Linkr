@@ -50,10 +50,16 @@ function getMyLikes({ token }) {
 }
 
 function putEdit(text, token, id) {
-  const body = {
-    text: text,
-  };
+  const body = {text};
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
+}
+
+function getPostComments(id, token) {
+  return axios.get(`${URL}posts/${id}/comments`, setConfig(token))
+}
+
+function postNewComment(id, body, token) {
+  return axios.post(`${URL}posts/${id}/comment`, body, setConfig(token))
 }
 
 function userSearch(query, { token }) {
@@ -84,8 +90,10 @@ export {
   deletePost,
   getMyLikes,
   putEdit,
+  getPostComments,
+  postNewComment,
   userSearch,
   postFollow,
   postUnFollow,
-  getFollows,
+  getFollows
 };
