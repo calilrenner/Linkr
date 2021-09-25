@@ -6,8 +6,8 @@ import { createNewPost } from "../service/api.service";
 import { IoLocationOutline } from 'react-icons/io5';
 
 
-export default function Post({ timelinePosts }) {
-  const { userData } = useContext(UserContext);
+export default function Post() {
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [link, setLink] = useState("");
   const [text, setText] = useState("");
   const [buttonText, setButtonText] = useState("Publish");
@@ -37,8 +37,8 @@ export default function Post({ timelinePosts }) {
     const token = userData.token;
     const req = createNewPost(body, token);
 
-    req.then((r) => {
-      timelinePosts();
+    req.then(() => {
+      setOnChangePost(!onChangePost);
       setButtonText("Publish");
       setDisabled(false);
       setLink("");
