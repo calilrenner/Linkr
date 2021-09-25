@@ -19,6 +19,8 @@ export default function Post({ timelinePosts }) {
       latitude,
       longitude
     }
+  
+  let body;
 
   function createPost(e) {
     e.preventDefault();
@@ -27,7 +29,11 @@ export default function Post({ timelinePosts }) {
     setButtonText("Publishing...");
     setDisabled(true);
 
-    const body = { link, text, geolocation };
+    if(startLocation) {
+      body = { link, text, geolocation };
+    } else {
+      body = { link, text };
+    }
     const token = userData.token;
     const req = createNewPost(body, token);
 
@@ -57,10 +63,7 @@ export default function Post({ timelinePosts }) {
               setStartLocation(false);
           }
       )
-    } else {
-      alert('Não foi possível iniciar localização');
-      setStartLocation(false);
-    };
+    }
   }
 
   return (

@@ -22,10 +22,11 @@ function MapContainer({geolocation, google, getLocation, setGetLocation, name}) 
                 </MapHeader>
                 <Map
                 google={google}
-                zoom={7}
+                zoom={10}
                 initialCenter={{ lat: parseFloat(geolocation.latitude), lng: parseFloat(geolocation.longitude)}}
                 style={style}
-                defaultOptions={false}
+                fullscreenControl={false}
+                zoomControl={false}
                 >
                     <Marker position={{
                         lat: parseFloat(geolocation.latitude),
@@ -39,7 +40,7 @@ function MapContainer({geolocation, google, getLocation, setGetLocation, name}) 
 
   export default GoogleApiWrapper(
     () => ({
-      apiKey: 'AIzaSyAJRZlZOSH1BD5V-T0J4ywkqGiASo75_BY',
+      apiKey: '',
     }
   ))(MapContainer)
 
