@@ -17,10 +17,6 @@ function getTrending({ token }) {
   return axios.get(`${URL}hashtags/trending`, setConfig(token));
 }
 
-function getPosts(token) {
-  return axios.get(`${URL}/posts`, setConfig(token));
-}
-
 function postLike(idPost, token) {
   return axios.post(`${URL}/posts/${idPost}/like`, "", setConfig(token));
 }
@@ -54,6 +50,10 @@ function putEdit(text, token, id) {
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
+function getFollowsPosts(token) {
+  return axios.get(`${URL}/following/posts`, setConfig(token));
+}
+
 function getPostComments(id, token) {
   return axios.get(`${URL}posts/${id}/comments`, setConfig(token));
 }
@@ -65,6 +65,7 @@ function postNewComment(id, body, token) {
 function userSearch(query, { token }) {
   return axios.get(`${URL}/users/search/?username=${query}`, setConfig(token));
 }
+
 function postFollow(id, token) {
   return axios.post(`${URL}/users/${id}/follow`, "", setConfig(token));
 }
@@ -85,7 +86,6 @@ export {
   registerUser,
   getTrending,
   serverLogin,
-  getPosts,
   postLike,
   postUnlike,
   getUserPosts,
@@ -94,6 +94,7 @@ export {
   deletePost,
   getMyLikes,
   putEdit,
+  getFollowsPosts,
   getPostComments,
   postNewComment,
   userSearch,

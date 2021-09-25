@@ -70,12 +70,6 @@ const LoaderText = styled.h1`
   }
 `;
 
-const ErrorMsg = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-`;
-
 const Text = styled.div`
   font-size: 30px;
   font-weight: bold;
@@ -89,4 +83,4 @@ const Text = styled.div`
   }
 `;
 
-export { Container, Title, Main, Loader, LoaderText, ErrorMsg, Text };
+export { Container, Title, Main, Loader, LoaderText, Text };
