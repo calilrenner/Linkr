@@ -16,11 +16,10 @@ import styled from "styled-components";
 
 export default function UserPosts() {
   const { id } = useParams();
-  const { userData } = useContext(UserContext);
+  const { userData, followsId, setFollowsId } = useContext(UserContext);
   const [userPosts, setUserPosts] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [follows, setFollows] = useState([]);
-  const [followsId, setFollowsId] = useState([]);
   const [following, setFollowing] = useState(false);
 
   useEffect(() => {
