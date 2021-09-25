@@ -235,7 +235,7 @@ export default function Post(props) {
                   <p>{link}</p>
                 </div>
                 <img src={linkImage} alt="" />
-              </LinkPost>{" "}
+              </LinkPost>
             </a>
           )}
         </ContentPost>
