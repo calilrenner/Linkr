@@ -18,13 +18,7 @@ export default function Login() {
     if (userDataJSON) {
       login(JSON.parse(userDataJSON));
     }
-<<<<<<< HEAD
-  }, 
-  []
-  );
-=======
   }, []); 
->>>>>>> main
 
   function handleLoginSubmit(e) {
     e.preventDefault();
