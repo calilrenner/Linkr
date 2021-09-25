@@ -68,8 +68,6 @@ export default function Timeline() {
       }
     }
 
-    console.log(followedPosts)
-
   function loadPosts() {
     if (followedPosts === "") {
       return (
