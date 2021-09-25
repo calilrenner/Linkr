@@ -13,13 +13,21 @@ import UserPosts from "./pages/UserPosts";
 export default function App() {
   const [userData, setUserData] = useState({});
   const [onChangePost, setOnChangePost] = useState(false);
+  const [followsId, setFollowsId] = useState([]);
 
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Switch>
         <UserContext.Provider
-          value={{ userData, setUserData, onChangePost, setOnChangePost }}
+          value={{
+            userData,
+            setUserData,
+            onChangePost,
+            setOnChangePost,
+            followsId,
+            setFollowsId,
+          }}
         >
           <Route path="/" exact component={Login} />
           <Route path="/sign-up" exact component={SignUp} />
