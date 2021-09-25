@@ -16,7 +16,7 @@ function MapContainer({geolocation, google, getLocation, setGetLocation}) {
             <MapBorder>
                 <MapHeader>
                     <MapDescription>Juvenals location</MapDescription>
-                    <MapClose onClick={console.log('boa')}/>
+                    <MapClose onClick={() => setGetLocation(!getLocation)}/>
                 </MapHeader>
                 <Map
                 google={google}
@@ -51,7 +51,7 @@ function MapContainer({geolocation, google, getLocation, setGetLocation}) {
     `
 
  const MapBackground = styled.div`
-        z-index: 10000000;
+        z-index: 30;
         position: fixed;
         top: 0;
         right: 0;
@@ -64,6 +64,7 @@ function MapContainer({geolocation, google, getLocation, setGetLocation}) {
  `
 
  const MapDescription = styled.h1`
+ z-index: 40;
     font-size: 38px;
     font-weight: bold;
  `
@@ -78,6 +79,7 @@ function MapContainer({geolocation, google, getLocation, setGetLocation}) {
  `
 
  const MapClose = styled(AiOutlineClose)`
+    z-index: 100;
     height: 31px;
     width: 31px;
  `
