@@ -11,7 +11,7 @@ import { FaHeart } from "react-icons/fa";
 import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
 import DeleteModal from "./DeleteModal";
-// import Localization from "./Localization";
+import Localization from "./Localization";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, geolocation } =
@@ -213,7 +213,7 @@ export default function Post(props) {
               <Link to={`/user/${user.id}`}>
                 <span>{username}</span>
               </Link>
-              {/* <Localization geolocation={geolocation}/> */}
+              {geolocation && <Localization geolocation={geolocation}/>}
               </div>
               <div>
                 {user.id === userData.user.id && 
