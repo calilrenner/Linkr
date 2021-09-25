@@ -18,9 +18,7 @@ export default function Login() {
     if (userDataJSON) {
       login(JSON.parse(userDataJSON));
     }
-  }, 
-  []
-  );
+  }, []); 
 
   function handleLoginSubmit(e) {
     e.preventDefault();

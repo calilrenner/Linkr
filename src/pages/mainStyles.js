@@ -10,6 +10,10 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
+  max-width: 450px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 43px;
   font-weight: bold;
   margin-top: 85px;
@@ -17,6 +21,7 @@ const Title = styled.h1`
   font-family: "Oswald", sans-serif;
 
   @media (max-width: 1000px) {
+    margin-top: 140px;
     margin-left: 20px;
     font-size: 33px;
     margin-bottom: 31px;
@@ -63,10 +68,24 @@ const LoaderText = styled.h1`
     }
   }
 `;
+
 const ErrorMsg = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 50px;
 `;
 
-export { Container, Title, Main, Loader, LoaderText, ErrorMsg };
+const Text = styled.div`
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 85px;
+  color: #FFF;
+  font-family: "Oswald", sans-serif;
+
+  @media(max-width: 1000px){
+    font-size: 25px;
+    margin-left: 20px;
+  }
+`;
+
+export { Container, Title, Main, Loader, LoaderText, ErrorMsg, Text };
