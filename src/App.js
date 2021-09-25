@@ -13,6 +13,7 @@ import UserPosts from "./pages/UserPosts";
 export default function App() {
   const [loginData, setLoginData] = useState({});
   const [onChangePost, setOnChangePost] = useState(false);
+  const [followsId, setFollowsId] = useState([]);
   const LOCAL_STORAGE_KEY = "loggedUser.data";
   const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
   let userData;
@@ -34,7 +35,7 @@ export default function App() {
       <GlobalStyle />
       <Switch>
         <UserContext.Provider
-          value={{ userData, setLoginData, onChangePost, setOnChangePost }}
+          value={{ userData, setLoginData, onChangePost, setOnChangePost, followsId, setFollowsId }}
         >
           <Route path="/" exact component={Login} />
           <Route path="/sign-up" exact component={SignUp} />
