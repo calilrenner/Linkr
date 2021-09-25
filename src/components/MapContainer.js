@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors } from '../globalStyles';
 import { AiOutlineClose } from 'react-icons/ai'
 
-function MapContainer({geolocation, google, getLocation, setGetLocation}) {
+function MapContainer({geolocation, google, getLocation, setGetLocation, name}) {
     const style = {
         width: '713px',
         height: '240px',
@@ -11,23 +11,25 @@ function MapContainer({geolocation, google, getLocation, setGetLocation}) {
         margin: '80px auto'
     }
 
+    let nameArray = name.split(' ');
+
     return (
         <MapBackground>
             <MapBorder>
                 <MapHeader>
-                    <MapDescription>Juvenals location</MapDescription>
+                    <MapDescription>{nameArray[0]}'s location</MapDescription>
                     <MapClose onClick={() => setGetLocation(!getLocation)}/>
                 </MapHeader>
                 <Map
                 google={google}
                 zoom={7}
-                initialCenter={{ lat: parseFloat(geolocation.geolocation.latitude), lng: parseFloat(geolocation.geolocation.longitude)}}
+                initialCenter={{ lat: parseFloat(geolocation.latitude), lng: parseFloat(geolocation.longitude)}}
                 style={style}
                 defaultOptions={false}
                 >
                     <Marker position={{
-                        lat: parseFloat(geolocation.geolocation.latitude),
-                        lng: parseFloat(geolocation.geolocation.longitude)
+                        lat: parseFloat(geolocation.latitude),
+                        lng: parseFloat(geolocation.longitude)
                     }} />
                 </Map>
             </MapBorder>

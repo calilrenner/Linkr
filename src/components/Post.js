@@ -38,7 +38,6 @@ export default function Post(props) {
       inputRef.current.focus();
     }
     setNewText(text);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editSelected]);
 
   function cancelEditOnEsc(e) {
@@ -147,7 +146,6 @@ export default function Post(props) {
       }
     }
     setToolTipMsg(preToolTipMsg);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actualLikes]);
 
   const edit = () => {
@@ -213,7 +211,7 @@ export default function Post(props) {
               <Link to={`/user/${user.id}`}>
                 <span>{username}</span>
               </Link>
-              {geolocation && <Localization geolocation={geolocation}/>}
+              {geolocation && <Localization geolocation={geolocation} name={user.username}/>}
               </div>
               <div>
                 {user.id === userData.user.id && 
