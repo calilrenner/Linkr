@@ -107,6 +107,8 @@ export default function Timeline() {
       })
     }
 
+    console.log(followedUsers)
+
     function returnPosts() {
       if(followedUsers.length === 0) {
         return (
@@ -182,5 +184,7 @@ const NoFollow = styled.div`
 const ErrorMsg = styled.div`    
     display: flex;
     justify-content:center;
-    margin-top: 50px
+    margin-top: 50px;
+    color: ${colors.white};
+    font-size: 20px;
 `;
