@@ -5,10 +5,17 @@ import { useContext, useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 import { FiHeart } from "react-icons/fi";
 
-export default function Likes({ likes, id }) {
+export default function Likes({ likes, id, repostId }) {
+
+    let likeId;
+
+    if(repostId) {
+        likeId = repostId;
+    } else {
+        likeId = id;
+    }
 
     const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
-    console.log(likes, id)
     const [usersLikesArray, setUsersLikesArray] = useState([
         ...likes.map((user) => user.userId),
     ]);
@@ -26,7 +33,7 @@ export default function Likes({ likes, id }) {
     function isliked() {
         if (!like) {
             setLike(true);
-            postLike(id, userData.token).then((res) => {
+            postLike(likeId, userData.token).then((res) => {
                 setLikesArrayLength(res.data.post.likes.length);
                 setActualLikes(res.data.post.likes);
             });
@@ -35,7 +42,7 @@ export default function Likes({ likes, id }) {
 
         if (like) {
             setLike(false);
-            postUnlike(id, userData.token).then((res) => {
+            postUnlike(likeId, userData.token).then((res) => {
                 setLikesArrayLength(res.data.post.likes.length);
                 setActualLikes(res.data.post.likes);
             });

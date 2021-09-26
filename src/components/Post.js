@@ -6,16 +6,13 @@ import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext, useState, useRef, useEffect } from "react";
 import { putEdit } from "../service/api.service";
-
-
-
 import DeleteModal from "./DeleteModal";
 import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
 import Likes from "./Likes";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostId } =
     props;
   const { username, avatar } = user;
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -99,6 +96,8 @@ export default function Post(props) {
     }
   }
 
+  console.log(userData.token)
+
   return (
     <>
       <Container>
@@ -106,7 +105,7 @@ export default function Post(props) {
           <Link to={`/user/${user.id}`}>
             <img src={avatar} alt="" />
           </Link>
-          <Likes likes={likes} id={id}/>
+          <Likes likes={likes} id={id} repostId={repostId}/>
           <CommentIcon 
             showComments={showComments} 
             setShowComments={setShowComments} 
