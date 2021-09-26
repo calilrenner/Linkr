@@ -13,6 +13,7 @@ import ReactTooltip from "react-tooltip";
 import getYoutubeID from "get-youtube-id";
 import DeleteModal from "./DeleteModal";
 import Youtube from "react-youtube";
+import notfound from "../assets/notfound.jpg";
 import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
 
@@ -193,6 +194,10 @@ export default function Post(props) {
     } else {
       setEditSelect(true);
     }
+  }
+
+  function image() {
+    return linkImage === "" || linkImage === null ? notfound : linkImage;
   }
 
   return (
