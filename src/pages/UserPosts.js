@@ -13,6 +13,8 @@ import Header from "../components/Header";
 import SearchUser from "../components/SearchUser";
 import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
 import styled from "styled-components";
+import { loadMoreUserPosts } from "../service/scrollApi.service";
+import InfiniteScroll from 'react-infinite-scroller';
 
 export default function UserPosts() {
   const { id } = useParams();
@@ -21,22 +23,78 @@ export default function UserPosts() {
   const [disabled, setDisabled] = useState(false);
   const [follows, setFollows] = useState([]);
   const [following, setFollowing] = useState(false);
+  const [trasnfer, setTrasnfer] = useState(false);
+  let higher = Number.POSITIVE_INFINITY;
+  const [postsIds, setPostsIds] = useState([]);
+  const [firstPostId, setFirstPostId] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [newUserPosts, setNewUserPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    getUserPosts(id, { token: userData.token }).then((r) =>
-      setUserPosts(r.data.posts)
-    );
-    getFollows(userData.token).then((r) => setFollows(r.data.users));
-  }, [following, id]);
-
-  useEffect(() => {
-    setFollowsId(follows.map((user) => user.id));
-  }, [follows]);
+  function postRepost(post) {
+    if(post.repostId) {
+      return post.repostId;
+    } else {
+      return post.id;
+    }
+  }
 
   useEffect(
-    () => setFollowing(followsId.includes(parseInt(id)) || false),
-    [followsId]
+    () => {
+      getUserPosts(id, { token: userData.token }).then((r) => {
+        setUserPosts(r.data.posts)
+        setTrasnfer(!trasnfer)
+      }
+        
+      )
+      getFollows(userData.token).then(r => setFollows(r.data.users))
+    },
+    [following]
   );
+
+  useEffect(() => {
+    if(userPosts.length > 0) {
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [userPosts])
+
+  useEffect(
+    () => {
+      setFollowsId(follows.map(user => user.id))
+    },
+    [follows]
+  )
+
+  useEffect(
+    () =>
+      setFollowing(followsId.includes(parseInt(id)) || false),
+    [followsId]
+  )
+
+  useEffect(() => {
+    if(userPosts.length > 0) {
+        setPostsIds(userPosts.map(post => postRepost(post)));
+    }
+  }, [userPosts, trasnfer])
+
+  useEffect(() => {
+    if(postsIds.length !== 0) {
+      postsIds.forEach(id => {
+        if(id < higher) {
+          higher = id;
+          setFirstPostId(higher);
+        }
+      })
+    };
+  }, [postsIds, userPosts])
+
+  function scrollInfinity() {
+    loadMoreUserPosts(id, firstPostId, userData.token).then(r => {
+      setNewUserPosts([...r.data.posts])
+      setHasMore(newUserPosts.length > 0)
+      setUserPosts([...userPosts, ...newUserPosts]);
+    })
+  }
 
   function followUser() {
     setDisabled(true);
@@ -74,14 +132,23 @@ export default function UserPosts() {
             ? `${userPosts[0].user.username}'s posts`
             : "Carregando..."}
         </Title>
-        {userPosts.length > 0 ? (
-          userPosts.map((post, index) => <Post key={index} {...post} />)
-        ) : (
+        {
+        pageNumber === 0 ? 
           <Container>
             <Loader />
             <LoaderText>Carregando...</LoaderText>
           </Container>
-        )}
+      :
+      <InfiniteScroll
+          pageStart={0}
+          loadMore={scrollInfinity}
+          hasMore={hasMore}
+          loader={<LoaderText key={0}>Loading ...</LoaderText>}
+        >
+            {userPosts.map((post, index) => (
+            <Post key={index} {...post} />))}
+        </InfiniteScroll>
+      }
       </Main>
       {parseInt(id) !== userData.user.id && (
         <Follow

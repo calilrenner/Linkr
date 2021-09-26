@@ -7,6 +7,8 @@ import Trending from "../components/Trending";
 import CreateNewPost from "../components/CreateNewPost";
 import styled from "styled-components";
 import { colors } from "../globalStyles";
+import InfiniteScroll from 'react-infinite-scroller';
+import { loadMorePosts } from "../service/scrollApi.service";
 import SearchUser from "../components/SearchUser";
 import {
   Container,
@@ -16,10 +18,27 @@ import {
   Title,
 } from "./mainStyles";
 
+
 export default function Timeline() {
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [followedPosts, setFollowedPosts] = useState("");
   const [followedUsers, setFollowedUsers] = useState([]);
+  const [postsIds, setPostsIds] = useState([]);
+  const [trasnfer, setTrasnfer] = useState(false)
+  let higher = Number.POSITIVE_INFINITY;
+  const [firstPostId, setFirstPostId] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [newPosts, setNewPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [errPosts, setErrPosts] = useState('');
+
+  function postRepost(post) {
+    if(post.repostId) {
+      return post.repostId;
+    } else {
+      return post.id;
+    }
+  }
 
   const useInterval = (callBackFunction, delay) => {
     const savedCallBackFunction = useRef();
@@ -46,37 +65,83 @@ export default function Timeline() {
   useEffect(() => 
   {
     getFollows(userData.token).then(r => setFollowedUsers(r.data.users))
-    getFollowsPosts(userData.token).then(r => setFollowedPosts(r.data.posts));
+    getFollowsPosts(userData.token).then(r => {
+      setFollowedPosts(r.data.posts)
+      setTrasnfer(!trasnfer)
+    }).catch((err) =>
+      setErrPosts(
+        "Houve uma falha ao obter os posts, por favor atualize a página"
+      )
+    )
   }
   ,[onChangePost])
 
-  function returnPosts() {
-    if(followedUsers.length === 0) {
-      return (
-        <NoFollow>Você não segue ninguém ainda, procure por perfis na busca.</NoFollow>
-      ) 
-      }else if(followedPosts.length === 0) {
-        return (
-        <NoFollow>Nenhuma publicação encontrada.</NoFollow>
-        )
-      } else {
-        return (
-          <>
-          {followedPosts.map((post) => <Post key={post.id} {...post} />)}
-          </>
-        )
+    useEffect(() => {
+      if(followedPosts.length > 0) {
+        setPageNumber(prevPageNumber => prevPageNumber + 1);
       }
+    }, [followedPosts])
+
+    useEffect(() => {
+      if(followedPosts.length > 0) {
+          setPostsIds(followedPosts.map(post => postRepost(post)));
+      }
+    }, [followedPosts, trasnfer])
+
+    useEffect(() => {
+      if(postsIds.length !== 0) {
+        postsIds.forEach(id => {
+          if(id < higher) {
+            higher = id;
+            setFirstPostId(higher);
+          }
+        })
+      }
+    }, [postsIds, followedPosts])
+
+    function scrollInfinity() {
+      loadMorePosts(firstPostId, userData.token).then(r => {
+        setNewPosts([...r.data.posts])
+        setHasMore(newPosts.length > 0)
+        setFollowedPosts([...followedPosts, ...newPosts]);
+      })
     }
 
-  function loadPosts() {
-    if (followedPosts === "") {
+    function returnPosts() {
+      if(followedUsers.length === 0) {
+        return (
+          <NoFollow>Você não segue ninguém ainda, procure por perfis na busca.</NoFollow>
+        ) 
+        }else if(followedPosts.length === 0 && pageNumber === 0) {
+          return (
+          <NoFollow>Nenhuma publicação encontrada.</NoFollow>
+          )
+        } else {
+          return (
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={scrollInfinity}
+            hasMore={hasMore}
+            loader={<LoaderText key={0}>Loading ...</LoaderText>}
+          >
+            {followedPosts.map((post, index) => (
+            <Post key={post.id} {...post} />))}
+          </InfiniteScroll>
+          )
+        }
+      }
+
+    function loadPosts() {
+      if (errPosts !== "") {
+        return <ErrorMsg>{errPosts}</ErrorMsg>;
+      } else if (followedPosts === "" && pageNumber === 0) {
       return (
         <Container>
           <Loader />
           <LoaderText>Carregando...</LoaderText>
         </Container>
       );
-    }  else {
+    } else {
       return (
         <Main>
           <div>
@@ -113,3 +178,9 @@ const NoFollow = styled.div`
     border-radius: 0;
   }
 `
+
+const ErrorMsg = styled.div`    
+    display: flex;
+    justify-content:center;
+    margin-top: 50px
+`;
