@@ -10,7 +10,7 @@ import { putEdit, postLike } from "../service/api.service";
 import { FaHeart } from "react-icons/fa";
 import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
-
+import LinkPreview from "./LinkPreview";
 import DeleteModal from "./DeleteModal";
 import notfound from "../assets/notfound.jpg";
 import CommentIcon from "./CommentIcon";
@@ -38,6 +38,7 @@ export default function Post(props) {
   const [showComments, setShowComments] = useState(false);
   const [postComments, setPostComments] = useState([]);
   const [myComment, setMyComment] = useState("");
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
 
   useEffect(() => {
     if (editSelected) {
@@ -195,8 +196,8 @@ export default function Post(props) {
     }
   }
 
-  function image(){
-    return (linkImage === "" || linkImage === null) ? notfound : linkImage;
+  function image() {
+    return linkImage === "" || linkImage === null ? notfound : linkImage;
   }
 
   return (
@@ -207,7 +208,11 @@ export default function Post(props) {
             <img src={avatar} alt="" />
           </Link>
           <div onClick={isliked} data-tip={toolTipMsg}>
-            {like ? <FaHeart color="red" cursor="pointer" /> : <FiHeart cursor="pointer"/>}
+            {like ? (
+              <FaHeart color="red" cursor="pointer" />
+            ) : (
+              <FiHeart cursor="pointer" />
+            )}
             <ReactTooltip />
           </div>
           <span>
@@ -215,13 +220,13 @@ export default function Post(props) {
               ? `${likesArrayLength} like`
               : `${likesArrayLength} likes`}
           </span>
-          <CommentIcon 
-            showComments={showComments} 
-            setShowComments={setShowComments} 
+          <CommentIcon
+            showComments={showComments}
+            setShowComments={setShowComments}
             postId={id}
             postComments={postComments}
             setPostComments={setPostComments}
-            myComment={myComment} 
+            myComment={myComment}
           />
         </SideBarPost>
         <ContentPost>
@@ -231,46 +236,50 @@ export default function Post(props) {
                 <span>{username}</span>
               </Link>
               <div>
-                {user.id === userData.user.id && 
+                {user.id === userData.user.id && (
                   <>
                     <EditIcon onClick={selectEdit} />
                     <DeleteIcon onClick={() => setModalOpen(!modalOpen)} />
-                  </> 
-                  }
+                  </>
+                )}
               </div>
             </div>
             {edit()}
           </MsgPost>
-          <a href={link} target="_blank" rel="noreferrer">
-            <LinkPost>
-              <div>
-                <span>{linkTitle}</span>
-                <span>{linkDescription}</span>
-                <p>{link}</p>
-              </div>
-              <img src={image()} alt="" />
-            </LinkPost>{" "}
-          </a>
+          <LinkPreview
+            previewModalOpen={previewModalOpen}
+            setPreviewModalOpen={setPreviewModalOpen}
+            title={linkTitle}
+            link={link}
+          />
+          <LinkPost onClick={() => setPreviewModalOpen(true)}>
+            <div>
+              <span>{linkTitle}</span>
+              <span>{linkDescription}</span>
+              <p>{link}</p>
+            </div>
+            <img src={image()} alt="" />
+          </LinkPost>
         </ContentPost>
-        {modalOpen && 
+        {modalOpen && (
           <DeleteModal
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             postId={id}
           />
-        }
+        )}
       </Container>
-      {showComments && 
-        <Comments 
+      {showComments && (
+        <Comments
           postComments={postComments}
           userId={user.id}
           postId={id}
           myComment={myComment}
           setMyComment={setMyComment}
         />
-      }
+      )}
     </>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -382,7 +391,7 @@ const MsgPost = styled.div`
     word-break: break-all;
   }
 
-  span:nth-child(2){
+  span:nth-child(2) {
     font-size: 17px;
     margin-top: 10px;
   }
