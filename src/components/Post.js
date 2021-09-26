@@ -12,6 +12,7 @@ import { postUnlike } from "../service/api.service";
 import ReactTooltip from "react-tooltip";
 
 import DeleteModal from "./DeleteModal";
+import notfound from "../assets/notfound.jpg";
 import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
 
@@ -193,6 +194,10 @@ export default function Post(props) {
     }
   }
 
+  function image(){
+    return (linkImage === "" || linkImage === null) ? notfound : linkImage;
+  }
+
   return (
     <>
       <Container>
@@ -242,7 +247,7 @@ export default function Post(props) {
                 <span>{linkDescription}</span>
                 <p>{link}</p>
               </div>
-              <img src={linkImage} alt="" />
+              <img src={image()} alt="" />
             </LinkPost>{" "}
           </a>
         </ContentPost>
