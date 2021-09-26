@@ -82,6 +82,10 @@ function getShownUser(id, { token }) {
   return axios.get(`${URL}/users/${id}`, setConfig(token));
 }
 
+function repost(id, token) {
+  return axios.post(`${URL}posts/${id}/share`, {}, setConfig(token));
+}
+
 export {
   registerUser,
   getTrending,
@@ -102,4 +106,5 @@ export {
   postUnFollow,
   getFollows,
   getShownUser,
+  repost,
 };
