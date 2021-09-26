@@ -1,102 +1,25 @@
 import styled from "styled-components";
 import { colors } from "../globalStyles";
 import { Link } from "react-router-dom";
-import ReactHashtag from "react-hashtag";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
-import { useContext, useState, useRef, useEffect } from "react";
-import { putEdit } from "../service/api.service";
+import { useContext, useState } from "react";
 import DeleteModal from "./DeleteModal";
 import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
 import Likes from "./Likes";
+import Edit from "./Edit";
 
 export default function Post(props) {
   const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostId } =
     props;
   const { username, avatar } = user;
-  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
-  const [editSelected, setEditSelect] = useState(false);
-  const [newText, setNewText] = useState(text);
-  const [editDisabled, setEditDisabled] = useState(false);
-  const inputRef = useRef();
+  const { userData } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [postComments, setPostComments] = useState([]);
   const [myComment, setMyComment] = useState("");
-
-  useEffect(() => {
-    if (editSelected) {
-      inputRef.current.focus();
-    }
-    setNewText(text);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editSelected]);
-
-  function cancelEditOnEsc(e) {
-    if (e.code === "Escape" && editSelected) {
-      setEditSelect(false);
-    }
-    if (e.code === "Enter" && editSelected) {
-      setEditDisabled(true);
-      putEdit(newText, userData.token, id)
-        .then((res) => {
-          setEditDisabled(false);
-          setEditSelect(false);
-
-          if (onChangePost) {
-            setOnChangePost(false);
-          } else {
-            setOnChangePost(true);
-          }
-        })
-        .catch((err) => {
-          setEditDisabled(false);
-          alert("Não foi possível salvar as alterações!");
-        });
-    }
-  }
-
-  const edit = () => {
-    if (editSelected) {
-      return (
-        <InputEditPost
-          type="text"
-          value={newText}
-          ref={inputRef}
-          onChange={(e) => setNewText(e.target.value)}
-          onKeyUp={(e) => cancelEditOnEsc(e)}
-          disabled={editDisabled}
-        />
-      );
-    } else {
-      return (
-        <span>
-          <ReactHashtag
-            renderHashtag={(hashTagValue) => (
-              <Link
-                to={`/hashtag/${hashTagValue.replace("#", "").toLowerCase()}`}
-              >
-                <Hashtag>{hashTagValue}</Hashtag>
-              </Link>
-            )}
-          >
-            {text}
-          </ReactHashtag>
-        </span>
-      );
-    }
-  };
-
-  function selectEdit() {
-    if (editSelected) {
-      setEditSelect(false);
-    } else {
-      setEditSelect(true);
-    }
-  }
-
-  console.log(userData.token)
+  const [editSelected, setEditSelect] = useState(false);
 
   return (
     <>
@@ -124,13 +47,13 @@ export default function Post(props) {
               <div>
                 {user.id === userData.user.id && 
                   <>
-                    <EditIcon onClick={selectEdit} />
+                    <EditIcon onClick={() => setEditSelect(!editSelected)} />
                     <DeleteIcon onClick={() => setModalOpen(!modalOpen)} />
                   </> 
                   }
               </div>
             </div>
-            {edit()}
+            <Edit setEditSelect={setEditSelect} editSelected={editSelected} id={id} text={text}/>
           </MsgPost>
           <a href={link} target="_blank" rel="noreferrer">
             <LinkPost>
@@ -284,12 +207,7 @@ const MsgPost = styled.div`
   }
 `;
 
-const EditIcon = styled(MdModeEdit)`
-  color: white;
-  font-size: 16px;
-  margin-right: 4px;
-  cursor: pointer;
-`;
+
 
 const DeleteIcon = styled(MdDelete)`
   color: white;
@@ -306,15 +224,9 @@ const ContentPost = styled.div`
   margin-left: 12px;
 `;
 
-const Hashtag = styled.a`
+const EditIcon = styled(MdModeEdit)`
   color: white;
-  text-decoration: none;
-  font-weight: 700;
-`;
-
-const InputEditPost = styled.input`
-  width: 100%;
-  height: 44px;
-  border-radius: 7px;
-  font-size: 14px;
+  font-size: 16px;
+  margin-right: 4px;
+  cursor: pointer;
 `;
