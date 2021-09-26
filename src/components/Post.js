@@ -5,6 +5,7 @@ import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext, useState } from "react";
 import DeleteModal from "./DeleteModal";
+import notfound from "../assets/notfound.jpg";
 import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
 import Likes from "./Likes";
@@ -20,6 +21,10 @@ export default function Post(props) {
   const [postComments, setPostComments] = useState([]);
   const [myComment, setMyComment] = useState("");
   const [editSelected, setEditSelect] = useState(false);
+
+  function image(){
+    return (linkImage === "" || linkImage === null) ? notfound : linkImage;
+  }
 
   return (
     <>
@@ -62,7 +67,7 @@ export default function Post(props) {
                 <span>{linkDescription}</span>
                 <p>{link}</p>
               </div>
-              <img src={linkImage} alt="" />
+              <img src={image()} alt="" />
             </LinkPost>{" "}
           </a>
         </ContentPost>
