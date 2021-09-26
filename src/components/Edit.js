@@ -91,4 +91,5 @@ const InputEditPost = styled.input`
   height: 44px;
   border-radius: 7px;
   font-size: 14px;
+  margin: 5px 0;
 `;
