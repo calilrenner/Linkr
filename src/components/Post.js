@@ -5,6 +5,8 @@ import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext, useState } from "react";
 import DeleteModal from "./DeleteModal";
+import RepostedBy from "./RepostedBy";
+import Repost from "./Repost";
 import notfound from "../assets/notfound.jpg";
 import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
@@ -12,7 +14,7 @@ import Likes from "./Likes";
 import Edit from "./Edit";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostId } =
+  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostId, repostCount, repostedBy } =
     props;
   const { username, avatar } = user;
   const { userData } = useContext(UserContext);
@@ -28,6 +30,9 @@ export default function Post(props) {
 
   return (
     <>
+      {repostedBy !== undefined &&
+        <RepostedBy repostedBy={repostedBy} userId={userData.user.id} />
+      }
       <Container>
         <SideBarPost>
           <Link to={`/user/${user.id}`}>
@@ -42,6 +47,7 @@ export default function Post(props) {
             setPostComments={setPostComments}
             myComment={myComment} 
           />
+          <Repost postId={id} repostCount={repostCount} />
         </SideBarPost>
         <ContentPost>
           <MsgPost>
