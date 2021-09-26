@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { getPostsByHashtag } from "../service/api.service";
 import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
@@ -13,11 +13,15 @@ export default function Hashtag() {
   const { userData } = useContext(UserContext);
   const [hashtagPosts, setHashtagPosts] = useState({});
   const [load, setLoad] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
+    if (!userData.token) {
+      history.push("/");
+    }
     getPostsByHashtag({ token: userData.token }, hashtag).then((r) => {
-      setHashtagPosts(r.data);
       setLoad(true);
+      setHashtagPosts(r.data);
     });
   }, [hashtag, userData.token]);
 
@@ -27,7 +31,7 @@ export default function Hashtag() {
       <Main>
         {window.innerWidth < 1000 && <SearchUser />}
         <Title># {hashtag}</Title>
-        {load ? (
+        {load && hashtagPosts.posts ? (
           hashtagPosts.posts.length === 0 ? (
             <Text>Nada sobre esse assunto ☹️</Text>
           ) : (

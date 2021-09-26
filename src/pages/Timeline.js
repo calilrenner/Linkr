@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import { useEffect, useState, useContext, useRef } from "react";
 import Post from "../components/Post";
 import UserContext from "../contexts/UserContext";
@@ -8,67 +9,67 @@ import CreateNewPost from "../components/CreateNewPost";
 import styled from "styled-components";
 import { colors } from "../globalStyles";
 import SearchUser from "../components/SearchUser";
-import {
-  Container,
-  Loader,
-  LoaderText,
-  Main,
-  Title,
-} from "./mainStyles";
+import { Container, Loader, LoaderText, Main, Title } from "./mainStyles";
 
 export default function Timeline() {
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
   const [followedPosts, setFollowedPosts] = useState("");
   const [followedUsers, setFollowedUsers] = useState([]);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!userData.token) {
+      history.push("/");
+    }
+  }, []);
 
   const useInterval = (callBackFunction, delay) => {
     const savedCallBackFunction = useRef();
-
     useEffect(() => {
       savedCallBackFunction.current = callBackFunction;
-    }, [callBackFunction])
+    }, [callBackFunction]);
 
     useEffect(() => {
       const newQueuePosts = () => {
         savedCallBackFunction.current();
-      }
-      if(delay !== null) {
+      };
+      if (delay !== null) {
         let update = setInterval(newQueuePosts, delay);
         return () => clearInterval(update);
       }
-    }, [delay])
-  }
+    }, [delay]);
+  };
 
   useInterval(() => {
-    setOnChangePost(!onChangePost)
+    setOnChangePost(!onChangePost);
   }, 15000);
 
-  useEffect(() => 
-  {
-    getFollows(userData.token).then(r => setFollowedUsers(r.data.users))
-    getFollowsPosts(userData.token).then(r => setFollowedPosts(r.data.posts));
-  }
-  ,[onChangePost])
+  useEffect(() => {
+    getFollows(userData.token).then((r) => setFollowedUsers(r.data.users));
+    getFollowsPosts(userData.token).then((r) => setFollowedPosts(r.data.posts));
+  }, [onChangePost]);
 
   console.log(followedPosts)
 
   function returnPosts() {
-    if(followedUsers.length === 0) {
+    if (followedUsers.length === 0) {
       return (
-        <NoFollow>Você não segue ninguém ainda, procure por perfis na busca.</NoFollow>
-      ) 
-      }else if(followedPosts.length === 0) {
-        return (
-        <NoFollow>Nenhuma publicação encontrada.</NoFollow>
-        )
-      } else {
-        return (
-          <>
-          {followedPosts.map((post) => <Post key={post.id} {...post} />)}
-          </>
-        )
-      }
+        <NoFollow>
+          Você não segue ninguém ainda, procure por perfis na busca.
+        </NoFollow>
+      );
+    } else if (followedPosts.length === 0) {
+      return <NoFollow>Nenhuma publicação encontrada.</NoFollow>;
+    } else {
+      return (
+        <>
+          {followedPosts.map((post) => (
+            <Post key={post.id} {...post} />
+          ))}
+        </>
+      );
     }
+  }
 
   function loadPosts() {
     if (followedPosts === "") {
@@ -78,7 +79,7 @@ export default function Timeline() {
           <LoaderText>Carregando...</LoaderText>
         </Container>
       );
-    }  else {
+    } else {
       return (
         <Main>
           <div>
@@ -109,9 +110,9 @@ const NoFollow = styled.div`
   display: flex;
   align-items: center;
   padding: 15px;
-  
+
   @media (max-width: 1000px) {
     width: 100%;
     border-radius: 0;
   }
-`
+`;

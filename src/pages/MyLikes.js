@@ -7,13 +7,17 @@ import Trending from "../components/Trending";
 import Header from "../components/Header";
 import { Loader, Main, Title, Text } from "./mainStyles";
 import SearchUser from "../components/SearchUser";
+import { useHistory } from "react-router-dom";
 
 export default function MyLikes() {
   const { userData, onChangePost } = useContext(UserContext);
   const [likedPosts, setLikedPosts] = useState({});
   const [load, setLoad] = useState(false);
-
+  const history = useHistory();
   useEffect(() => {
+    if (!userData.token) {
+      history.push("/");
+    }
     getMyLikes({ token: userData.token }).then((r) => {
       setLikedPosts(r.data.posts);
       setLoad(true);
