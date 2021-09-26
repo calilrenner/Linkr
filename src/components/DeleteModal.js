@@ -9,111 +9,118 @@ import { deletePost } from "../service/api.service";
 Modal.setAppElement(document.querySelector(".root"));
 
 export default function DeleteModal({ modalOpen, setModalOpen, postId }) {
-    const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
-    const [disabledButtons, setDisabledButtons] = useState(false);
+  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
+  const [disabledButtons, setDisabledButtons] = useState(false);
 
-    function deleteThisPost() {
-        const token = userData.token;
-        const id = postId;
-        const req = deletePost(id, token);
+  function deleteThisPost() {
+    const token = userData.token;
+    const id = postId;
+    const req = deletePost(id, token);
 
-        setDisabledButtons(true);
+    setDisabledButtons(true);
 
-        req.then(() => {
-            setDisabledButtons(false);
-            setModalOpen(!modalOpen);
-            setOnChangePost(!onChangePost)
-        })
-        req.catch(() => {;
-            setDisabledButtons(false)
-            setModalOpen(!modalOpen);
-            setOnChangePost(!onChangePost)
-            alert("Não foi possível excluir o post. Tente novamente.");
-        })
-    }
+    req.then(() => {
+      setDisabledButtons(false);
+      setModalOpen(!modalOpen);
+      setOnChangePost(!onChangePost);
+    });
+    req.catch(() => {
+      setDisabledButtons(false);
+      setModalOpen(!modalOpen);
+      setOnChangePost(!onChangePost);
+      alert("Não foi possível excluir o post. Tente novamente.");
+    });
+  }
 
-    return (
-        <StyledModal style={customStyles} isOpen={modalOpen} onRequestClose={() => setModalOpen(!modalOpen)}>
-            <Text margin={disabledButtons}>
-                {disabledButtons ?
-                    "Excluindo..."
-                :
-                    "Tem certeza que deseja excluir essa publicação?"
-                }
-            </Text>
-            {disabledButtons && <Loader type="ThreeDots" color="#ffffff" height="20px" />}
-            <div>
-                <GoBackButton onClick={() => setModalOpen(!modalOpen)} disabled={disabledButtons} >
-                    Não, voltar
-                </GoBackButton>
-                <ConfirmButton onClick={deleteThisPost} disabled={disabledButtons} >
-                    Sim, excluir
-                </ConfirmButton>
-            </div>
-        </StyledModal>
-    );   
+  return (
+    <StyledModal
+      style={customStyles}
+      isOpen={modalOpen}
+      onRequestClose={() => setModalOpen(!modalOpen)}
+    >
+      <Text margin={disabledButtons}>
+        {disabledButtons
+          ? "Excluindo..."
+          : "Tem certeza que deseja excluir essa publicação?"}
+      </Text>
+      {disabledButtons && (
+        <Loader type="ThreeDots" color="#ffffff" height="20px" />
+      )}
+      <div>
+        <GoBackButton
+          onClick={() => setModalOpen(!modalOpen)}
+          disabled={disabledButtons}
+        >
+          Não, voltar
+        </GoBackButton>
+        <ConfirmButton onClick={deleteThisPost} disabled={disabledButtons}>
+          Sim, excluir
+        </ConfirmButton>
+      </div>
+    </StyledModal>
+  );
 }
 
 const StyledModal = styled(ReactModal)`
-    top: 50vh;
-    left: 50vw;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    max-width: 597px;
-    width: 100%;
-    height: 262px;
-    background: #333;
-    border-radius: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    padding: 0 110px 0 110px;
+  top: 50vh;
+  left: 50vw;
+  right: auto;
+  bottom: auto;
 
-    div{
-        margin-top: 20px;
-    }
+  transform: translate(-50%, -50%);
+  max-width: 597px;
+  width: 100%;
+  height: 262px;
+  background: #333;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  padding: 0 110px 0 110px;
+
+  div {
+    margin-top: 20px;
+  }
 `;
 
 const customStyles = {
-    overlay: {zIndex: 1000}
+  overlay: { zIndex: 1000 },
 };
 
 const Text = styled.p`
-    font-family: "Lato", sans-serif;
-    font-weight: bold;
-    font-size: 34px;
-    line-height: 41px;
-    color: #FFF;
-    margin-bottom: ${props => props.margin ? "20px" : "40px"};
+  font-family: "Lato", sans-serif;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 41px;
+  color: #fff;
+  margin-bottom: ${(props) => (props.margin ? "20px" : "40px")};
 `;
 
 const GoBackButton = styled.button`
-    width: 134px;
-    height: 37px;
-    background: #ffffff;
-    color: #1877f2;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 22px;
-    border-radius: 5px;
-    border: none;
-    margin-right: 27px;
-    cursor: pointer;
+  width: 134px;
+  height: 37px;
+  background: #ffffff;
+  color: #1877f2;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  border-radius: 5px;
+  border: none;
+  margin-right: 27px;
+  cursor: pointer;
 `;
 
 const ConfirmButton = styled.button`
-    width: 134px;
-    height: 37px;
-    background: #1877f2;
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 22px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
+  width: 134px;
+  height: 37px;
+  background: #1877f2;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
 `;

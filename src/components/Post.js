@@ -325,6 +325,7 @@ const LinkPost = styled.div`
   height: 155px;
   width: 100%;
   max-width: 500px;
+  cursor: pointer;
 
   div {
     margin: 15px 15px;

@@ -16,8 +16,10 @@ export default function LinkPreview({
       onRequestClose={() => setPreviewModalOpen(!previewModalOpen)}
     >
       <div>
-        <button>Open in a new tab</button>
-        <MdClose onClick={() => setPreviewModalOpen(!previewModalOpen)} />
+        <a href={link} target="_blank" rel="noreferrer">
+          <button>Open in a new tab</button>
+        </a>
+        <Close onClick={() => setPreviewModalOpen(!previewModalOpen)} />
       </div>
       <iframe title={title} src={link}></iframe>
     </Preview>
@@ -57,12 +59,18 @@ const Preview = styled(ReactModal)`
     border: none;
     color: ${colors.white};
     font-weight: bold;
+    cursor: pointer;
   }
 
   iframe {
     width: 95%;
     height: 85%;
   }
+`;
+
+const Close = styled(MdClose)`
+  cursor: pointer;
+  font-size: 20px;
 `;
 
 const customStyles = {
