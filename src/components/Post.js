@@ -40,7 +40,7 @@ export default function Post(props) {
   const [editSelected, setEditSelect] = useState(false);
 
   function image() {
-    return linkImage === "" || linkImage === null ? notfound : linkImage;
+    return (linkImage === "" || linkImage === null || linkTitle=== "Google") ? notfound : linkImage;
   }
 
   return (
