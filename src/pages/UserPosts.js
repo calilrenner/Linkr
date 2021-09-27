@@ -1,17 +1,18 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import {
   getFollows,
   getUserPosts,
   postFollow,
   postUnFollow,
+  getShownUser,
 } from "../service/api.service";
 import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
 import SearchUser from "../components/SearchUser";
-import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
+import { Main, Title, Container, Loader, LoaderText, Text } from "./mainStyles";
 import styled from "styled-components";
 import { loadMoreUserPosts } from "../service/scrollApi.service";
 import InfiniteScroll from 'react-infinite-scroller';
@@ -30,6 +31,9 @@ export default function UserPosts() {
   const [pageNumber, setPageNumber] = useState(0);
   const [newUserPosts, setNewUserPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [load, setLoad] = useState(false);
+  const [shownUser, setShownUser] = useState({});
+  const history = useHistory();
 
   function postRepost(post) {
     if(post.repostId) {
@@ -41,15 +45,20 @@ export default function UserPosts() {
 
   useEffect(
     () => {
+      if (!userData.token) {
+        history.push("/");
+      }
       getUserPosts(id, { token: userData.token }).then((r) => {
         setUserPosts(r.data.posts)
         setTrasnfer(!trasnfer)
-      }
-        
-      )
+        setLoad(true);
+      })
+      getShownUser(id, { token: userData.token }).then((r) =>
+      setShownUser(r.data.user)
+    );
       getFollows(userData.token).then(r => setFollows(r.data.users))
     },
-    [following]
+    [following, id]
   );
 
   useEffect(() => {
@@ -128,13 +137,18 @@ export default function UserPosts() {
       <Main>
         {window.innerWidth < 1000 && <SearchUser />}
         <Title>
-          {userPosts.length > 0
-            ? `${userPosts[0].user.username}'s posts`
-            : "Carregando..."}
+          {load ? `${shownUser.username}'s posts` : "Carregando..."}
         </Title>
-        {
-        pageNumber === 0 ? 
-          <Container>
+        {load ? (
+          userPosts.length === 0 ? (
+            <Text>Este usuáro ainda não postou nada ☹️</Text>
+          ) : (
+            userPosts.map((post, index) => <Post key={index} {...post} />)
+          )
+        ) :
+          (
+            pageNumber === 0 ? 
+            <Container>
             <Loader />
             <LoaderText>Carregando...</LoaderText>
           </Container>
@@ -147,10 +161,11 @@ export default function UserPosts() {
         >
             {userPosts.map((post, index) => (
             <Post key={index} {...post} />))}
-        </InfiniteScroll>
+      </InfiniteScroll>
+        )
       }
       </Main>
-      {parseInt(id) !== userData.user.id && (
+      {load && parseInt(id) !== userData.user.id && (
         <Follow
           onClick={() => (following ? unfollowUser() : followUser())}
           disabled={disabled}

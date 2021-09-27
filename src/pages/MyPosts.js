@@ -9,6 +9,7 @@ import { Main, Title, Loader, Text, LoaderText } from "./mainStyles";
 import InfiniteScroll from 'react-infinite-scroller';
 import { loadMoreMyPosts } from "../service/scrollApi.service";
 import SearchUser from "../components/SearchUser";
+import { useHistory } from "react-router-dom";
 
 export default function MyPosts() {
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -21,6 +22,7 @@ export default function MyPosts() {
   const [pageNumber, setPageNumber] = useState(0);
   const [newUserPosts, setNewUserPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const history = useHistory();
 
   function postRepost(post) {
     if(post.repostId) {
@@ -31,15 +33,16 @@ export default function MyPosts() {
   }
 
   useEffect(() => {
-    const id = userData.user.id;
-    const token = { token: userData.token };
-    const req = getUserPosts(id, token);
-
-    req.then((res) => {
-      setUserPosts(res.data.posts)
-      setLoad(true)
-      setTrasnfer(!trasnfer)
-    });
+    if (!userData.token) {
+      history.push("/");
+    }
+    if (userData.token) {
+      getUserPosts(userData.user.id, { token: userData.token }).then((res) => {
+        setUserPosts(res.data.posts);
+        setLoad(true);
+        setTrasnfer(!trasnfer)
+      });
+    }
   }, [onChangePost, hasMore]);
 
   useEffect(() => {

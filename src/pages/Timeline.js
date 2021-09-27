@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import { useEffect, useState, useContext, useRef } from "react";
 import Post from "../components/Post";
 import UserContext from "../contexts/UserContext";
@@ -10,13 +11,7 @@ import { colors } from "../globalStyles";
 import InfiniteScroll from 'react-infinite-scroller';
 import { loadMorePosts } from "../service/scrollApi.service";
 import SearchUser from "../components/SearchUser";
-import {
-  Container,
-  Loader,
-  LoaderText,
-  Main,
-  Title,
-} from "./mainStyles";
+import { Container, Loader, LoaderText, Main, Title } from "./mainStyles";
 
 
 export default function Timeline() {
@@ -31,6 +26,7 @@ export default function Timeline() {
   const [newPosts, setNewPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [errPosts, setErrPosts] = useState('');
+  const history = useHistory();
 
   function postRepost(post) {
     if(post.repostId) {
@@ -40,26 +36,31 @@ export default function Timeline() {
     }
   }
 
+  useEffect(() => {
+    if (!userData.token) {
+      history.push("/");
+    }
+  }, []);
+
   const useInterval = (callBackFunction, delay) => {
     const savedCallBackFunction = useRef();
-
     useEffect(() => {
       savedCallBackFunction.current = callBackFunction;
-    }, [callBackFunction])
+    }, [callBackFunction]);
 
     useEffect(() => {
       const newQueuePosts = () => {
         savedCallBackFunction.current();
-      }
-      if(delay !== null) {
+      };
+      if (delay !== null) {
         let update = setInterval(newQueuePosts, delay);
         return () => clearInterval(update);
       }
-    }, [delay])
-  }
+    }, [delay]);
+  };
 
   useInterval(() => {
-    setOnChangePost(!onChangePost)
+    setOnChangePost(!onChangePost);
   }, 15000);
 
   useEffect(() => 
@@ -107,9 +108,7 @@ export default function Timeline() {
       })
     }
 
-    console.log(followedUsers)
-
-    function returnPosts() {
+    function posts() {
       if(followedUsers.length === 0) {
         return (
           <NoFollow>Você não segue ninguém ainda, procure por perfis na busca.</NoFollow>
@@ -151,14 +150,13 @@ export default function Timeline() {
             {window.innerWidth < 1000 && <SearchUser />}
             <Title>timeline</Title>
             <CreateNewPost />
-            {returnPosts()}
+            {posts()}
           </div>
           <Trending />
         </Main>
       );
     }
   }
-
   return <>{loadPosts()}</>;
 }
 
@@ -174,7 +172,7 @@ const NoFollow = styled.div`
   display: flex;
   align-items: center;
   padding: 15px;
-  
+
   @media (max-width: 1000px) {
     width: 100%;
     border-radius: 0;

@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { getPostsByHashtag } from "../service/api.service";
 import UserContext from "../contexts/UserContext";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
 import Header from "../components/Header";
-import { Main, Title, Container, Loader, LoaderText } from "./mainStyles";
+import { Main, Title, Container, Loader, LoaderText, Text } from "./mainStyles";
 import InfiniteScroll from 'react-infinite-scroller';
 import { loadMoreHashTagPosts } from "../service/scrollApi.service";
 import SearchUser from "../components/SearchUser";
@@ -21,6 +21,8 @@ export default function Hashtag() {
   const [pageNumber, setPageNumber] = useState(0);
   const [newHashTagPosts, setNewHashTagPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [load, setLoad] = useState(false);
+  const history = useHistory();
 
   function postRepost(post) {
     if(post.repostId) {
@@ -31,6 +33,9 @@ export default function Hashtag() {
   }
 
   useEffect(() => {
+    if (!userData.token) {
+      history.push("/");
+    }
     getPostsByHashtag({ token: userData.token }, hashtag).then((r) =>
       {
         setHashtagPosts(r.data.posts)
@@ -76,9 +81,17 @@ export default function Hashtag() {
       <Main>
         {window.innerWidth < 1000 && <SearchUser />}
         <Title># {hashtag}</Title>
-        {
-          pageNumber === 0 ? 
-          <Container>
+        {load && hashtagPosts.posts ? (
+          hashtagPosts.posts.length === 0 ? (
+            <Text>Nada sobre esse assunto ☹️</Text>
+          ) : (
+            hashtagPosts.posts.map((post, index) => (
+              <Post key={index} {...post} />
+            ))
+          )
+        ) :
+          (pageNumber === 0 ?
+            <Container>
             <Loader />
             <LoaderText>Carregando...</LoaderText>
           </Container>
@@ -91,9 +104,9 @@ export default function Hashtag() {
         >
             {hashtagPosts.map((post, index) => (
             <Post key={index} {...post} />))}
-        </InfiniteScroll>
+        </InfiniteScroll> 
+            )
         }
-        
       </Main>
       <Trending />
     </>

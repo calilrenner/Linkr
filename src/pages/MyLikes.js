@@ -9,6 +9,7 @@ import { Loader, Main, Title, Text, LoaderText } from "./mainStyles";
 import InfiniteScroll from 'react-infinite-scroller';
 import { loadMoreLikedPosts } from "../service/scrollApi.service";
 import SearchUser from "../components/SearchUser";
+import { useHistory } from "react-router-dom";
 
 export default function MyLikes() {
   const { userData, onChangePosts } = useContext(UserContext);
@@ -21,6 +22,7 @@ export default function MyLikes() {
   const [pageNumber, setPageNumber] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [newLikedPosts, setNewLikedPosts] = useState([]);
+  const history = useHistory();
 
   function postRepost(post) {
     if(post.repostId) {
@@ -31,6 +33,9 @@ export default function MyLikes() {
   }
 
   useEffect(() => {
+    if (!userData.token) {
+      history.push("/");
+    }
     getMyLikes({ token: userData.token }).then((r) => {
       setLikedPosts(r.data.posts);
       setLoad(true);
