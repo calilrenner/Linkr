@@ -38,9 +38,10 @@ export default function Post(props) {
   const [postComments, setPostComments] = useState([]);
   const [myComment, setMyComment] = useState("");
   const [editSelected, setEditSelect] = useState(false);
+  const isGif = linkImage.search(/\.gif$/g) !== -1 ? true : false;
 
   function image() {
-    return (linkImage === "" || linkImage === null || linkTitle=== "Google") ? notfound : linkImage;
+    return (linkImage === "" || linkImage === null || isGif ) ? notfound : linkImage;
   }
 
   return (
