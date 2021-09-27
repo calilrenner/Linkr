@@ -38,7 +38,7 @@ export default function Trending() {
       <form onSubmit={handleSubmit}>
         <StyledInput
           type="text"
-          placeholder="type a hastag"
+          placeholder="type a hashtag"
           onChange={(e) => setHashtagInput(e.target.value)}
         ></StyledInput>
       </form>
