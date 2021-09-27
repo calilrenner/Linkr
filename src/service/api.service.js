@@ -26,7 +26,7 @@ function postUnlike(idPost, token) {
 }
 
 function getUserPosts(id, { token }) {
-  return axios.get(`${URL}users/${id}/posts`, setConfig(token));
+  return axios.get(`${URL}/users/${id}/posts`, setConfig(token));
 }
 
 function getPostsByHashtag({ token }, hashtag) {
@@ -41,7 +41,7 @@ function deletePost(id, token) {
   return axios.delete(`${URL}posts/${id}`, setConfig(token));
 }
 
-function getMyLikes({ token }) {
+function getMyLikes(token) {
   return axios.get(`${URL}/posts/liked`, setConfig(token));
 }
 
@@ -51,7 +51,7 @@ function putEdit(text, token, id) {
 }
 
 function getFollowsPosts(token) {
-  return axios.get(`${URL}/following/posts`, setConfig(token));
+  return axios.get(`${URL}following/posts`, setConfig(token));
 }
 
 function getPostComments(id, token) {
