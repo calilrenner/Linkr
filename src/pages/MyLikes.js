@@ -74,8 +74,6 @@ export default function MyLikes() {
     })
   }
 
-  console.log(likedPosts)
-
   return (
     <>
       <Header />
