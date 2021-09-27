@@ -28,14 +28,6 @@ export default function Timeline() {
   const [errPosts, setErrPosts] = useState('');
   const history = useHistory();
 
-  function postRepost(post) {
-    if(post.repostId) {
-      return post.repostId;
-    } else {
-      return post.id;
-    }
-  }
-
   useEffect(() => {
     if (!userData.token) {
       history.push("/");
@@ -85,7 +77,7 @@ export default function Timeline() {
 
     useEffect(() => {
       if(followedPosts.length > 0) {
-          setPostsIds(followedPosts.map(post => postRepost(post)));
+          setPostsIds(followedPosts.map(post => post.repostId || post.id));
       }
     }, [followedPosts, trasnfer])
 
@@ -126,7 +118,7 @@ export default function Timeline() {
             loader={<LoaderText key={0}>Loading ...</LoaderText>}
           >
             {followedPosts.map((post, index) => (
-            <Post key={post.id} {...post} />))}
+            <Post key={index} {...post} />))}
           </InfiniteScroll>
           )
         }

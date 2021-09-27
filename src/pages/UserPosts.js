@@ -35,14 +35,6 @@ export default function UserPosts() {
   const [shownUser, setShownUser] = useState({});
   const history = useHistory();
 
-  function postRepost(post) {
-    if(post.repostId) {
-      return post.repostId;
-    } else {
-      return post.id;
-    }
-  }
-
   useEffect(
     () => {
       if (!userData.token) {
@@ -82,7 +74,7 @@ export default function UserPosts() {
 
   useEffect(() => {
     if(userPosts.length > 0) {
-        setPostsIds(userPosts.map(post => postRepost(post)));
+        setPostsIds(userPosts.map(post => post.repostId || post.id));
     }
   }, [userPosts, trasnfer])
 
@@ -139,13 +131,9 @@ export default function UserPosts() {
         <Title>
           {load ? `${shownUser.username}'s posts` : "Carregando..."}
         </Title>
-        {load ? (
-          userPosts.length === 0 ? (
+        {load && userPosts.length === 0 ? 
             <Text>Este usuáro ainda não postou nada ☹️</Text>
-          ) : (
-            userPosts.map((post, index) => <Post key={index} {...post} />)
-          )
-        ) :
+        :
           (
             pageNumber === 0 ? 
             <Container>

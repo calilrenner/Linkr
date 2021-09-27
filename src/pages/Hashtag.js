@@ -13,7 +13,7 @@ import SearchUser from "../components/SearchUser";
 export default function Hashtag() {
   const { hashtag } = useParams();
   const { userData } = useContext(UserContext);
-  const [hashtagPosts, setHashtagPosts] = useState([]);
+  const [hashtagPosts, setHashtagPosts] = useState('');
   let higher = Number.POSITIVE_INFINITY;
   const [firstPostId, setFirstPostId] = useState(0);
   const [postsIds, setPostsIds] = useState([]);
@@ -21,16 +21,7 @@ export default function Hashtag() {
   const [pageNumber, setPageNumber] = useState(0);
   const [newHashTagPosts, setNewHashTagPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [load, setLoad] = useState(false);
   const history = useHistory();
-
-  function postRepost(post) {
-    if(post.repostId) {
-      return post.repostId;
-    } else {
-      return post.id;
-    }
-  }
 
   useEffect(() => {
     if (!userData.token) {
@@ -52,7 +43,7 @@ export default function Hashtag() {
 
   useEffect(() => {
     if(hashtagPosts.length > 0) {
-        setPostsIds(hashtagPosts.map(post => postRepost(post)));
+        setPostsIds(hashtagPosts.map(post => post.repostId || post.id));
     }
   }, [hashtagPosts, trasnfer])
 
@@ -81,21 +72,23 @@ export default function Hashtag() {
       <Main>
         {window.innerWidth < 1000 && <SearchUser />}
         <Title># {hashtag}</Title>
-        {load && hashtagPosts.posts ? (
-          hashtagPosts.posts.length === 0 ? (
+        {
+        pageNumber === 0 ?
+            (hashtagPosts === '' ?
+            <Container>
+              <Loader />
+              <LoaderText>Carregando...</LoaderText>
+            </Container>
+          :
+          (hashtagPosts.length === 0 ? (
             <Text>Nada sobre esse assunto ☹️</Text>
           ) : (
-            hashtagPosts.posts.map((post, index) => (
+            hashtagPosts.map((post, index) => (
               <Post key={index} {...post} />
             ))
-          )
-        ) :
-          (pageNumber === 0 ?
-            <Container>
-            <Loader />
-            <LoaderText>Carregando...</LoaderText>
-          </Container>
-          :
+          )))
+           :
+          (
         <InfiniteScroll
           pageStart={0}
           loadMore={scrollInfinity}

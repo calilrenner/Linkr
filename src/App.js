@@ -14,6 +14,7 @@ export default function App() {
   const [userData, setUserData] = useState({});
   const [onChangePost, setOnChangePost] = useState(false);
   const [followsId, setFollowsId] = useState([]);
+  const [getLocation, setGetLocation] = useState(false);
 
   return (
     <BrowserRouter>
@@ -27,6 +28,8 @@ export default function App() {
             setOnChangePost,
             followsId,
             setFollowsId,
+            getLocation,
+            setGetLocation
           }}
         >
           <Route path="/" exact component={Login} />

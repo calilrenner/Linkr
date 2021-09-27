@@ -12,25 +12,15 @@ import SearchUser from "../components/SearchUser";
 import { useHistory } from "react-router-dom";
 
 export default function MyPosts() {
-  const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
-  const [userPosts, setUserPosts] = useState([]);
-  const [load, setLoad] = useState(false);
+  const { userData, onChangePost } = useContext(UserContext);
+  const [userPosts, setUserPosts] = useState('');
   let higher = Number.POSITIVE_INFINITY;
   const [firstPostId, setFirstPostId] = useState(0);
   const [postsIds, setPostsIds] = useState([]);
-  const [trasnfer, setTrasnfer] = useState(false)
   const [pageNumber, setPageNumber] = useState(0);
   const [newUserPosts, setNewUserPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const history = useHistory();
-
-  function postRepost(post) {
-    if(post.repostId) {
-      return post.repostId;
-    } else {
-      return post.id;
-    }
-  }
 
   useEffect(() => {
     if (!userData.token) {
@@ -39,11 +29,9 @@ export default function MyPosts() {
     if (userData.token) {
       getUserPosts(userData.user.id, { token: userData.token }).then((res) => {
         setUserPosts(res.data.posts);
-        setLoad(true);
-        setTrasnfer(!trasnfer)
       });
     }
-  }, [onChangePost, hasMore]);
+  }, [onChangePost]);
 
   useEffect(() => {
     if(userPosts.length > 0) {
@@ -53,9 +41,9 @@ export default function MyPosts() {
 
   useEffect(() => {
     if(userPosts.length > 0) {
-        setPostsIds(userPosts.map(post => postRepost(post)));
+        setPostsIds(userPosts.map(post => post.repostId || post.id));
     }
-  }, [userPosts, trasnfer])
+  }, [userPosts])
 
   useEffect(() => {
     if(postsIds.length !== 0) {
@@ -66,7 +54,7 @@ export default function MyPosts() {
         }
       })
     };
-  }, [postsIds, userPosts])
+  }, [postsIds, userPosts, hasMore])
 
   function scrollInfinity() {
     loadMoreMyPosts(userData.user.id, firstPostId, userData.token).then(r => {
@@ -83,37 +71,30 @@ export default function MyPosts() {
         {window.innerWidth < 1000 && <SearchUser />}
         <Title>my posts</Title>
         {
-          pageNumber === 0 || userPosts.length === 0?
-        (
-          load ? 
-          (userPosts.length === 0 ?
+          pageNumber === 0 ?
+          (userPosts === '' ?
+            <Container>
+              <Loader />
+            </Container>
+            :
+            (userPosts.length === 0 ?
             <Text>
               Você ainda não postou nada ☹️
             </Text>
             :
-            userPosts.map((u, i) => (
-              <Post key={i} {...u} />
-            ))
-          )
-        : 
-        (
-          <Container>
-            <Loader />
-          </Container>
-        )
-        )
+              userPosts.map((u, i) => (
+                <Post key={i} {...u} />
+              ))))
         :
-        (
         <InfiniteScroll
           pageStart={0}
           loadMore={scrollInfinity}
           hasMore={hasMore}
           loader={<LoaderText key={0}>Loading ...</LoaderText>}
         >
-            {userPosts.map((post, index) => (
-            <Post key={index} {...post} />))}
+            {userPosts.map((post) => (
+            <Post key={post.id} {...post} />))}
         </InfiniteScroll>
-        )
         }
       </div>
       <Trending />

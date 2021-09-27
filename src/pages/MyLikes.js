@@ -7,39 +7,29 @@ import Trending from "../components/Trending";
 import Header from "../components/Header";
 import { Loader, Main, Title, Text, LoaderText } from "./mainStyles";
 import InfiniteScroll from 'react-infinite-scroller';
-import { loadMoreLikedPosts } from "../service/scrollApi.service";
+import { getMyLikesIds, loadMoreLikedPosts } from "../service/scrollApi.service";
 import SearchUser from "../components/SearchUser";
 import { useHistory } from "react-router-dom";
 
 export default function MyLikes() {
+  const [getInitial, setGetInicial] = useState('')
   const { userData, onChangePosts } = useContext(UserContext);
-  const [likedPosts, setLikedPosts] = useState({});
-  const [load, setLoad] = useState(false);
+  const [likedPosts, setLikedPosts] = useState('');
   let higher = Number.POSITIVE_INFINITY;
+  let lower = Number.NEGATIVE_INFINITY;
   const [firstPostId, setFirstPostId] = useState(0);
-  const [postsIds, setPostsIds] = useState([]);
-  const [trasnfer, setTrasnfer] = useState(false)
   const [pageNumber, setPageNumber] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [newLikedPosts, setNewLikedPosts] = useState([]);
   const history = useHistory();
-
-  function postRepost(post) {
-    if(post.repostId) {
-      return post.repostId;
-    } else {
-      return post.id;
-    }
-  }
+  const [ lastPostId, setLastPostId ] = useState(0)
 
   useEffect(() => {
     if (!userData.token) {
       history.push("/");
     }
-    getMyLikes({ token: userData.token }).then((r) => {
-      setLikedPosts(r.data.posts);
-      setLoad(true);
-      setTrasnfer(!trasnfer)
+    getMyLikes(userData.token).then((r) => {
+      setGetInicial(r.data.posts.map(post => post.id));
     }
     );
   }, [onChangePosts]);
@@ -51,29 +41,40 @@ export default function MyLikes() {
   }, [likedPosts])
 
   useEffect(() => {
-    if(likedPosts.length > 0) {
-        setPostsIds(likedPosts.map(post => postRepost(post)));
-    }
-  }, [likedPosts, trasnfer])
-
-  useEffect(() => {
-    if(postsIds.length !== 0) {
-      postsIds.forEach(id => {
+    if(getInitial.length !== 0) {
+      getInitial.forEach(id => {
         if(id < higher) {
           higher = id;
           setFirstPostId(higher);
         }
       })
     };
-  }, [postsIds, likedPosts])
+    if(getInitial.length !== 0) {
+      getInitial.forEach(id => {
+        if(id > lower) {
+          lower = id;
+          setLastPostId(lower);
+        }
+      })
+    };
+  }, [getInitial, likedPosts, hasMore])
+
+  useEffect(() => {
+    if(firstPostId !== 0) {
+      getMyLikesIds(firstPostId, userData.token).then((r) =>
+        setLikedPosts(r.data.posts))
+    }
+  }, [getInitial, onChangePosts, firstPostId]);
 
   function scrollInfinity() {
-    loadMoreLikedPosts(firstPostId, userData.token).then(r => {
+    loadMoreLikedPosts(lastPostId, userData.token).then(r => {
       setNewLikedPosts([...r.data.posts])
       setHasMore(newLikedPosts.length > 0)
       setLikedPosts([...likedPosts, ...newLikedPosts]);
     })
   }
+
+  console.log(likedPosts)
 
   return (
     <>
@@ -83,23 +84,19 @@ export default function MyLikes() {
         <Title>my likes</Title>
         {
           pageNumber === 0 ?
-          (
-            load ?
-            (likedPosts.length === 0 ?
-              <Text>
-                Você ainda não curtiu nada ☹️
-              </Text>
-              :
-              likedPosts.map((post, index) => (
-                <Post key={index} {...post} />
-              ))
-            )
-            :
+            (likedPosts === '' ?
             <Container>
               <Loader />
             </Container>
-          )
-        :
+            :
+            (likedPosts.length === 0 ?
+            (<Text>
+              Você ainda não curtiu nada ☹️
+            </Text>)
+            :
+            (likedPosts.map((post, index) => (
+              <Post key={index} {...post} />)))))
+            :
         <InfiniteScroll
           pageStart={0}
           loadMore={scrollInfinity}
