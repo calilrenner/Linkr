@@ -2,7 +2,13 @@ import { useContext, useState } from "react";
 import Loader from "react-loader-spinner";
 import UserContext from "../contexts/UserContext";
 import { deletePost } from "../service/api.service";
-import { StyledModal, Text, GoBackButton, ConfirmButton } from "./modalStyles";
+import {
+  StyledModal,
+  Text,
+  GoBackButton,
+  ConfirmButton,
+  customStyles,
+} from "./modalStyles";
 
 export default function DeleteModal({ modalOpen, setModalOpen, postId }) {
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -30,6 +36,7 @@ export default function DeleteModal({ modalOpen, setModalOpen, postId }) {
 
   return (
     <StyledModal
+      style={customStyles}
       isOpen={modalOpen}
       onRequestClose={() => setModalOpen(!modalOpen)}
     >

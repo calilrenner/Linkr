@@ -40,9 +40,12 @@ export default function Post(props) {
   const [myComment, setMyComment] = useState("");
   const [editSelected, setEditSelect] = useState(false);
   const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const isGif = linkImage && linkImage.search(/\.gif$/g) !== -1 ? true : false;
 
   function image() {
-    return linkImage === "" || linkImage === null ? notfound : linkImage;
+    return linkImage === "" || linkImage === null || isGif
+      ? notfound
+      : linkImage;
   }
 
   return (
