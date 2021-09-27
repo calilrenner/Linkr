@@ -9,6 +9,7 @@ import DeleteModal from "./DeleteModal";
 import Youtube from "react-youtube";
 import RepostedBy from "./RepostedBy";
 import Repost from "./Repost";
+import Localization from "./Localization";
 import notfound from "../assets/notfound.jpg";
 import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
@@ -28,9 +29,10 @@ export default function Post(props) {
     repostId,
     repostCount,
     repostedBy,
+    geolocation
   } = props;
   const { username, avatar } = user;
-  const { userData } = useContext(UserContext);
+  const { userData, getLocation } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [postComments, setPostComments] = useState([]);
@@ -46,7 +48,7 @@ export default function Post(props) {
       {repostedBy !== undefined && (
         <RepostedBy repostedBy={repostedBy} userId={userData.user.id} />
       )}
-      <Container>
+      <Container getLocation={getLocation}>
         <SideBarPost>
           <Link to={`/user/${user.id}`}>
             <img src={avatar} alt="" />
@@ -65,9 +67,12 @@ export default function Post(props) {
         <ContentPost>
           <MsgPost>
             <div>
+              <div>
               <Link to={`/user/${user.id}`}>
                 <span>{username}</span>
               </Link>
+              {geolocation && <Localization geolocation={geolocation} name={user.username}/>}
+              </div>
               <div>
                 {user.id === userData.user.id && (
                   <>
@@ -129,7 +134,7 @@ const Container = styled.div`
   color: ${colors.white};
   margin-top: 29px;
   position: relative;
-  z-index: 2;
+  z-index: ${props => props.getLocation ? '' : '2'};
 
   @media (max-width: 1000px) {
     width: 100%;
@@ -227,6 +232,7 @@ const MsgPost = styled.div`
     color: #cecece;
     word-wrap: break-word;
     word-break: break-all;
+    margin-right: 15px;
   }
 
   span:nth-child(2) {
