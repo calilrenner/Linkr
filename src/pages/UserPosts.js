@@ -14,6 +14,8 @@ import Header from "../components/Header";
 import SearchUser from "../components/SearchUser";
 import { Main, Title, Container, Loader, LoaderText, Text } from "./mainStyles";
 import styled from "styled-components";
+import { loadMoreUserPosts } from "../service/scrollApi.service";
+import InfiniteScroll from 'react-infinite-scroller';
 
 export default function UserPosts() {
   const { id } = useParams();
@@ -22,32 +24,78 @@ export default function UserPosts() {
   const [disabled, setDisabled] = useState(false);
   const [follows, setFollows] = useState([]);
   const [following, setFollowing] = useState(false);
+  const [trasnfer, setTrasnfer] = useState(false);
+  let higher = Number.POSITIVE_INFINITY;
+  const [postsIds, setPostsIds] = useState([]);
+  const [firstPostId, setFirstPostId] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [newUserPosts, setNewUserPosts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
   const [load, setLoad] = useState(false);
   const [shownUser, setShownUser] = useState({});
   const history = useHistory();
 
-  useEffect(() => {
-    if (!userData.token) {
-      history.push("/");
-    }
-    getUserPosts(id, { token: userData.token }).then((r) => {
-      setUserPosts(r.data.posts);
-      setLoad(true);
-    });
-    getShownUser(id, { token: userData.token }).then((r) =>
+  useEffect(
+    () => {
+      if (!userData.token) {
+        history.push("/");
+      }
+      getUserPosts(id, { token: userData.token }).then((r) => {
+        setUserPosts(r.data.posts)
+        setTrasnfer(!trasnfer)
+        setLoad(true);
+      })
+      getShownUser(id, { token: userData.token }).then((r) =>
       setShownUser(r.data.user)
     );
-    getFollows(userData.token).then((r) => setFollows(r.data.users));
-  }, [following, id]);
+      getFollows(userData.token).then(r => setFollows(r.data.users))
+    },
+    [following, id]
+  );
 
   useEffect(() => {
-    setFollowsId(follows.map((user) => user.id));
-  }, [follows]);
+    if(userPosts.length > 0) {
+      setPageNumber(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [userPosts])
 
   useEffect(
-    () => setFollowing(followsId.includes(parseInt(id)) || false),
+    () => {
+      setFollowsId(follows.map(user => user.id))
+    },
+    [follows]
+  )
+
+  useEffect(
+    () =>
+      setFollowing(followsId.includes(parseInt(id)) || false),
     [followsId]
-  );
+  )
+
+  useEffect(() => {
+    if(userPosts.length > 0) {
+        setPostsIds(userPosts.map(post => post.repostId || post.id));
+    }
+  }, [userPosts, trasnfer])
+
+  useEffect(() => {
+    if(postsIds.length !== 0) {
+      postsIds.forEach(id => {
+        if(id < higher) {
+          higher = id;
+          setFirstPostId(higher);
+        }
+      })
+    };
+  }, [postsIds, userPosts])
+
+  function scrollInfinity() {
+    loadMoreUserPosts(id, firstPostId, userData.token).then(r => {
+      setNewUserPosts([...r.data.posts])
+      setHasMore(newUserPosts.length > 0)
+      setUserPosts([...userPosts, ...newUserPosts]);
+    })
+  }
 
   function followUser() {
     setDisabled(true);
@@ -83,18 +131,27 @@ export default function UserPosts() {
         <Title>
           {load ? `${shownUser.username}'s posts` : "Carregando..."}
         </Title>
-        {load ? (
-          userPosts.length === 0 ? (
+        {load && userPosts.length === 0 ? 
             <Text>Este usuáro ainda não postou nada ☹️</Text>
-          ) : (
-            userPosts.map((post, index) => <Post key={index} {...post} />)
-          )
-        ) : (
-          <Container>
+        :
+          (
+            pageNumber === 0 ? 
+            <Container>
             <Loader />
             <LoaderText>Carregando...</LoaderText>
           </Container>
-        )}
+      :
+      <InfiniteScroll
+          pageStart={0}
+          loadMore={scrollInfinity}
+          hasMore={hasMore}
+          loader={<LoaderText key={0}>Loading ...</LoaderText>}
+        >
+            {userPosts.map((post, index) => (
+            <Post key={index} {...post} />))}
+      </InfiniteScroll>
+        )
+      }
       </Main>
       {load && parseInt(id) !== userData.user.id && (
         <Follow
