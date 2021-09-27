@@ -5,14 +5,15 @@ import { useContext, useState } from "react";
 import SearchUser from "./SearchUser";
 import { colors } from "../globalStyles";
 import UserContext from "../contexts/UserContext";
-const LOCAL_STORAGE_KEY = "loggedUser.data";
+import { removeLoggedUser } from "../service/loginPersistance.service";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
-  const { userData, setLoginData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
+
   function logout() {
-    setLoginData({});
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    removeLoggedUser();
+    setUserData({});
   }
 
   return (
@@ -29,7 +30,10 @@ export default function Header() {
             <ArrowUp onClick={() => setShowMenu(!showMenu)} />
           )}
           <Image onClick={() => setShowMenu(!showMenu)}>
-            <img src={userData.user.avatar} alt={userData.user.username} />
+            <img
+              src={userData.token && userData.user.avatar}
+              alt={userData.token && userData.user.username}
+            />
           </Image>
         </div>
       </Content>

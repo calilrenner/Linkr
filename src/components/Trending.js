@@ -1,20 +1,26 @@
 import styled from "styled-components";
 import { colors } from "../globalStyles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { getTrending } from "../service/api.service";
 import { useEffect, useState, useContext } from "react";
 import UserContext from "../contexts/UserContext";
 
 export default function Trending() {
   const { userData } = useContext(UserContext);
-
+  const [hashtagInput, setHashtagInput] = useState("");
   const [trending, setTrending] = useState([]);
+  const history = useHistory();
 
   useEffect(
     () =>
       getTrending({ token: userData.token }).then((r) => setTrending(r.data)),
     [userData.token]
   );
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    history.push(`/hashtag/${hashtagInput}`);
+  }
   return (
     <TrendingContainer>
       <div>
@@ -29,13 +35,21 @@ export default function Trending() {
             ))
           : ""}
       </ul>
+      <form onSubmit={handleSubmit}>
+        <StyledInput
+          type="text"
+          placeholder="type a hastag"
+          onChange={(e) => setHashtagInput(e.target.value)}
+        ></StyledInput>
+      </form>
+      <StyledSpan>#</StyledSpan>
     </TrendingContainer>
   );
 }
 
 const TrendingContainer = styled.div`
   position: fixed;
-  top: 150px;
+  top: 165px;
   right: calc((100% - 937px) / 2);
   width: 301px;
   height: 406px;
@@ -59,11 +73,11 @@ const TrendingContainer = styled.div`
 
   ul {
     font-size: 19px;
-    margin: 30px 0 0 15px;
+    margin: 15px 0 0 15px;
   }
 
   li {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-family: "Lato", sans-serif;
   }
   a {
@@ -72,4 +86,30 @@ const TrendingContainer = styled.div`
   @media (max-width: 1024px) {
     display: none;
   }
+`;
+
+const StyledInput = styled.input`
+  width: 269px;
+  height: 35px;
+  position: absolute;
+  bottom: 18px;
+  left: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #252525;
+  padding-left: 35px;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: bold;
+  color: ${colors.white};
+  outline: none;
+`;
+
+const StyledSpan = styled.span`
+  position: absolute;
+  left: 25px;
+  bottom: 27px;
+  color: ${colors.white};
+  font-size: 19px;
+  font-weight: bold;
 `;

@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext, useState } from "react";
+import getYoutubeID from "get-youtube-id";
 import DeleteModal from "./DeleteModal";
+import Youtube from "react-youtube";
 import RepostedBy from "./RepostedBy";
 import Repost from "./Repost";
 import Localization from "./Localization";
@@ -15,8 +17,20 @@ import Likes from "./Likes";
 import Edit from "./Edit";
 
 export default function Post(props) {
-  const { id, text, link, linkTitle, linkDescription, linkImage, user, likes, repostId, repostCount, repostedBy, geolocation } =
-    props;
+  const {
+    id,
+    text,
+    link,
+    linkTitle,
+    linkDescription,
+    linkImage,
+    user,
+    likes,
+    repostId,
+    repostCount,
+    repostedBy,
+    geolocation
+  } = props;
   const { username, avatar } = user;
   const { userData, getLocation } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
@@ -25,28 +39,28 @@ export default function Post(props) {
   const [myComment, setMyComment] = useState("");
   const [editSelected, setEditSelect] = useState(false);
 
-  function image(){
-    return (linkImage === "" || linkImage === null) ? notfound : linkImage;
+  function image() {
+    return linkImage === "" || linkImage === null ? notfound : linkImage;
   }
 
   return (
     <>
-      {repostedBy !== undefined &&
+      {repostedBy !== undefined && (
         <RepostedBy repostedBy={repostedBy} userId={userData.user.id} />
-      }
+      )}
       <Container getLocation={getLocation}>
         <SideBarPost>
           <Link to={`/user/${user.id}`}>
             <img src={avatar} alt="" />
           </Link>
-          <Likes likes={likes} id={id} repostId={repostId}/>
-          <CommentIcon 
-            showComments={showComments} 
-            setShowComments={setShowComments} 
+          <Likes likes={likes} id={id} repostId={repostId} />
+          <CommentIcon
+            showComments={showComments}
+            setShowComments={setShowComments}
             postId={id}
             postComments={postComments}
             setPostComments={setPostComments}
-            myComment={myComment} 
+            myComment={myComment}
           />
           <Repost postId={id} repostCount={repostCount} />
         </SideBarPost>
@@ -60,46 +74,55 @@ export default function Post(props) {
               {geolocation && <Localization geolocation={geolocation} name={user.username}/>}
               </div>
               <div>
-                {user.id === userData.user.id && 
+                {user.id === userData.user.id && (
                   <>
                     <EditIcon onClick={() => setEditSelect(!editSelected)} />
                     <DeleteIcon onClick={() => setModalOpen(!modalOpen)} />
-                  </> 
-                  }
+                  </>
+                )}
               </div>
             </div>
-            <Edit setEditSelect={setEditSelect} editSelected={editSelected} id={id} text={text}/>
+            <Edit
+              setEditSelect={setEditSelect}
+              editSelected={editSelected}
+              id={id}
+              text={text}
+            />
           </MsgPost>
-          <a href={link} target="_blank" rel="noreferrer">
-            <LinkPost>
-              <div>
-                <span>{linkTitle}</span>
-                <span>{linkDescription}</span>
-                <p>{link}</p>
-              </div>
-              <img src={image()} alt="" />
-            </LinkPost>{" "}
-          </a>
+          {getYoutubeID(link) ? (
+            <StyledYoutube videoId={getYoutubeID(link)} />
+          ) : (
+            <a href={link} target="_blank" rel="noreferrer">
+              <LinkPost>
+                <div>
+                  <span>{linkTitle}</span>
+                  <span>{linkDescription}</span>
+                  <p>{link}</p>
+                </div>
+                <img src={image()} alt="" />
+              </LinkPost>
+            </a>
+          )}
         </ContentPost>
-        {modalOpen && 
+        {modalOpen && (
           <DeleteModal
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             postId={id}
           />
-        }
+        )}
       </Container>
-      {showComments && 
-        <Comments 
+      {showComments && (
+        <Comments
           postComments={postComments}
           userId={user.id}
           postId={id}
           myComment={myComment}
           setMyComment={setMyComment}
         />
-      }
+      )}
     </>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -212,7 +235,7 @@ const MsgPost = styled.div`
     margin-right: 15px;
   }
 
-  span:nth-child(2){
+  span:nth-child(2) {
     font-size: 17px;
     margin-top: 10px;
   }
@@ -222,8 +245,6 @@ const MsgPost = styled.div`
     justify-content: space-between;
   }
 `;
-
-
 
 const DeleteIcon = styled(MdDelete)`
   color: white;
@@ -242,7 +263,15 @@ const ContentPost = styled.div`
 
 const EditIcon = styled(MdModeEdit)`
   color: white;
+  text-decoration: none;
+  font-weight: 700;
   font-size: 16px;
   margin-right: 4px;
   cursor: pointer;
+`;
+
+const StyledYoutube = styled(Youtube)`
+  width: 500px;
+  height: 300px;
+  border-radius: 16px;
 `;

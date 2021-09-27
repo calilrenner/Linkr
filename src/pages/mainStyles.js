@@ -11,6 +11,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   max-width: 450px;
+  height: 52px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -73,10 +74,10 @@ const Text = styled.div`
   font-size: 30px;
   font-weight: bold;
   margin-top: 85px;
-  color: #FFF;
+  color: #fff;
   font-family: "Oswald", sans-serif;
 
-  @media(max-width: 1000px){
+  @media (max-width: 1000px) {
     font-size: 25px;
     margin-left: 20px;
   }

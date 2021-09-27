@@ -147,6 +147,7 @@ const Result = styled.div`
 
   span {
     max-width: 300px;
+    height: 20px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

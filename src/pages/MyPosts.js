@@ -7,21 +7,24 @@ import Trending from "../components/Trending";
 import Post from "../components/Post";
 import { Main, Title, Loader, Text } from "./mainStyles";
 import SearchUser from "../components/SearchUser";
+import { useHistory } from "react-router-dom";
 
 export default function MyPosts() {
   const { userData, onChangePost } = useContext(UserContext);
   const [userPosts, setUserPosts] = useState([]);
   const [load, setLoad] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
-    const id = userData.user.id;
-    const token = { token: userData.token };
-    const req = getUserPosts(id, token);
-
-    req.then((res) => {
-      setUserPosts(res.data.posts);
-      setLoad(true);
-    });
+    if (!userData.token) {
+      history.push("/");
+    }
+    if (userData.token) {
+      getUserPosts(userData.user.id, { token: userData.token }).then((res) => {
+        setUserPosts(res.data.posts);
+        setLoad(true);
+      });
+    }
   }, [onChangePost]);
 
   console.log(userPosts);
