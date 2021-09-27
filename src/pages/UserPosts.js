@@ -19,7 +19,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 export default function UserPosts() {
   const { id } = useParams();
-  const { userData, followsId, setFollowsId } = useContext(UserContext);
+  const { userData, followsId, setFollowsId, onChangePost, setOnChangePost } = useContext(UserContext);
   const [userPosts, setUserPosts] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [follows, setFollows] = useState([]);
@@ -44,13 +44,14 @@ export default function UserPosts() {
         setUserPosts(r.data.posts)
         setTrasnfer(!trasnfer)
         setLoad(true);
+        setOnChangePost(!onChangePost)
       })
       getShownUser(id, { token: userData.token }).then((r) =>
       setShownUser(r.data.user)
     );
       getFollows(userData.token).then(r => setFollows(r.data.users))
     },
-    [following, id]
+    [following, id, onChangePost]
   );
 
   useEffect(() => {
