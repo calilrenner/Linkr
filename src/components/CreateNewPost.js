@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 import UserContext from "../contexts/UserContext";
 import { createNewPost } from "../service/api.service";
+import { IoLocationOutline } from 'react-icons/io5';
+
 
 export default function Post() {
   const { userData, onChangePost, setOnChangePost } = useContext(UserContext);
@@ -10,14 +12,28 @@ export default function Post() {
   const [text, setText] = useState("");
   const [buttonText, setButtonText] = useState("Publish");
   const [disabled, setDisabled] = useState(false);
+  const [startLocation, setStartLocation] = useState(false);
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const geolocation = {
+      latitude,
+      longitude
+    }
+  
+  let body;
 
   function createPost(e) {
     e.preventDefault();
+    
 
     setButtonText("Publishing...");
     setDisabled(true);
 
-    const body = { link, text };
+    if(startLocation) {
+      body = { link, text, geolocation };
+    } else {
+      body = { link, text };
+    }
     const token = userData.token;
     const req = createNewPost(body, token);
 
@@ -33,6 +49,21 @@ export default function Post() {
       setDisabled(false);
       setButtonText("Publish");
     });
+  }
+
+  function askLocation() {
+    if ('geolocation' in navigator && !startLocation) {
+          navigator.geolocation.getCurrentPosition((position) => 
+          {
+            setLongitude(position.coords.longitude)
+            setLatitude(position.coords.latitude)
+          }, (error) => 
+          {
+              alert('Não foi possível iniciar localização');
+              setStartLocation(false);
+          }
+      )
+    }
   }
 
   return (
@@ -59,9 +90,21 @@ export default function Post() {
               onChange={(e) => setText(e.target.value)}
               disabled={disabled}
             />
-            <Button type="submit" disabled={disabled}>
-              {buttonText}
-            </Button>
+            <Footer >
+              <div>
+                <IoLocation onClick={() => {
+                  setStartLocation(!startLocation);
+                  askLocation();
+                }
+                } startLocation={startLocation} />
+                <TextLocation startLocation={startLocation}>
+                  {startLocation ? 'Localização ativada' : 'Localização desativada'}
+                </TextLocation>
+              </div>
+              <Button type="submit" disabled={disabled}>
+                {buttonText}
+              </Button>
+            </Footer>
           </form>
         </Text>
       </Content>
@@ -159,6 +202,18 @@ const TextInput = styled.textarea`
   margin-bottom: 5px;
 `;
 
+const Footer = styled.footer`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > *:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`
+
 const Button = styled.button`
   width: 112px;
   height: 31px;
@@ -172,4 +227,14 @@ const Button = styled.button`
   line-height: 17px;
   cursor: ${(props) => (props.disabled ? "" : "pointer")};
   align-self: flex-end;
-`;
+`
+
+const IoLocation = styled(IoLocationOutline)`
+  color: ${props => props.startLocation ? '#238700' : '#949494'};
+  margin-right: 2px;
+`
+
+const TextLocation = styled.span`
+  color: ${props => props.startLocation ? '#238700' : '#949494'};
+  font-size: 13px;
+`

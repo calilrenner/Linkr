@@ -2,23 +2,26 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Container, TitleContainer, Form } from "./accesControlStyles";
 import { serverLogin } from "../../service/api.service";
+import {
+  storeLoggedUser,
+  getLoggedUser,
+} from "../../service/loginPersistance.service";
 import UserContext from "../../contexts/UserContext";
 import Loader from "react-loader-spinner";
 
 export default function Login() {
-  const { setLoginData } = useContext(UserContext);
+  const { setUserData } = useContext(UserContext);
   const history = useHistory();
-  const LOCAL_STORAGE_KEY = "loggedUser.data";
-  const userDataJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disableForm, setDisableForm] = useState(false);
 
   useEffect(() => {
-    if (userDataJSON) {
-      login(JSON.parse(userDataJSON));
+    const loggedUser = getLoggedUser();
+    if (loggedUser) {
+      login(loggedUser);
     }
-  }, []); 
+  }, []);
 
   function handleLoginSubmit(e) {
     e.preventDefault();
@@ -40,7 +43,8 @@ export default function Login() {
   }
 
   function login(user) {
-    setLoginData(user);
+    setUserData(user);
+    storeLoggedUser(user);
     setDisableForm(false);
     history.push("/timeline");
   }

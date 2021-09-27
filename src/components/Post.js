@@ -4,9 +4,12 @@ import { Link } from "react-router-dom";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import UserContext from "../contexts/UserContext";
 import { useContext, useState } from "react";
+import getYoutubeID from "get-youtube-id";
 import DeleteModal from "./DeleteModal";
+import Youtube from "react-youtube";
 import RepostedBy from "./RepostedBy";
 import Repost from "./Repost";
+import Localization from "./Localization";
 import notfound from "../assets/notfound.jpg";
 import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
@@ -27,9 +30,10 @@ export default function Post(props) {
     repostId,
     repostCount,
     repostedBy,
+    geolocation,
   } = props;
   const { username, avatar } = user;
-  const { userData } = useContext(UserContext);
+  const { userData, getLocation } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [postComments, setPostComments] = useState([]);
@@ -46,7 +50,7 @@ export default function Post(props) {
       {repostedBy !== undefined && (
         <RepostedBy repostedBy={repostedBy} userId={userData.user.id} />
       )}
-      <Container>
+      <Container getLocation={getLocation}>
         <SideBarPost>
           <Link to={`/user/${user.id}`}>
             <img src={avatar} alt="" />
@@ -65,9 +69,17 @@ export default function Post(props) {
         <ContentPost>
           <MsgPost>
             <div>
-              <Link to={`/user/${user.id}`}>
-                <span>{username}</span>
-              </Link>
+              <div>
+                <Link to={`/user/${user.id}`}>
+                  <span>{username}</span>
+                </Link>
+                {geolocation && (
+                  <Localization
+                    geolocation={geolocation}
+                    name={user.username}
+                  />
+                )}
+              </div>
               <div>
                 {user.id === userData.user.id && (
                   <>
@@ -84,20 +96,26 @@ export default function Post(props) {
               text={text}
             />
           </MsgPost>
-          <LinkPreview
-            previewModalOpen={previewModalOpen}
-            setPreviewModalOpen={setPreviewModalOpen}
-            title={linkTitle}
-            link={link}
-          />
-          <LinkPost onClick={() => setPreviewModalOpen(true)}>
-            <div>
-              <span>{linkTitle}</span>
-              <span>{linkDescription}</span>
-              <p>{link}</p>
-            </div>
-            <img src={image()} alt="" />
-          </LinkPost>
+          {getYoutubeID(link) ? (
+            <StyledYoutube videoId={getYoutubeID(link)} />
+          ) : (
+            <>
+              <LinkPreview
+                previewModalOpen={previewModalOpen}
+                setPreviewModalOpen={setPreviewModalOpen}
+                title={linkTitle}
+                link={link}
+              />
+              <LinkPost onClick={() => setPreviewModalOpen(true)}>
+                <div>
+                  <span>{linkTitle}</span>
+                  <span>{linkDescription}</span>
+                  <p>{link}</p>
+                </div>
+                <img src={image()} alt="" />
+              </LinkPost>
+            </>
+          )}
         </ContentPost>
         {modalOpen && (
           <DeleteModal
@@ -129,7 +147,7 @@ const Container = styled.div`
   color: ${colors.white};
   margin-top: 29px;
   position: relative;
-  z-index: 2;
+  z-index: ${(props) => (props.getLocation ? "" : "2")};
 
   @media (max-width: 1000px) {
     width: 100%;
@@ -228,6 +246,7 @@ const MsgPost = styled.div`
     color: #cecece;
     word-wrap: break-word;
     word-break: break-all;
+    margin-right: 15px;
   }
 
   span:nth-child(2) {
@@ -258,7 +277,15 @@ const ContentPost = styled.div`
 
 const EditIcon = styled(MdModeEdit)`
   color: white;
+  text-decoration: none;
+  font-weight: 700;
   font-size: 16px;
   margin-right: 4px;
   cursor: pointer;
+`;
+
+const StyledYoutube = styled(Youtube)`
+  width: 500px;
+  height: 300px;
+  border-radius: 16px;
 `;

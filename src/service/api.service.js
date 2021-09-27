@@ -46,7 +46,7 @@ function getMyLikes({ token }) {
 }
 
 function putEdit(text, token, id) {
-  const body = {text};
+  const body = { text };
   return axios.put(`${URL}/posts/${id}`, body, setConfig(token));
 }
 
@@ -55,11 +55,11 @@ function getFollowsPosts(token) {
 }
 
 function getPostComments(id, token) {
-  return axios.get(`${URL}posts/${id}/comments`, setConfig(token))
+  return axios.get(`${URL}posts/${id}/comments`, setConfig(token));
 }
 
 function postNewComment(id, body, token) {
-  return axios.post(`${URL}posts/${id}/comment`, body, setConfig(token))
+  return axios.post(`${URL}posts/${id}/comment`, body, setConfig(token));
 }
 
 function userSearch(query, { token }) {
@@ -78,8 +78,12 @@ function getFollows(token) {
   return axios.get(`${URL}/users/follows`, setConfig(token));
 }
 
+function getShownUser(id, { token }) {
+  return axios.get(`${URL}/users/${id}`, setConfig(token));
+}
+
 function repost(id, token) {
-  return axios.post(`${URL}posts/${id}/share`, {}, setConfig(token))
+  return axios.post(`${URL}posts/${id}/share`, {}, setConfig(token));
 }
 
 export {
@@ -101,5 +105,6 @@ export {
   postFollow,
   postUnFollow,
   getFollows,
-  repost
+  getShownUser,
+  repost,
 };
