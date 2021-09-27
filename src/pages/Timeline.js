@@ -50,6 +50,8 @@ export default function Timeline() {
   }
   ,[onChangePost])
 
+  console.log(followedPosts)
+
   function returnPosts() {
     if(followedUsers.length === 0) {
       return (

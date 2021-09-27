@@ -63,7 +63,9 @@ table {
 * {
     box-sizing: border-box;
 }
-
+strong{
+	font-weight: bold;
+}
 a{
 	text-decoration: none;
 }
