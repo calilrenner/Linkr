@@ -15,6 +15,7 @@ import CommentIcon from "./CommentIcon";
 import Comments from "./Comments";
 import Likes from "./Likes";
 import Edit from "./Edit";
+import LinkPreview from "./LinkPreview";
 
 export default function Post(props) {
   const {
@@ -29,7 +30,7 @@ export default function Post(props) {
     repostId,
     repostCount,
     repostedBy,
-    geolocation
+    geolocation,
   } = props;
   const { username, avatar } = user;
   const { userData, getLocation } = useContext(UserContext);
@@ -38,10 +39,13 @@ export default function Post(props) {
   const [postComments, setPostComments] = useState([]);
   const [myComment, setMyComment] = useState("");
   const [editSelected, setEditSelect] = useState(false);
-  const isGif = linkImage.search(/\.gif$/g) !== -1 ? true : false;
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const isGif = linkImage && linkImage.search(/\.gif$/g) !== -1 ? true : false;
 
   function image() {
-    return (linkImage === "" || linkImage === null || isGif ) ? notfound : linkImage;
+    return linkImage === "" || linkImage === null || isGif
+      ? notfound
+      : linkImage;
   }
 
   return (
@@ -69,10 +73,15 @@ export default function Post(props) {
           <MsgPost>
             <div>
               <div>
-              <Link to={`/user/${user.id}`}>
-                <span>{username}</span>
-              </Link>
-              {geolocation && <Localization geolocation={geolocation} name={user.username}/>}
+                <Link to={`/user/${user.id}`}>
+                  <span>{username}</span>
+                </Link>
+                {geolocation && (
+                  <Localization
+                    geolocation={geolocation}
+                    name={user.username}
+                  />
+                )}
               </div>
               <div>
                 {user.id === userData.user.id && (
@@ -93,8 +102,14 @@ export default function Post(props) {
           {getYoutubeID(link) ? (
             <StyledYoutube videoId={getYoutubeID(link)} />
           ) : (
-            <a href={link} target="_blank" rel="noreferrer">
-              <LinkPost>
+            <>
+              <LinkPreview
+                previewModalOpen={previewModalOpen}
+                setPreviewModalOpen={setPreviewModalOpen}
+                title={linkTitle}
+                link={link}
+              />
+              <LinkPost onClick={() => setPreviewModalOpen(true)}>
                 <div>
                   <span>{linkTitle}</span>
                   <span>{linkDescription}</span>
@@ -102,7 +117,7 @@ export default function Post(props) {
                 </div>
                 <img src={image()} alt="" />
               </LinkPost>
-            </a>
+            </>
           )}
         </ContentPost>
         {modalOpen && (
@@ -135,7 +150,7 @@ const Container = styled.div`
   color: ${colors.white};
   margin-top: 29px;
   position: relative;
-  z-index: ${props => props.getLocation ? '' : '2'};
+  z-index: ${(props) => (props.getLocation ? "" : "2")};
 
   @media (max-width: 1000px) {
     width: 100%;
@@ -169,6 +184,7 @@ const LinkPost = styled.div`
   height: 155px;
   width: 100%;
   max-width: 500px;
+  cursor: pointer;
 
   div {
     margin: 15px 15px;
