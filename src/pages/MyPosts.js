@@ -27,8 +27,6 @@ export default function MyPosts() {
     }
   }, [onChangePost]);
 
-  console.log(userPosts);
-
   return (
     <Main>
       <div>

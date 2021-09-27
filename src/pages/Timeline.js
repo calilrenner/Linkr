@@ -49,8 +49,6 @@ export default function Timeline() {
     getFollowsPosts(userData.token).then((r) => setFollowedPosts(r.data.posts));
   }, [onChangePost]);
 
-  console.log(followedPosts)
-
   function returnPosts() {
     if (followedUsers.length === 0) {
       return (
