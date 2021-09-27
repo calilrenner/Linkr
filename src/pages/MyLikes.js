@@ -13,8 +13,8 @@ import { useHistory } from "react-router-dom";
 
 export default function MyLikes() {
   const [getInitial, setGetInicial] = useState('')
-  const { userData, onChangePosts } = useContext(UserContext);
-  const [likedPosts, setLikedPosts] = useState('');
+  const { userData, onChangePost } = useContext(UserContext);
+  const [likedPosts, setLikedPosts] = useState([]);
   let higher = Number.POSITIVE_INFINITY;
   let lower = Number.NEGATIVE_INFINITY;
   const [firstPostId, setFirstPostId] = useState(0);
@@ -22,7 +22,8 @@ export default function MyLikes() {
   const [hasMore, setHasMore] = useState(true);
   const [newLikedPosts, setNewLikedPosts] = useState([]);
   const history = useHistory();
-  const [ lastPostId, setLastPostId ] = useState(0)
+  const [ lastPostId, setLastPostId ] = useState(0);
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     if (!userData.token) {
@@ -30,9 +31,10 @@ export default function MyLikes() {
     }
     getMyLikes(userData.token).then((r) => {
       setGetInicial(r.data.posts.map(post => post.id));
+      setLoad(!load)
     }
     );
-  }, [onChangePosts]);
+  }, [onChangePost]);
 
   useEffect(() => {
     if(likedPosts.length > 0) {
@@ -63,8 +65,9 @@ export default function MyLikes() {
     if(firstPostId !== 0) {
       getMyLikesIds(firstPostId, userData.token).then((r) =>
         setLikedPosts(r.data.posts))
+        setLoad(!load)
     }
-  }, [getInitial, onChangePosts, firstPostId]);
+  }, [getInitial, onChangePost, firstPostId]);
 
   function scrollInfinity() {
     loadMoreLikedPosts(lastPostId, userData.token).then(r => {
@@ -82,7 +85,7 @@ export default function MyLikes() {
         <Title>my likes</Title>
         {
           pageNumber === 0 ?
-            (likedPosts === '' ?
+            (load ?
             <Container>
               <Loader />
             </Container>
